@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<EditText xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/edtNumberText"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="5dp"
+    android:background="@drawable/rect_bg"
+    android:hint="Number text"
+    android:inputType="number"
+    android:maxLines="1"
+    android:padding="10dp"
+    android:textColor="@color/black"
+    android:textColorHint="@color/gray"
+    android:textSize="18sp" />

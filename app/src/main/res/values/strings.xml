@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">PComplaintsApp</string>
+    <string name="drawer_open">Open</string>
+    <string name="drawer_close">Close</string>
+    <string name="police_permissions">Police \n Permissions</string>
+    <string name="police_identity_address_trace">Police Identity \n&amp;\n Address Trace</string>
+    <string name="materimonial_verification">Matrimonial Verifications</string>
+    <string name="drafting_complaints">Drafting \n&amp;\n Complaints</string>
+    <string name="btn_link_to_register">Not a member? Sign up now.</string>
+    <string name="title_activity_cyber_cafe_application_form">CyberCafeApplicationFormActivity
+    </string>
+    <string name="error_message">Oops! Something went wrong</string>
+</resources>

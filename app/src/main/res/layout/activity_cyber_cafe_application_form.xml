@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <include layout="@layout/common_header"/>
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="10dp"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/edtFullName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:padding="10dp"
+                android:background="@drawable/rect_bg"
+                android:textColorHint="@color/gray"
+                android:inputType="text"
+                android:hint="Full Name"
+                android:textSize="18sp"
+                android:textColor="@color/black" />
+
+            <EditText
+                android:id="@+id/edtOccupation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rect_bg"
+                android:maxLines="1"
+                android:inputType="text"
+                android:layout_marginTop="10dp"
+                android:padding="10dp"
+                android:textSize="18sp"
+                android:textColorHint="@color/gray"
+                android:hint="Occupation"
+                android:textColor="@color/black"/>
+
+            <EditText
+                android:id="@+id/edtParentage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rect_bg"
+                android:maxLines="1"
+                android:inputType="text"
+                android:layout_marginTop="10dp"
+                android:padding="10dp"
+                android:textSize="18sp"
+                android:textColorHint="@color/gray"
+                android:hint="Parentage(Father's/Husband Name)"
+                android:textColor="@color/black"/>
+
+            <EditText
+                android:id="@+id/edtNationality"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rect_bg"
+                android:maxLines="1"
+                android:inputType="text"
+                android:layout_marginTop="10dp"
+                android:padding="10dp"
+                android:textSize="18sp"
+                android:textColorHint="@color/gray"
+                android:hint="Nationality"
+                android:textColor="@color/black"/>
+
+            <EditText
+                android:id="@+id/edtOwnerEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rect_bg"
+                android:maxLines="1"
+                android:inputType="textEmailAddress"
+                android:layout_marginTop="10dp"
+                android:padding="10dp"
+                android:textSize="18sp"
+                android:textColorHint="@color/gray"
+                android:hint="Owner E-Mail Id"
+                android:textColor="@color/black"/>
+
+            <EditText
+                android:id="@+id/edtTelephone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rect_bg"
+                android:maxLines="1"
+                android:inputType="phone"
+                android:maxLength="10"
+                android:layout_marginTop="10dp"
+                android:padding="10dp"
+                android:textSize="18sp"
+                android:textColorHint="@color/gray"
+                android:hint="Telephone No "
+                android:textColor="@color/black"/>
+
+            <EditText
+                android:id="@+id/edtCyberCafeEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textEmailAddress"
+                android:maxLines="1"
+                android:background="@drawable/rect_bg"
+                android:layout_marginTop="10dp"
+                android:padding="10dp"
+                android:textSize="18sp"
+                android:textColorHint="@color/gray"
+                android:hint="Cyber Cafe E-Mail"
+                android:textColor="@color/black"/>
+
+            <EditText
+                android:id="@+id/edtNoOfBranchs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:maxLines="1"
+                android:background="@drawable/rect_bg"
+                android:layout_marginTop="10dp"
+                android:padding="10dp"
+                android:textSize="18sp"
+                android:textColorHint="@color/gray"
+                android:hint="No. of Branches"
+                android:textColor="@color/black"/>
+
+            <TextView
+                android:id="@+id/tvArea"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:background="@drawable/rect_bg"
+                android:drawableRight="@drawable/ic_arrow_down_black"
+                android:layout_marginTop="10dp"
+                android:padding="10dp"
+                android:textSize="18sp"
+                android:textColorHint="@color/gray"
+                android:hint="Select area"
+                android:textColor="@color/black"/>
+
+            <EditText
+                android:id="@+id/edtAreaOfPremise"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_gravity="left|start"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/rect_bg"
+                android:gravity="left|start"
+                android:maxLength="180"
+                android:lines="3"
+                android:hint="Approximate area of the premise"
+                android:inputType="textMultiLine"
+                android:padding="10dp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/gray"
+                android:textSize="18sp" />
+
+            <EditText
+                android:id="@+id/edtNoOfTerminals"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:maxLines="1"
+                android:background="@drawable/rect_bg"
+                android:layout_marginTop="10dp"
+                android:padding="10dp"
+                android:textSize="18sp"
+                android:textColorHint="@color/gray"
+                android:hint="No. of Terminal Proposed "
+                android:textColor="@color/black"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Whether premises are:"
+                    android:textColor="@color/gray"
+                    android:textSize="18sp"/>
+
+                <RadioGroup
+                    android:id="@+id/rbGroup"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <RadioButton
+                        android:id="@+id/rbOwned"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:buttonTint="@color/app_color"
+                        android:checked="true"
+                        android:text="Owned"
+                        android:textSize="16sp"
+                        android:textColor="@color/app_color"/>
+                    <RadioButton
+                        android:id="@+id/rbLeased"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:buttonTint="@color/app_color"
+                        android:text="Leased"
+                        android:textSize="16sp"
+                        android:textColor="@color/app_color"/>
+                    <RadioButton
+                        android:id="@+id/rbRented"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:buttonTint="@color/app_color"
+                        android:text="Rented"
+                        android:textSize="16sp"
+                        android:textColor="@color/app_color"/>
+                </RadioGroup>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:text="Please Capture Applicant Image"
+                    android:textSize="16sp"
+                    android:textColor="@color/gray"/>
+                <ImageView
+                    android:id="@+id/ivCamera"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:src="@drawable/ic_camera"/>
+                <ImageView
+                    android:id="@+id/ivUserImg"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:scaleType="fitXY" />
+            </LinearLayout>
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+
+    <LinearLayout
+        android:id="@+id/llApply"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:background="@color/app_color"
+        android:padding="13dp"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="Apply"
+            android:textSize="18sp"
+            android:textColor="@color/white"
+            android:textStyle="bold"/>
+    </LinearLayout>
+</LinearLayout>

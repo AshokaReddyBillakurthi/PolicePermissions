@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.techouts.pcomplaints">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <application
+        android:name=".PoliceServicesApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/NoActionBar">
+        <activity
+            android:name=".SplashActivity"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".LoginActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".HomeActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ServicesActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".PermissionsAndVerificationActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".CreateServiceActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".UserListActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".CustomerRegistrationActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".UserRegistrationActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".CyberCafeApplicationActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ApplicationListActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".GunLicenceApplicationActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ApplicationActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".CrimeReportApplicationActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".MatrimonialVerificationApplicationActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".UserDetailsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ApplicationDetailsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ExServiceManRegistrationActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".ExServiceManListActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".ExServiceManDetailsActivity"
+            android:screenOrientation="portrait" />
+    </application>
+</manifest>
