@@ -1,16 +1,13 @@
 package com.techouts.pcomplaints;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
+import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.Log;
 import android.util.Patterns;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -26,10 +23,12 @@ import com.techouts.pcomplaints.adapters.AreaAdapter;
 import com.techouts.pcomplaints.adapters.CityAdapter;
 import com.techouts.pcomplaints.adapters.LocationAdapter;
 import com.techouts.pcomplaints.adapters.StateAdapter;
+import com.techouts.pcomplaints.custom.CustomDialog;
 import com.techouts.pcomplaints.datahandler.DatabaseHandler;
 import com.techouts.pcomplaints.entities.User;
 import com.techouts.pcomplaints.utils.ApiServiceConstants;
 import com.techouts.pcomplaints.utils.AppConstents;
+import com.techouts.pcomplaints.utils.DataManager;
 import com.techouts.pcomplaints.utils.DialogUtils;
 import com.techouts.pcomplaints.utils.OkHttpUtils;
 
@@ -37,6 +36,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -46,10 +46,10 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class UserRegistrationActivity extends BaseActivity implements AreaAdapter.OnAreaClickListener,
-        CityAdapter.OnCityClickListener, StateAdapter.OnStateClickListener, LocationAdapter.OnLocationClickListener {
+public class UserRegistrationActivity extends BaseActivity implements CityAdapter.OnCityClickListener,
+        StateAdapter.OnStateClickListener{
 
-    private TextView tvTitle, tvState, tvCity, tvArea, tvLocation;
+    private TextView tvTitle, tvState, tvCity, tvArea;
     private ImageView ivBack;
     private EditText edtFirstName, edtLastName, edtMobileNumber,
             edtEmail, edtPassword;
@@ -60,6 +60,7 @@ public class UserRegistrationActivity extends BaseActivity implements AreaAdapte
     private String userType = "";
     private PopupWindow popupWindow;
     private boolean isPosted = false;
+    private CustomDialog customDialog;
 
     @Override
     public int getRootLayout() {
@@ -80,7 +81,6 @@ public class UserRegistrationActivity extends BaseActivity implements AreaAdapte
         edtMobileNumber = findViewById(R.id.edtMobileNumber);
         edtEmail = findViewById(R.id.edtEmail);
         edtPassword = findViewById(R.id.edtPassword);
-        tvLocation = findViewById(R.id.tvLocation);
         tvState = findViewById(R.id.tvState);
         tvCity = findViewById(R.id.tvCity);
         tvArea = findViewById(R.id.tvArea);
@@ -109,13 +109,6 @@ public class UserRegistrationActivity extends BaseActivity implements AreaAdapte
             }
         });
 
-        tvLocation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                initiatePopupWindowForLocation(v);
-            }
-        });
-
         tvState.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -133,7 +126,16 @@ public class UserRegistrationActivity extends BaseActivity implements AreaAdapte
         tvArea.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                initiatePopupWindowForArea(v);
+                List<String> areaList = DataManager.getList(AppConstents.TYPE_AREA);
+                customDialog = new CustomDialog(UserRegistrationActivity.this, areaList,
+                        new CustomDialog.NameSelectedListener() {
+                            @Override
+                            public void onNameSelected(String listName) {
+                                tvArea.setText(listName);
+                                customDialog.dismiss();
+                            }
+                        });
+                customDialog.show();
             }
         });
 
@@ -160,9 +162,8 @@ public class UserRegistrationActivity extends BaseActivity implements AreaAdapte
             String state = tvState.getText().toString().trim();
             String city = tvCity.getText().toString().trim();
             String area = tvArea.getText().toString().trim();
-            String location = tvLocation.getText().toString().trim();
             if (validateData(firstName, lastName, email, password,
-                    mobileNo, state, city, area, location)) {
+                    mobileNo, state, city, area)) {
                 ArrayList<User> arrayList = new ArrayList<>();
                 User user = new User();
                 user.firstName = firstName;
@@ -173,7 +174,6 @@ public class UserRegistrationActivity extends BaseActivity implements AreaAdapte
                 user.state = state;
                 user.city = city;
                 user.area = area;
-                user.location = location;
                 user.userImg = userImg;
                 user.userType = userType;
 //                if(postDataToServer(user)){
@@ -186,21 +186,6 @@ public class UserRegistrationActivity extends BaseActivity implements AreaAdapte
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    @Override
-    public void onLocationSelected(String location) {
-        if (popupWindow != null)
-            popupWindow.dismiss();
-
-        tvLocation.setText(location);
-    }
-
-    @Override
-    public void onAreaSelected(String area) {
-        if (popupWindow != null)
-            popupWindow.dismiss();
-        tvArea.setText(area);
     }
 
     @Override
@@ -311,7 +296,7 @@ public class UserRegistrationActivity extends BaseActivity implements AreaAdapte
 
     private boolean validateData(String firstName, String lastName,
                                  String email, String password, String mobileNo,
-                                 String state, String city, String area, String location) {
+                                 String state, String city, String area) {
         boolean isValid = true;
         if (TextUtils.isEmpty(firstName)) {
             isValid = false;
@@ -343,9 +328,6 @@ public class UserRegistrationActivity extends BaseActivity implements AreaAdapte
         } else if (TextUtils.isEmpty(area)) {
             isValid = false;
             showToast("Please enter area");
-        } else if (TextUtils.isEmpty(location)) {
-            isValid = false;
-            showToast("Please select location");
         } else if (TextUtils.isEmpty(userImg)) {
             isValid = false;
             showToast("Please capture Image");
@@ -375,8 +357,7 @@ public class UserRegistrationActivity extends BaseActivity implements AreaAdapte
             popupWindow.setFocusable(true);
             View view = LayoutInflater.from(UserRegistrationActivity.this).inflate(R.layout.popup_window_area_list, null);
             RecyclerView rvAreas = view.findViewById(R.id.rvAreas);
-            ArrayList<String> stateList = new ArrayList<>();
-            stateList.add(AppConstents.TELANGANA);
+            List<String> stateList = DataManager.getList(AppConstents.TYPE_STATE);
             rvAreas.setLayoutManager(new LinearLayoutManager(UserRegistrationActivity.this));
             rvAreas.setAdapter(new StateAdapter(stateList, UserRegistrationActivity.this));
             popupWindow.setContentView(view);
@@ -392,8 +373,7 @@ public class UserRegistrationActivity extends BaseActivity implements AreaAdapte
             popupWindow.setFocusable(true);
             View view = LayoutInflater.from(UserRegistrationActivity.this).inflate(R.layout.popup_window_area_list, null);
             RecyclerView rvAreas = view.findViewById(R.id.rvAreas);
-            ArrayList<String> cityList = new ArrayList<>();
-            cityList.add(AppConstents.HYDERABAD);
+            List<String> cityList = DataManager.getList(AppConstents.TYPE_CITY);
             rvAreas.setLayoutManager(new LinearLayoutManager(UserRegistrationActivity.this));
             rvAreas.setAdapter(new CityAdapter(cityList, UserRegistrationActivity.this));
             popupWindow.setContentView(view);
@@ -403,49 +383,49 @@ public class UserRegistrationActivity extends BaseActivity implements AreaAdapte
         }
     }
 
-    private void initiatePopupWindowForArea(View v) {
-        try {
-            popupWindow = new PopupWindow(this);
-            popupWindow.setFocusable(true);
-            View view = LayoutInflater.from(UserRegistrationActivity.this).inflate(R.layout.popup_window_area_list, null);
-            RecyclerView rvAreas = view.findViewById(R.id.rvAreas);
-            ArrayList<String> areaList = new ArrayList<>();
-            areaList.add("Domalguda");
-            areaList.add("Secunderabad");
-            areaList.add("Bansilapet");
-            areaList.add("Liberty");
-            areaList.add("Hyderguda");
-            areaList.add("Shyamalal");
-            areaList.add("Ligampalli");
-            rvAreas.setLayoutManager(new LinearLayoutManager(UserRegistrationActivity.this));
-            rvAreas.setAdapter(new AreaAdapter(areaList, UserRegistrationActivity.this));
-            popupWindow.setContentView(view);
-            popupWindow.showAsDropDown(v, Gravity.CENTER, 0, 0);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+//    private void initiatePopupWindowForArea(View v) {
+//        try {
+//            popupWindow = new PopupWindow(this);
+//            popupWindow.setFocusable(true);
+//            View view = LayoutInflater.from(UserRegistrationActivity.this).inflate(R.layout.popup_window_area_list, null);
+//            RecyclerView rvAreas = view.findViewById(R.id.rvAreas);
+//            ArrayList<String> areaList = new ArrayList<>();
+//            areaList.add("Domalguda");
+//            areaList.add("Secunderabad");
+//            areaList.add("Bansilapet");
+//            areaList.add("Liberty");
+//            areaList.add("Hyderguda");
+//            areaList.add("Shyamalal");
+//            areaList.add("Ligampalli");
+//            rvAreas.setLayoutManager(new LinearLayoutManager(UserRegistrationActivity.this));
+//            rvAreas.setAdapter(new AreaAdapter(areaList, UserRegistrationActivity.this));
+//            popupWindow.setContentView(view);
+//            popupWindow.showAsDropDown(v, Gravity.CENTER, 0, 0);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
 
-    private void initiatePopupWindowForLocation(View v) {
-        try {
-            popupWindow = new PopupWindow(this);
-            popupWindow.setFocusable(true);
-            View view = LayoutInflater.from(UserRegistrationActivity.this).inflate(R.layout.popup_window_area_list, null);
-            RecyclerView rvAreas = view.findViewById(R.id.rvAreas);
-            ArrayList<String> locationList = new ArrayList<>();
-            locationList.add("Chikkadpally");
-            locationList.add("Gandhinagar");
-            locationList.add("Narayanaguda");
-            locationList.add("Saifbad");
-            locationList.add("Begumpet");
-            locationList.add("Mahankali");
-            rvAreas.setLayoutManager(new LinearLayoutManager(UserRegistrationActivity.this));
-            rvAreas.setAdapter(new LocationAdapter(locationList, UserRegistrationActivity.this));
-            popupWindow.setContentView(view);
-            popupWindow.showAsDropDown(v, Gravity.CENTER, 0, 0);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+//    private void initiatePopupWindowForLocation(View v) {
+//        try {
+//            popupWindow = new PopupWindow(this);
+//            popupWindow.setFocusable(true);
+//            View view = LayoutInflater.from(UserRegistrationActivity.this).inflate(R.layout.popup_window_area_list, null);
+//            RecyclerView rvAreas = view.findViewById(R.id.rvAreas);
+//            ArrayList<String> locationList = new ArrayList<>();
+//            locationList.add("Chikkadpally");
+//            locationList.add("Gandhinagar");
+//            locationList.add("Narayanaguda");
+//            locationList.add("Saifbad");
+//            locationList.add("Begumpet");
+//            locationList.add("Mahankali");
+//            rvAreas.setLayoutManager(new LinearLayoutManager(UserRegistrationActivity.this));
+//            rvAreas.setAdapter(new LocationAdapter(locationList, UserRegistrationActivity.this));
+//            popupWindow.setContentView(view);
+//            popupWindow.showAsDropDown(v, Gravity.CENTER, 0, 0);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
 
 }

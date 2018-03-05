@@ -1,22 +1,19 @@
 package com.techouts.pcomplaints;
 
 import android.graphics.Bitmap;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.techouts.pcomplaints.entities.ExServiceMan;
-import com.techouts.pcomplaints.entities.User;
 import com.techouts.pcomplaints.utils.AppConstents;
 
 public class ExServiceManDetailsActivity extends BaseActivity {
 
     private TextView tvTitle, tvFirstName, tvLastName, tvArea,
             tvAccept,tvReject,tvDocList,
-            tvCity, tvState,tvEmail,tvMobileNo,tvLocation,tvServices;
+            tvCity, tvState,tvEmail,tvMobileNo,tvServices;
     private ImageView ivBack, ivUserImage;
     private ExServiceMan exServiceMan;
     private String loginType;
@@ -41,8 +38,7 @@ public class ExServiceManDetailsActivity extends BaseActivity {
         tvEmail = findViewById(R.id.tvEmail);
         tvMobileNo = findViewById(R.id.tvMobileNo);
         tvServices = findViewById(R.id.tvServices);
-        tvLocation = findViewById(R.id.tvLocation);
-        tvArea = findViewById(R.id.tvArea);
+        tvArea = findViewById(R.id.tvListName);
         tvCity = findViewById(R.id.tvCity);
         tvState = findViewById(R.id.tvState);
         tvAccept = findViewById(R.id.tvAccept);
@@ -95,7 +91,6 @@ public class ExServiceManDetailsActivity extends BaseActivity {
             tvLastName.setText(exServiceMan.lastName + "");
             tvEmail.setText(exServiceMan.email+"");
             tvMobileNo.setText(exServiceMan.mobileNo+"");
-            tvLocation.setText(exServiceMan.location+"");
             tvServices.setText(exServiceMan.services+"");
             tvDocList.setText(exServiceMan.reqDocs+"");
             tvArea.setText(exServiceMan.area + "");

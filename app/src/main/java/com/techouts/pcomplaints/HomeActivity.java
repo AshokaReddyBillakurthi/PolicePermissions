@@ -15,9 +15,10 @@ import android.widget.TextView;
 import com.techouts.pcomplaints.adapters.MenuListAdaper;
 import com.techouts.pcomplaints.fragments.HomeFragment;
 import com.techouts.pcomplaints.utils.AppConstents;
+import com.techouts.pcomplaints.utils.DataManager;
 import com.techouts.pcomplaints.utils.DialogUtils;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class HomeActivity extends BaseActivity {
 
@@ -25,7 +26,7 @@ public class HomeActivity extends BaseActivity {
     private LinearLayout llMenu;
     private RecyclerView rvMenuList;
     public String loginType = "";
-    private ArrayList<String> menuList;
+    private List<String> menuList;
     private TextView tvScreenTitle;
     boolean doubleBackToExitPressedOnce = false;
 
@@ -76,32 +77,22 @@ public class HomeActivity extends BaseActivity {
 
     @Override
     public void initData() {
+
         if (loginType.equalsIgnoreCase(AppConstents.LOGIN_ADMIN)) {
             tvScreenTitle.setText(AppConstents.ADMIN);
-            menuList = new ArrayList<>();
-            menuList.add(AppConstents.CREATE_SERVICE);
-            menuList.add(AppConstents.SERVICE_MAN_LIST);
-            menuList.add(AppConstents.CUSTOMER_LIST);
-            menuList.add(AppConstents.LOGOUT);
+            menuList = DataManager.getMenuList(AppConstents.LOGIN_ADMIN);
         } else if (loginType.equalsIgnoreCase(AppConstents.LOGIN_SERVICE_MAN)) {
             tvScreenTitle.setText(AppConstents.SERVICE_MAN);
-            menuList = new ArrayList<>();
-            menuList.add(AppConstents.APPLICATION_LIST);
-            menuList.add(AppConstents.LOGOUT);
+            menuList = DataManager.getMenuList(AppConstents.LOGIN_SERVICE_MAN);
         } else if (loginType.equalsIgnoreCase(AppConstents.LOGIN_CUSTOMER)) {
             tvScreenTitle.setText(AppConstents.CUSTOMER);
-            menuList = new ArrayList<>();
-            menuList.add(AppConstents.SERVICES);
-            menuList.add(AppConstents.LOGOUT);
+            menuList = DataManager.getMenuList(AppConstents.LOGIN_CUSTOMER);
         } else if(loginType.equalsIgnoreCase(AppConstents.LOGIN_TYPE_NONE)){
             tvScreenTitle.setText(AppConstents.HOME);
-            menuList = new ArrayList<>();
-            menuList.add(AppConstents.SERVICES);
-            menuList.add(AppConstents.SERVICE_MAN_LIST);
-            menuList.add(AppConstents.LOGIN);
+            menuList = DataManager.getMenuList(AppConstents.LOGIN_TYPE_NONE);
         }
-        rvMenuList.setAdapter(new MenuListAdaper(menuList));
 
+        rvMenuList.setAdapter(new MenuListAdaper(menuList));
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.container, new HomeFragment());

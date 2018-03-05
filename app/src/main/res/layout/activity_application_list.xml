@@ -14,7 +14,7 @@
         android:layout_marginRight="5dp"
         android:orientation="vertical">
         <TextView
-            android:id="@+id/tvArea"
+            android:id="@+id/tvListName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:drawableRight="@drawable/ic_arrow_down_black"

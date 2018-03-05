@@ -33,8 +33,6 @@ public class ExServiceMan implements Serializable{
     public String city;
     @ColumnInfo(name = "area")
     public String area;
-    @ColumnInfo(name="location")
-    public String location;
     @ColumnInfo(name = "userImg")
     public String userImg;
     @ColumnInfo(name = "userType")

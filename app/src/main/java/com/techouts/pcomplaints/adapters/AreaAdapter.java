@@ -25,7 +25,7 @@ public class AreaAdapter extends RecyclerView.Adapter<AreaAdapter.AreaViewHolder
 
     @Override
     public AreaViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.area_item_cell,parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_cell,parent,false);
         return new AreaViewHolder(view);
     }
 
@@ -43,7 +43,7 @@ public class AreaAdapter extends RecyclerView.Adapter<AreaAdapter.AreaViewHolder
         TextView tvArea;
         public AreaViewHolder(View itemView) {
             super(itemView);
-            tvArea = itemView.findViewById(R.id.tvArea);
+            tvArea = itemView.findViewById(R.id.tvListName);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.techouts.pcomplaints.R;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by TO-OW109 on 09-02-2018.
@@ -16,17 +17,17 @@ import java.util.ArrayList;
 
 public class StateAdapter extends RecyclerView.Adapter<StateAdapter.StateViewHolder>  {
 
-    private ArrayList<String> cityList;
+    private List<String> cityList;
     private StateAdapter.OnStateClickListener listener;
 
-    public StateAdapter(ArrayList<String> cityList, StateAdapter.OnStateClickListener listener){
+    public StateAdapter(List<String> cityList, StateAdapter.OnStateClickListener listener){
         this.cityList = cityList;
         this.listener = listener;
     }
 
     @Override
     public StateViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.area_item_cell,parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_cell,parent,false);
         return new StateViewHolder(view);
     }
 
@@ -45,7 +46,7 @@ public class StateAdapter extends RecyclerView.Adapter<StateAdapter.StateViewHol
         TextView tvArea;
         public StateViewHolder(View itemView) {
             super(itemView);
-            tvArea = itemView.findViewById(R.id.tvArea);
+            tvArea = itemView.findViewById(R.id.tvListName);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

@@ -19,17 +19,19 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import com.techouts.pcomplaints.custom.CustomDialog;
 import com.techouts.pcomplaints.datahandler.DatabaseHandler;
 import com.techouts.pcomplaints.entities.PermissionApplication;
 import com.techouts.pcomplaints.utils.AppConstents;
+import com.techouts.pcomplaints.utils.DataManager;
 import com.techouts.pcomplaints.utils.DialogUtils;
 import com.techouts.pcomplaints.utils.SharedPreferenceUtils;
-import com.techouts.pcomplaints.R;
 import com.techouts.pcomplaints.adapters.AreaAdapter;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class CrimeReportApplicationActivity extends BaseActivity implements AreaAdapter.OnAreaClickListener {
+public class CrimeReportApplicationActivity extends BaseActivity{
 
     private EditText edtFirstName, edtLastName, edtOccupation, edtEmail,
             edtMobileNo, edtAddress, edtValueOfProperty;
@@ -42,6 +44,7 @@ public class CrimeReportApplicationActivity extends BaseActivity implements Area
     private static final String TAG = CyberCafeApplicationActivity.class.getSimpleName();
     private PopupWindow popupWindow;
     private PermissionApplication permissionApplication;
+    private CustomDialog customDialog;
 
 
     @Override
@@ -63,7 +66,7 @@ public class CrimeReportApplicationActivity extends BaseActivity implements Area
         edtMobileNo = findViewById(R.id.edtMobileNo);
         edtAddress = findViewById(R.id.edtAddress);
         edtValueOfProperty = findViewById(R.id.edtValueOfProperty);
-        tvArea = findViewById(R.id.tvArea);
+        tvArea = findViewById(R.id.tvListName);
         ivCamera = findViewById(R.id.ivCamera);
         ivUserImg = findViewById(R.id.ivUserImg);
         rgSex = findViewById(R.id.rgSex);
@@ -87,7 +90,16 @@ public class CrimeReportApplicationActivity extends BaseActivity implements Area
         tvArea.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                initiatePopupWindow(v);
+                List<String> areaList = DataManager.getList(AppConstents.TYPE_AREA);
+                customDialog = new CustomDialog(CrimeReportApplicationActivity.this, areaList,
+                        new CustomDialog.NameSelectedListener() {
+                            @Override
+                            public void onNameSelected(String listName) {
+                                tvArea.setText(listName);
+                                customDialog.dismiss();
+                            }
+                        });
+                customDialog.show();
             }
         });
 
@@ -104,37 +116,6 @@ public class CrimeReportApplicationActivity extends BaseActivity implements Area
                 applyCrimeReport();
             }
         });
-    }
-
-    private void initiatePopupWindow(View v) {
-        try {
-            popupWindow = new PopupWindow(this);
-            popupWindow.setFocusable(true);
-            View view = LayoutInflater.from(CrimeReportApplicationActivity.this).inflate(R.layout.popup_window_area_list, null);
-            RecyclerView rvAreas = view.findViewById(R.id.rvAreas);
-            ArrayList<String> areaList = new ArrayList<>();
-            areaList.add("Domalguda");
-            areaList.add("Secunderabad");
-            areaList.add("Bansilapet");
-            areaList.add("Liberty");
-            areaList.add("Hyderguda");
-            areaList.add("Shyamalal");
-            areaList.add("Ligampalli");
-            rvAreas.setLayoutManager(new LinearLayoutManager(CrimeReportApplicationActivity.this));
-            rvAreas.setAdapter(new AreaAdapter(areaList, CrimeReportApplicationActivity.this));
-            popupWindow.setContentView(view);
-            popupWindow.showAsDropDown(v, Gravity.CENTER, 0, 0);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void onAreaSelected(String area) {
-        if (popupWindow != null)
-            popupWindow.dismiss();
-
-        tvArea.setText(area);
     }
 
     private void applyCrimeReport() {

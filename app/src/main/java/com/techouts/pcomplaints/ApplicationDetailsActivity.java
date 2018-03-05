@@ -32,7 +32,7 @@ public class ApplicationDetailsActivity extends BaseActivity {
         tvOccupation = findViewById(R.id.tvOccupation);
         tvMobileNo = findViewById(R.id.tvMobileNo);
         tvApplicationType = findViewById(R.id.tvApplicationType);
-        tvArea = findViewById(R.id.tvArea);
+        tvArea = findViewById(R.id.tvListName);
 //        tvCity = findViewById(R.id.tvCity);
 //        tvState = findViewById(R.id.tvState);
         ivBack = findViewById(R.id.ivBack);

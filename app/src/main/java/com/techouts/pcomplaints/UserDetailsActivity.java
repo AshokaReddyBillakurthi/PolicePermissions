@@ -1,7 +1,6 @@
 package com.techouts.pcomplaints;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -9,11 +8,9 @@ import android.widget.TextView;
 import com.techouts.pcomplaints.entities.User;
 import com.techouts.pcomplaints.utils.AppConstents;
 
-import java.io.File;
-
 public class UserDetailsActivity extends BaseActivity {
 
-    private TextView tvTitle, tvFirstName, tvLastName, tvArea,tvLocation,
+    private TextView tvTitle, tvFirstName, tvLastName, tvArea,
             tvCity, tvState,tvEmail,tvMobileNo;
     private ImageView ivBack, ivUserImage;
     private User user;
@@ -33,9 +30,8 @@ public class UserDetailsActivity extends BaseActivity {
         tvLastName = findViewById(R.id.tvLastName);
         tvEmail = findViewById(R.id.tvEmail);
         tvMobileNo = findViewById(R.id.tvMobileNo);
-        tvArea = findViewById(R.id.tvArea);
+        tvArea = findViewById(R.id.tvListName);
         tvCity = findViewById(R.id.tvCity);
-        tvLocation = findViewById(R.id.tvLocation);
         tvState = findViewById(R.id.tvState);
         ivBack = findViewById(R.id.ivBack);
         ivUserImage = findViewById(R.id.ivUserImage);
@@ -59,13 +55,9 @@ public class UserDetailsActivity extends BaseActivity {
             tvArea.setText(user.area + "");
             tvCity.setText(user.city + "");
             tvState.setText(user.state + "");
-            tvLocation.setText(user.location+"");
             Bitmap bitmap = getUserImageBitMap(user.userImg);
             if(bitmap!=null)
                 ivUserImage.setImageBitmap(bitmap);
         }
     }
-
-
-
 }

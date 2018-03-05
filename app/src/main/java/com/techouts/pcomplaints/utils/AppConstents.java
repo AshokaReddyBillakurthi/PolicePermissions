@@ -13,7 +13,7 @@ public interface AppConstents {
     String CREATE_SERVICE = "Create Service";
     String SERVICES = "Services";
     String ADMIN = "Admin";
-    String SERVICE_MAN = "Service Man";
+    String SERVICE_MAN = "Ex.Service Man";
     String CUSTOMER = "Customer";
     String HOME = "Home";
     String LOGIN = "Login";
@@ -34,6 +34,10 @@ public interface AppConstents {
     String EXTRA_SEARVICE_TYPE = "SearviceType";
     String EXTRA_USER = "User";
     String EXTRA_PERMISSION_APPLICATION = "PermissionApplication";
+
+    String TYPE_STATE = "State";
+    String TYPE_CITY = "City";
+    String TYPE_AREA = "Area";
 
     //States
     String TELANGANA = "Telangana";

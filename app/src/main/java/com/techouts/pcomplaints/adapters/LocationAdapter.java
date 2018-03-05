@@ -26,7 +26,7 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Locati
 
     @Override
     public LocationViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.area_item_cell,parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_cell,parent,false);
         return new LocationViewHolder(view);
     }
 
@@ -44,7 +44,7 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Locati
         TextView tvLocation;
         public LocationViewHolder(View itemView) {
             super(itemView);
-            tvLocation = itemView.findViewById(R.id.tvArea);
+            tvLocation = itemView.findViewById(R.id.tvListName);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

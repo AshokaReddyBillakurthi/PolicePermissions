@@ -19,7 +19,7 @@ public interface ExServiceManDao {
     @Query("SELECT * FROM ExServiceMan")
     List<ExServiceMan> getAll();
 
-    @Query("SELECT * FROM User WHERE email LIKE :email")
+    @Query("SELECT * FROM ExServiceMan WHERE email LIKE :email")
     ExServiceMan findByEmail(String email);
 
     @Query("SELECT count(*) FROM ExServiceMan Where email LIKE :email AND password LIKE :password")

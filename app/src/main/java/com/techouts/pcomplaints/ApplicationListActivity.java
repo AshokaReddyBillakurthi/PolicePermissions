@@ -6,15 +6,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.techouts.pcomplaints.datahandler.DatabaseHandler;
 import com.techouts.pcomplaints.entities.PermissionApplication;
-import com.techouts.pcomplaints.utils.AppConstents;
-import com.techouts.pcomplaints.R;
 import com.techouts.pcomplaints.adapters.ApplicationsListAdapter;
 import com.techouts.pcomplaints.adapters.AreaAdapter;
 
@@ -40,7 +37,7 @@ public class ApplicationListActivity extends BaseActivity implements AreaAdapter
         ivBack = findViewById(R.id.ivBack);
         tvTitle = findViewById(R.id.tvTitle);
         tvNoApplications = findViewById(R.id.tvNoApplications);
-        tvArea = findViewById(R.id.tvArea);
+        tvArea = findViewById(R.id.tvListName);
         rvApplications.setLayoutManager(new LinearLayoutManager(ApplicationListActivity.this));
         applicationsListAdapter = new ApplicationsListAdapter();
         rvApplications.setAdapter(applicationsListAdapter);

@@ -17,6 +17,7 @@ import com.techouts.pcomplaints.ServicesActivity;
 import com.techouts.pcomplaints.UserListActivity;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by TO-OW109 on 02-02-2018.
@@ -24,9 +25,9 @@ import java.util.ArrayList;
 
 public class MenuListAdaper extends RecyclerView.Adapter<MenuListAdaper.MenuViewHolder> {
 
-    private ArrayList<String> menuList;
+    private List<String> menuList;
 
-    public MenuListAdaper(ArrayList<String> menuList) {
+    public MenuListAdaper(List<String> menuList) {
         this.menuList = menuList;
     }
 

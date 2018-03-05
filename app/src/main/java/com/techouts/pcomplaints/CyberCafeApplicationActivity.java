@@ -19,17 +19,19 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import com.techouts.pcomplaints.custom.CustomDialog;
 import com.techouts.pcomplaints.datahandler.DatabaseHandler;
 import com.techouts.pcomplaints.entities.PermissionApplication;
 import com.techouts.pcomplaints.utils.AppConstents;
+import com.techouts.pcomplaints.utils.DataManager;
 import com.techouts.pcomplaints.utils.DialogUtils;
 import com.techouts.pcomplaints.utils.SharedPreferenceUtils;
-import com.techouts.pcomplaints.R;
 import com.techouts.pcomplaints.adapters.AreaAdapter;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class CyberCafeApplicationActivity extends BaseActivity implements AreaAdapter.OnAreaClickListener {
+public class CyberCafeApplicationActivity extends BaseActivity {
     private EditText edtFullName, edtOccupation, edtParentage, edtNationality,
             edtOwnerEmail, edtTelephone, edtCyberCafeEmail, edtNoOfBranchs, edtAreaOfPremise,
             edtNoOfTerminals;
@@ -43,6 +45,7 @@ public class CyberCafeApplicationActivity extends BaseActivity implements AreaAd
     private PermissionApplication permissionApplication;
     private PopupWindow popupWindow;
     private String applicationType = "";
+    private CustomDialog customDialog;
 
     @Override
     public int getRootLayout() {
@@ -67,7 +70,7 @@ public class CyberCafeApplicationActivity extends BaseActivity implements AreaAd
         rbGroup = findViewById(R.id.rbGroup);
         llApply = findViewById(R.id.llApply);
         tvTitle = findViewById(R.id.tvTitle);
-        tvArea = findViewById(R.id.tvArea);
+        tvArea = findViewById(R.id.tvListName);
         ivBack = findViewById(R.id.ivBack);
         ivCamera = findViewById(R.id.ivCamera);
         ivUserImg = findViewById(R.id.ivUserImg);
@@ -102,7 +105,22 @@ public class CyberCafeApplicationActivity extends BaseActivity implements AreaAd
         tvArea.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                initiatePopupWindow(v);
+                tvArea.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        List<String> areaList = DataManager.getList(AppConstents.TYPE_AREA);
+                        customDialog = new CustomDialog(CyberCafeApplicationActivity.this, areaList,
+                                new CustomDialog.NameSelectedListener() {
+                                    @Override
+                                    public void onNameSelected(String listName) {
+                                        tvArea.setText(listName);
+                                        customDialog.dismiss();
+                                    }
+                                });
+                        customDialog.show();
+                    }
+                });
+
             }
         });
     }
@@ -211,15 +229,6 @@ public class CyberCafeApplicationActivity extends BaseActivity implements AreaAd
         return isValid;
     }
 
-    @Override
-    public void onAreaSelected(String area) {
-        if(popupWindow!=null)
-            popupWindow.dismiss();
-
-        tvArea.setText(area);
-
-    }
-
     private class ApplyPermissionAsyncTask extends AsyncTask<ArrayList<PermissionApplication>, Integer, Boolean> {
 
         @Override
@@ -264,29 +273,4 @@ public class CyberCafeApplicationActivity extends BaseActivity implements AreaAd
             }
         }
     }
-
-    private void initiatePopupWindow(View v) {
-        try {
-            popupWindow  = new PopupWindow(this);
-            popupWindow.setFocusable(true);
-            View view = LayoutInflater.from(CyberCafeApplicationActivity.this).inflate(R.layout.popup_window_area_list,null);
-            RecyclerView rvAreas = view.findViewById(R.id.rvAreas);
-            ArrayList<String> areaList = new ArrayList<>();
-            areaList.add("Domalguda");
-            areaList.add("Secunderabad");
-            areaList.add("Bansilapet");
-            areaList.add("Liberty");
-            areaList.add("Hyderguda");
-            areaList.add("Shyamalal");
-            areaList.add("Ligampalli");
-            rvAreas.setLayoutManager(new LinearLayoutManager(CyberCafeApplicationActivity.this));
-            rvAreas.setAdapter(new AreaAdapter(areaList,CyberCafeApplicationActivity.this));
-            popupWindow.setContentView(view);
-            popupWindow.showAsDropDown(v, Gravity.CENTER,0, 0);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-
 }

@@ -19,18 +19,19 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import com.techouts.pcomplaints.custom.CustomDialog;
 import com.techouts.pcomplaints.datahandler.DatabaseHandler;
 import com.techouts.pcomplaints.utils.AppConstents;
-import com.techouts.pcomplaints.R;
 import com.techouts.pcomplaints.adapters.AreaAdapter;
 import com.techouts.pcomplaints.entities.PermissionApplication;
+import com.techouts.pcomplaints.utils.DataManager;
 import com.techouts.pcomplaints.utils.DialogUtils;
 import com.techouts.pcomplaints.utils.SharedPreferenceUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class GunLicenceApplicationActivity extends BaseActivity implements AreaAdapter.OnAreaClickListener{
+public class GunLicenceApplicationActivity extends BaseActivity{
 
     private EditText edtFullName,edtOccupation,edtParentage,edtNationality,edtHeadForLicense,
             edtTelephone,edtPurposeOfArms,edtDescriptionOfArms,edtQtyAmmunition,edtOldLicenseNo,edtEmail;
@@ -41,7 +42,7 @@ public class GunLicenceApplicationActivity extends BaseActivity implements AreaA
     private LinearLayout llApply;
     private static final int CAMERA_CAPTURE = 1;
     private static final String TAG = CyberCafeApplicationActivity.class.getSimpleName();
-    private PopupWindow popupWindow;
+    private CustomDialog customDialog;
 
     @Override
     public int getRootLayout() {
@@ -63,7 +64,7 @@ public class GunLicenceApplicationActivity extends BaseActivity implements AreaA
         edtOldLicenseNo = findViewById(R.id.edtOldLicenseNo);
         rgSocialStatus = findViewById(R.id.rgSocialStatus);
         tvTitle = findViewById(R.id.tvTitle);
-        tvArea = findViewById(R.id.tvArea);
+        tvArea = findViewById(R.id.tvListName);
         llApply = findViewById(R.id.llApply);
         ivCamera = findViewById(R.id.ivCamera);
         ivUserImg = findViewById(R.id.ivUserImg);
@@ -88,7 +89,16 @@ public class GunLicenceApplicationActivity extends BaseActivity implements AreaA
         tvArea.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                initiatePopupWindow(v);
+                List<String> areaList = DataManager.getList(AppConstents.TYPE_AREA);
+                customDialog = new CustomDialog(GunLicenceApplicationActivity.this, areaList,
+                        new CustomDialog.NameSelectedListener() {
+                            @Override
+                            public void onNameSelected(String listName) {
+                                tvArea.setText(listName);
+                                customDialog.dismiss();
+                            }
+                        });
+                customDialog.show();
             }
         });
 
@@ -224,13 +234,6 @@ public class GunLicenceApplicationActivity extends BaseActivity implements AreaA
 
     }
 
-    @Override
-    public void onAreaSelected(String area) {
-        if(popupWindow!=null)
-            popupWindow.dismiss();
-
-        tvArea.setText(area+"");
-    }
 
     class GunLicenceAsyncTask extends AsyncTask<List<PermissionApplication>,Void,Void>{
 
@@ -267,26 +270,4 @@ public class GunLicenceApplicationActivity extends BaseActivity implements AreaA
         }
     }
 
-    private void initiatePopupWindow(View v) {
-        try {
-            popupWindow  = new PopupWindow(this);
-            popupWindow.setFocusable(true);
-            View view = LayoutInflater.from(GunLicenceApplicationActivity.this).inflate(R.layout.popup_window_area_list,null);
-            RecyclerView rvAreas = view.findViewById(R.id.rvAreas);
-            ArrayList<String> areaList = new ArrayList<>();
-            areaList.add("Domalguda");
-            areaList.add("Secunderabad");
-            areaList.add("Bansilapet");
-            areaList.add("Liberty");
-            areaList.add("Hyderguda");
-            areaList.add("Shyamalal");
-            areaList.add("Ligampalli");
-            rvAreas.setLayoutManager(new LinearLayoutManager(GunLicenceApplicationActivity.this));
-            rvAreas.setAdapter(new AreaAdapter(areaList,GunLicenceApplicationActivity.this));
-            popupWindow.setContentView(view);
-            popupWindow.showAsDropDown(v, Gravity.CENTER,0, 0);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 }
