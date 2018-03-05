@@ -10,4 +10,7 @@
     <string name="title_activity_cyber_cafe_application_form">CyberCafeApplicationFormActivity
     </string>
     <string name="error_message">Oops! Something went wrong</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

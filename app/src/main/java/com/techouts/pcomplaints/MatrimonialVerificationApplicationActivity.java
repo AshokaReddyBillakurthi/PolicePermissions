@@ -12,8 +12,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.techouts.pcomplaints.R;
-
 import java.io.IOException;
 
 public class MatrimonialVerificationApplicationActivity extends BaseActivity {

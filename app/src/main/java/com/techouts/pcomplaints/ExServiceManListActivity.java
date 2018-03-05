@@ -1,32 +1,26 @@
 package com.techouts.pcomplaints;
 
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.techouts.pcomplaints.adapters.ExServiceManListAdapter;
-import com.techouts.pcomplaints.adapters.UserListAdpter;
+import com.techouts.pcomplaints.adapters.ExServiceManPagerAdapter;
 import com.techouts.pcomplaints.datahandler.DatabaseHandler;
 import com.techouts.pcomplaints.entities.ExServiceMan;
-import com.techouts.pcomplaints.entities.User;
 import com.techouts.pcomplaints.utils.AppConstents;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ExServiceManListActivity extends BaseActivity {
 
-    private RecyclerView rvServiceManList;
-    private ExServiceManListAdapter serviceManListAdpter;
+    private ViewPager viewPager;
+    private TabLayout tabs;
     private TextView tvTitle;
     private ImageView ivBack, ivCross;
     private String userListType = "";
@@ -35,6 +29,7 @@ public class ExServiceManListActivity extends BaseActivity {
     private List<ExServiceMan> tempExServiceManList;
     private List<ExServiceMan> exServiceManList;
     public String loginType="";
+    private ExServiceManPagerAdapter exServiceManPagerAdapter;
 
     @Override
     public int getRootLayout() {
@@ -48,19 +43,16 @@ public class ExServiceManListActivity extends BaseActivity {
             userListType = getIntent().getExtras().getString(AppConstents.EXTRA_USER_LIST,"");
             loginType = getIntent().getExtras().getString(AppConstents.EXTRA_LOGIN_TYPE,"");
         }
-
-        rvServiceManList = findViewById(R.id.rvServiceManList);
+        viewPager = findViewById(R.id.viewpager);
+        tabs = findViewById(R.id.tabs);
+        exServiceManPagerAdapter = new ExServiceManPagerAdapter(this,getSupportFragmentManager());
+        viewPager.setAdapter(exServiceManPagerAdapter);
+        tabs.setupWithViewPager(viewPager);
         tvTitle = findViewById(R.id.tvTitle);
         ivBack = findViewById(R.id.ivBack);
         ivCross = findViewById(R.id.ivCross);
         edtSearch = findViewById(R.id.edtSearch);
-        rvServiceManList.setLayoutManager(new LinearLayoutManager(ExServiceManListActivity.this));
-        serviceManListAdpter = new ExServiceManListAdapter(ExServiceManListActivity.this);
-        rvServiceManList.setAdapter(serviceManListAdpter);
-
         edtSearch.setHint("Search with area, city, first name, last name...");
-
-
 
         if (userListType.equalsIgnoreCase(AppConstents.SERVICE_MAN)) {
             tvTitle.setText("ServiceMan List");
@@ -117,26 +109,26 @@ public class ExServiceManListActivity extends BaseActivity {
 
 
     private void searchText(String searchText) {
-        try {
-            tempExServiceManList = new ArrayList<>();
-            if (!TextUtils.isEmpty(searchText)) {
-                for (ExServiceMan exServiceMan : tempExServiceManList) {
-                    if ((exServiceMan.area.contains(searchText))
-                            || (exServiceMan.city.contains(searchText))
-                            || (exServiceMan.firstName.contains(searchText))
-                            || (exServiceMan.lastName.contains(searchText))) {
-                        tempExServiceManList.add(exServiceMan);
-                    }
-                }
-                if (tempExServiceManList != null && tempExServiceManList.size() > 0) {
-                    serviceManListAdpter.refresh(tempExServiceManList);
-                }
-            } else {
-                serviceManListAdpter.refresh(exServiceManList);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        try {
+//            tempExServiceManList = new ArrayList<>();
+//            if (!TextUtils.isEmpty(searchText)) {
+//                for (ExServiceMan exServiceMan : tempExServiceManList) {
+//                    if ((exServiceMan.area.contains(searchText))
+//                            || (exServiceMan.city.contains(searchText))
+//                            || (exServiceMan.firstName.contains(searchText))
+//                            || (exServiceMan.lastName.contains(searchText))) {
+//                        tempExServiceManList.add(exServiceMan);
+//                    }
+//                }
+//                if (tempExServiceManList != null && tempExServiceManList.size() > 0) {
+//                    serviceManListAdpter.refresh(tempExServiceManList);
+//                }
+//            } else {
+//                serviceManListAdpter.refresh(exServiceManList);
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
     }
 
     class GetExserviceManListTask extends AsyncTask<Void, Void, List<ExServiceMan>> {
@@ -150,9 +142,9 @@ public class ExServiceManListActivity extends BaseActivity {
         @Override
         protected void onPostExecute(List<ExServiceMan> exServiceManList) {
             super.onPostExecute(exServiceManList);
-            if (exServiceManList != null && exServiceManList.size() > 0) {
-                serviceManListAdpter.refresh(exServiceManList);
-            }
+//            if (exServiceManList != null && exServiceManList.size() > 0) {
+//                serviceManListAdpter.refresh(exServiceManList);
+//            }
         }
     }
 }
