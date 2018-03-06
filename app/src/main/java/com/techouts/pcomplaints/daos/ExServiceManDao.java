@@ -16,14 +16,17 @@ import java.util.List;
 @Dao
 public interface ExServiceManDao {
 
-    @Query("SELECT * FROM ExServiceMan")
-    List<ExServiceMan> getAll();
+    @Query("SELECT * FROM ExServiceMan WHERE status LIKE :status")
+    List<ExServiceMan> getAll(int status);
 
     @Query("SELECT * FROM ExServiceMan WHERE email LIKE :email")
     ExServiceMan findByEmail(String email);
 
-    @Query("SELECT count(*) FROM ExServiceMan Where email LIKE :email AND password LIKE :password")
+    @Query("SELECT count(*) FROM ExServiceMan Where email LIKE :email AND password LIKE :password AND status = 1")
     int findExServiceManByEmailAndPassword(String email,String password);
+
+    @Query("UPDATE ExServiceMan SET status = :status  WHERE email = :email")
+    void updateStatusByEmailId(int status,String email);
 
     @Insert
     void insertAll(List<ExServiceMan> exServiceMans);

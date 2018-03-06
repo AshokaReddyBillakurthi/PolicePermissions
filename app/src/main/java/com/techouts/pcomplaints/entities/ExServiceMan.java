@@ -41,4 +41,6 @@ public class ExServiceMan implements Serializable{
     public String services;
     @ColumnInfo(name="reqDocs")
     public String reqDocs;
+    @ColumnInfo(name="status")
+    public int status;
 }

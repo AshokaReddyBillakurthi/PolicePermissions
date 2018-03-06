@@ -24,10 +24,8 @@ public class ExServiceManListActivity extends BaseActivity {
     private TextView tvTitle;
     private ImageView ivBack, ivCross;
     private String userListType = "";
-    private String userType = "";
     private EditText edtSearch;
     private List<ExServiceMan> tempExServiceManList;
-    private List<ExServiceMan> exServiceManList;
     public String loginType="";
     private ExServiceManPagerAdapter exServiceManPagerAdapter;
 
@@ -45,9 +43,6 @@ public class ExServiceManListActivity extends BaseActivity {
         }
         viewPager = findViewById(R.id.viewpager);
         tabs = findViewById(R.id.tabs);
-        exServiceManPagerAdapter = new ExServiceManPagerAdapter(this,getSupportFragmentManager());
-        viewPager.setAdapter(exServiceManPagerAdapter);
-        tabs.setupWithViewPager(viewPager);
         tvTitle = findViewById(R.id.tvTitle);
         ivBack = findViewById(R.id.ivBack);
         ivCross = findViewById(R.id.ivCross);
@@ -56,7 +51,6 @@ public class ExServiceManListActivity extends BaseActivity {
 
         if (userListType.equalsIgnoreCase(AppConstents.SERVICE_MAN)) {
             tvTitle.setText("ServiceMan List");
-            userType = AppConstents.USER_TYPE_SERVICEMAN;
         }
         ivBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,6 +58,14 @@ public class ExServiceManListActivity extends BaseActivity {
                 finish();
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        exServiceManPagerAdapter = new ExServiceManPagerAdapter(this,getSupportFragmentManager());
+        viewPager.setAdapter(exServiceManPagerAdapter);
+        tabs.setupWithViewPager(viewPager);
     }
 
     @Override
@@ -104,7 +106,7 @@ public class ExServiceManListActivity extends BaseActivity {
             }
         });
 
-        new GetExserviceManListTask().execute();
+
     }
 
 
@@ -131,20 +133,5 @@ public class ExServiceManListActivity extends BaseActivity {
 //        }
     }
 
-    class GetExserviceManListTask extends AsyncTask<Void, Void, List<ExServiceMan>> {
 
-        @Override
-        protected List<ExServiceMan> doInBackground(Void... voids) {
-            exServiceManList = DatabaseHandler.getInstance(getApplicationContext()).exServiceManDao().getAll();
-            return exServiceManList;
-        }
-
-        @Override
-        protected void onPostExecute(List<ExServiceMan> exServiceManList) {
-            super.onPostExecute(exServiceManList);
-//            if (exServiceManList != null && exServiceManList.size() > 0) {
-//                serviceManListAdpter.refresh(exServiceManList);
-//            }
-        }
-    }
 }

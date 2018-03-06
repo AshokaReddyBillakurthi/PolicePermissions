@@ -24,11 +24,11 @@ public class ExServiceManPagerAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         if (position == 0) {
-            return new ExServiceManListFragment();
+            return new ExServiceManListFragment(0);
         } else if (position == 1){
-            return new ExServiceManListFragment();
+            return new ExServiceManListFragment(1);
         } else
-            return new ExServiceManListFragment();
+            return new ExServiceManListFragment(-1);
     }
 
     // This determines the number of tabs

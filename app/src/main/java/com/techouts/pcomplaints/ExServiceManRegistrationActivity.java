@@ -205,6 +205,7 @@ public class ExServiceManRegistrationActivity extends BaseActivity implements Ar
                 exServiceMan.city = city;
                 exServiceMan.area = area;
                 exServiceMan.userImg = userImg;
+                exServiceMan.status = 0;
                 if (docList != null && docList.size() > 0) {
                     for (String str : docList) {
                         strDoc.append(str).append(",");

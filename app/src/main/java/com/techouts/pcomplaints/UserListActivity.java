@@ -141,13 +141,7 @@ public class UserListActivity extends BaseActivity {
 
         @Override
         protected List<User> doInBackground(Void... voids) {
-            if(userListType.equalsIgnoreCase(AppConstents.SERVICE_MAN)){
-                exServiceManList = DatabaseHandler.getInstance(getApplicationContext()).exServiceManDao().getAll();
-            }
-            else{
-                userList = DatabaseHandler.getInstance(getApplicationContext()).userDao().getAll(userType);
-            }
-
+            userList = DatabaseHandler.getInstance(getApplicationContext()).userDao().getAll(userType);
             return userList;
         }
 

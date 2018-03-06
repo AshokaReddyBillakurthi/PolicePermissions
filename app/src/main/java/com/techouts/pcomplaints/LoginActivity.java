@@ -118,6 +118,7 @@ public class LoginActivity extends BaseActivity {
                     args[0] = email;
                     args[1] = password;
                     args[2] = userType;
+
                     new LoginAsyncTask().execute(args);
                 }
                 checkLogin(email,password);
