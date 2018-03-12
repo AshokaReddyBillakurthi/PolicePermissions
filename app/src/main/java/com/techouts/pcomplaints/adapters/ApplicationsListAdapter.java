@@ -46,6 +46,7 @@ public class ApplicationsListAdapter extends RecyclerView.Adapter<ApplicationsLi
         holder.tvEmail.setText(permissionApplicationList.get(position).owneremail+"");
         holder.tvMobileNo.setText(permissionApplicationList.get(position).telephoneNo+"");
         holder.tvApplicationType.setText(permissionApplicationList.get(position).applicationType+"");
+        holder.tvArea.setText(permissionApplicationList.get(position).area+"");
         getImageOfServiceMan(permissionApplicationList.get(position).applicantImg,holder.ivApplicantImg);
     }
 
@@ -62,7 +63,7 @@ public class ApplicationsListAdapter extends RecyclerView.Adapter<ApplicationsLi
     class ApplicationViewHolder extends RecyclerView.ViewHolder{
 
         ImageView ivApplicantImg;
-        TextView tvName,tvEmail,tvMobileNo,tvApplicationType;
+        TextView tvName,tvEmail,tvMobileNo,tvApplicationType,tvArea;
 
         public ApplicationViewHolder(View itemView) {
             super(itemView);
@@ -71,6 +72,7 @@ public class ApplicationsListAdapter extends RecyclerView.Adapter<ApplicationsLi
             tvName = itemView.findViewById(R.id.tvName);
             tvEmail = itemView.findViewById(R.id.tvEmail);
             tvMobileNo = itemView.findViewById(R.id.tvMobileNo);
+            tvArea = itemView.findViewById(R.id.tvArea);
             tvApplicationType = itemView.findViewById(R.id.tvApplicationType);
 
             itemView.setOnClickListener(new View.OnClickListener() {

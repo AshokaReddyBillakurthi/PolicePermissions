@@ -119,23 +119,36 @@ public class UserRegistrationActivity extends BaseActivity implements CityAdapte
         tvCity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                initiatePopupWindowForCity(v);
+                String state = tvState.getText().toString();
+                if(TextUtils.isEmpty(state)){
+                    showToast("Please select state first");
+                }
+                else{
+                    initiatePopupWindowForCity(v);
+                }
             }
         });
 
         tvArea.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                List<String> areaList = DataManager.getList(AppConstents.TYPE_AREA);
-                customDialog = new CustomDialog(UserRegistrationActivity.this, areaList,
-                        new CustomDialog.NameSelectedListener() {
-                            @Override
-                            public void onNameSelected(String listName) {
-                                tvArea.setText(listName);
-                                customDialog.dismiss();
-                            }
-                        });
-                customDialog.show();
+                String city = tvCity.getText().toString();
+                if(TextUtils.isEmpty(city)){
+                    showToast("Please select city first");
+                }
+                else{
+                    List<String> areaList = DataManager.getList(AppConstents.TYPE_AREA);
+                    customDialog = new CustomDialog(UserRegistrationActivity.this, areaList,
+                            new CustomDialog.NameSelectedListener() {
+                                @Override
+                                public void onNameSelected(String listName) {
+                                    tvArea.setText(listName);
+                                    customDialog.dismiss();
+                                }
+                            });
+                    customDialog.show();
+                }
+
             }
         });
 

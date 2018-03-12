@@ -35,6 +35,8 @@ import com.techouts.pcomplaints.utils.DataManager;
 import com.techouts.pcomplaints.utils.DialogUtils;
 import com.techouts.pcomplaints.utils.FilePathUtils;
 
+import org.w3c.dom.Text;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -102,24 +104,36 @@ public class ExServiceManRegistrationActivity extends BaseActivity implements Ar
         tvArea.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                initiatePopupWindowForArea(v);
-                List<String> areaList = DataManager.getList(AppConstents.TYPE_AREA);
-                customDialog = new CustomDialog(ExServiceManRegistrationActivity.this, areaList,
-                        new CustomDialog.NameSelectedListener() {
-                            @Override
-                            public void onNameSelected(String listName) {
-                                tvArea.setText(listName);
-                                customDialog.dismiss();
-                            }
-                        });
-                customDialog.show();
+                String city = tvCity.getText().toString();
+                if(TextUtils.isEmpty(city)){
+                    showToast("Please select city first");
+                }
+                else{
+                    List<String> areaList = DataManager.getList(AppConstents.TYPE_AREA);
+                    customDialog = new CustomDialog(ExServiceManRegistrationActivity.this, areaList,
+                            new CustomDialog.NameSelectedListener() {
+                                @Override
+                                public void onNameSelected(String listName) {
+                                    tvArea.setText(listName);
+                                    customDialog.dismiss();
+                                }
+                            });
+                    customDialog.show();
+                }
             }
         });
 
         tvCity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                initiatePopupWindowForCity(v);
+                String state = tvState.getText().toString();
+                if(TextUtils.isEmpty(state)){
+                    showToast("Please select state first");
+                }
+                else {
+                    initiatePopupWindowForCity(v);
+                }
+
             }
         });
 

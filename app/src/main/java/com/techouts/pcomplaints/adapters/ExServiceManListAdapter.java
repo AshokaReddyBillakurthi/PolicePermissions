@@ -43,10 +43,11 @@ public class ExServiceManListAdapter extends RecyclerView.Adapter<ExServiceManLi
 
     @Override
     public void onBindViewHolder(ExServiceManViewHolder holder, int position) {
-        holder.tvFirstName.setText(listExServiceMan.get(position).firstName + "");
-        holder.tvLastName.setText(listExServiceMan.get(position).lastName + "");
+        holder.tvFullName.setText(listExServiceMan.get(position).firstName + " "+listExServiceMan.get(position).lastName + "");
         holder.tvEmail.setText(listExServiceMan.get(position).email + "");
         holder.tvMobileNumber.setText(listExServiceMan.get(position).mobileNo + "");
+        holder.tvArea.setText(listExServiceMan.get(position).area+"");
+        holder.tvCity.setText(listExServiceMan.get(position).city+"");
         getImageOfServiceMan(listExServiceMan.get(position).userImg,holder.ivServiceManImg);
     }
 
@@ -62,16 +63,17 @@ public class ExServiceManListAdapter extends RecyclerView.Adapter<ExServiceManLi
 
     class ExServiceManViewHolder extends RecyclerView.ViewHolder{
 
-        TextView tvFirstName, tvLastName, tvEmail, tvMobileNumber;
+        TextView tvFullName, tvEmail, tvMobileNumber,tvArea,tvCity;
         ImageView ivServiceManImg;
 
         public ExServiceManViewHolder(final View itemView) {
             super(itemView);
-            tvFirstName = itemView.findViewById(R.id.tvFirstName);
-            tvLastName = itemView.findViewById(R.id.tvLastName);
+            tvFullName = itemView.findViewById(R.id.tvFullName);
             tvEmail = itemView.findViewById(R.id.tvEmail);
             tvMobileNumber = itemView.findViewById(R.id.tvMobileNumber);
             ivServiceManImg = itemView.findViewById(R.id.ivServiceManImg);
+            tvArea = itemView.findViewById(R.id.tvArea);
+            tvCity = itemView.findViewById(R.id.tvCity);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
