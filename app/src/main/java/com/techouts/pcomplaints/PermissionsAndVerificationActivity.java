@@ -12,8 +12,10 @@ import android.widget.TextView;
 
 import com.techouts.pcomplaints.adapters.PermissionListAdapter;
 import com.techouts.pcomplaints.utils.AppConstents;
+import com.techouts.pcomplaints.utils.DataManager;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class PermissionsAndVerificationActivity extends BaseActivity {
 
@@ -21,7 +23,7 @@ public class PermissionsAndVerificationActivity extends BaseActivity {
     private ImageView ivBack,ivCross;
     private RecyclerView rvPolicePermissions;
     private PermissionListAdapter permissionListAdapter;
-    private ArrayList<String> permissionList;
+    private List<String> permissionList;
     private EditText edtSearch;
     private ArrayList<String> tempSearchList;
     private String serviceName = "";
@@ -46,34 +48,21 @@ public class PermissionsAndVerificationActivity extends BaseActivity {
         permissionList = new ArrayList<>();
         if(serviceName.equalsIgnoreCase(AppConstents.POLICE_PERMISSIONS)) {
             tvTitle.setText(AppConstents.POLICE_PERMISSIONS);
-            permissionList.add(AppConstents.GUN_LICENCES);
-            permissionList.add(AppConstents.INTERNET_CAFES);
-            permissionList.add(AppConstents.SNOOKERS_PARLOURS);
-            permissionList.add(AppConstents.PARKING_PLACES);
-            permissionList.add(AppConstents.EVENTS_FUNCTIONS_MIKES);
-            permissionList.add(AppConstents.LODGES_HOTELS);
-            permissionList.add(AppConstents.FILM_TV_SHOOTINGS);
-            permissionList.add(AppConstents.POLICE_BB_FOR_PVT_FUNCTIONS);
+            permissionList = DataManager.getServices(serviceName);
         }
         else if(serviceName.equalsIgnoreCase(AppConstents.MATRIMONIAL_VERIFICATIONS)){
             tvTitle.setText(AppConstents.MATRIMONIAL_VERIFICATIONS);
-            permissionList.add(AppConstents.MARTIMONIAL_VERIFICATION);
-//            permissionList.add(AppConstents.IMARTIMONIAL_ISSUES);
+            permissionList = DataManager.getServices(serviceName);
         }
         else if(serviceName.equalsIgnoreCase(AppConstents.DRAFTING_COMPLAINTS)){
             tvTitle.setText(AppConstents.DRAFTING_COMPLAINTS);
-            permissionList.add(AppConstents.CRIME_REPORT);
-            permissionList.add(AppConstents.Nocs);
-            permissionList.add(AppConstents.LICENCES_RENEWALS);
-            permissionList.add(AppConstents.CERTIFIED_COPIES);
-            permissionList.add(AppConstents.RTI_AND_APPEALS_TO_HIGHER_UPS);
+            permissionList = DataManager.getServices(serviceName);
         }
         else if(serviceName.equalsIgnoreCase(AppConstents.POLICE_IDENTITY_ADDRESS_TRACE)){
             tvTitle.setText(AppConstents.POLICE_IDENTITY_ADDRESS_TRACE);
-            permissionList.add(AppConstents.PHONE_ADDRESSES);
-            permissionList.add(AppConstents.ADDHAR_ID_PROOFS);
-            permissionList.add(AppConstents.DECLARED_AND_STATED_ADDRESS);
+            permissionList = DataManager.getServices(serviceName);
         }
+
         permissionListAdapter = new PermissionListAdapter(permissionList);
         rvPolicePermissions.setAdapter(permissionListAdapter);
 
@@ -112,6 +101,7 @@ public class PermissionsAndVerificationActivity extends BaseActivity {
                 searchText("");
             }
         });
+
         ivBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

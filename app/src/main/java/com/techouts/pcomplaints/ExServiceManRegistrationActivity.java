@@ -6,12 +6,9 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.provider.MediaStore;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.Patterns;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -19,14 +16,9 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.techouts.pcomplaints.adapters.AreaAdapter;
-import com.techouts.pcomplaints.adapters.CityAdapter;
-import com.techouts.pcomplaints.adapters.LocationAdapter;
-import com.techouts.pcomplaints.adapters.StateAdapter;
 import com.techouts.pcomplaints.custom.CustomDialog;
 import com.techouts.pcomplaints.datahandler.DatabaseHandler;
 import com.techouts.pcomplaints.entities.ExServiceMan;
@@ -35,14 +27,11 @@ import com.techouts.pcomplaints.utils.DataManager;
 import com.techouts.pcomplaints.utils.DialogUtils;
 import com.techouts.pcomplaints.utils.FilePathUtils;
 
-import org.w3c.dom.Text;
-
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ExServiceManRegistrationActivity extends BaseActivity implements AreaAdapter.OnAreaClickListener,
-        CityAdapter.OnCityClickListener, StateAdapter.OnStateClickListener {
+
+public class ExServiceManRegistrationActivity extends BaseActivity {
 
     private EditText edtFirstName, edtLastName, edtExPoliceId, edtMobileNumber, edtEmail, edtPassword;
     private TextView tvState, tvCity, tvArea, tvTitle;
@@ -54,7 +43,6 @@ public class ExServiceManRegistrationActivity extends BaseActivity implements Ar
     private static final int CAMERA_CAPTURE = 101;
     private static final String TAG = ExServiceManRegistrationActivity.class.getSimpleName();
     private String selectedFilePath;
-    private PopupWindow popupWindow;
     private ArrayList<String> docList;
     private boolean isServiceSelectd = false;
     private CustomDialog customDialog = null;
@@ -131,7 +119,16 @@ public class ExServiceManRegistrationActivity extends BaseActivity implements Ar
                     showToast("Please select state first");
                 }
                 else {
-                    initiatePopupWindowForCity(v);
+                    List<String> areaList = DataManager.getList(AppConstents.TYPE_CITY);
+                    customDialog = new CustomDialog(ExServiceManRegistrationActivity.this, areaList,
+                            new CustomDialog.NameSelectedListener() {
+                                @Override
+                                public void onNameSelected(String listName) {
+                                    tvCity.setText(listName);
+                                    customDialog.dismiss();
+                                }
+                            });
+                    customDialog.show();
                 }
 
             }
@@ -140,7 +137,16 @@ public class ExServiceManRegistrationActivity extends BaseActivity implements Ar
         tvState.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                initiatePopupWindowForState(v);
+                List<String> areaList = DataManager.getList(AppConstents.TYPE_STATE);
+                customDialog = new CustomDialog(ExServiceManRegistrationActivity.this, areaList,
+                        new CustomDialog.NameSelectedListener() {
+                            @Override
+                            public void onNameSelected(String listName) {
+                                tvState.setText(listName);
+                                customDialog.dismiss();
+                            }
+                        });
+                customDialog.show();
             }
         });
 
@@ -311,33 +317,18 @@ public class ExServiceManRegistrationActivity extends BaseActivity implements Ar
         intent.setType("*/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(Intent.createChooser(intent, "Choose File to Upload.."), PICK_FILE_REQUEST);
-
-//        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-//        intent.setType("application/msword,application/pdf");
-//        intent.addCategory(Intent.CATEGORY_OPENABLE);
-//        // Only the system receives the ACTION_OPEN_DOCUMENT, so no need to test.
-//        startActivityForResult(Intent.createChooser(intent,"Choose File to Upload.."),PICK_FILE_REQUEST);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
-            if (requestCode == PICK_FILE_REQUEST) {
-                if (data == null) {
-                    //no data present
-                    return;
-                }
-                Uri uri = data.getData();
-                String uriString = uri.toString();
-                File myFile = new File(uriString);
-                String path = myFile.getAbsolutePath();
-                String displayName = null;
+            if (requestCode == PICK_FILE_REQUEST&&data!=null) {
                 Uri selectedFileUri = data.getData();
                 selectedFilePath = FilePathUtils.getFilePathByUriString(this, selectedFileUri);
                 Log.i(TAG, "Selected File Path:" + selectedFilePath);
 
-                if (selectedFilePath != null && !selectedFilePath.equals("")) {
+                if (!TextUtils.isEmpty(selectedFilePath)) {
                     final View view = LayoutInflater.from(ExServiceManRegistrationActivity.this)
                             .inflate(R.layout.layout_documents, null);
                     final TextView tvUploadFineName = view.findViewById(R.id.tvUploadedFile);
@@ -368,105 +359,5 @@ public class ExServiceManRegistrationActivity extends BaseActivity implements Ar
                 }
             }
         }
-    }
-
-    private void initiatePopupWindowForState(View v) {
-        try {
-            popupWindow = new PopupWindow(this);
-            popupWindow.setFocusable(true);
-            View view = LayoutInflater.from(ExServiceManRegistrationActivity.this).inflate(R.layout.popup_window_area_list, null);
-            RecyclerView rvAreas = view.findViewById(R.id.rvAreas);
-            List<String> stateList = DataManager.getList(AppConstents.TYPE_STATE);
-            rvAreas.setLayoutManager(new LinearLayoutManager(ExServiceManRegistrationActivity.this));
-            rvAreas.setAdapter(new StateAdapter(stateList, ExServiceManRegistrationActivity.this));
-            popupWindow.setContentView(view);
-            popupWindow.showAsDropDown(v, Gravity.CENTER, 0, 0);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void initiatePopupWindowForCity(View v) {
-        try {
-            popupWindow = new PopupWindow(this);
-            popupWindow.setFocusable(true);
-            View view = LayoutInflater.from(ExServiceManRegistrationActivity.this).inflate(R.layout.popup_window_area_list, null);
-            RecyclerView rvAreas = view.findViewById(R.id.rvAreas);
-            List<String> cityList = DataManager.getList(AppConstents.TYPE_CITY);
-            rvAreas.setLayoutManager(new LinearLayoutManager(ExServiceManRegistrationActivity.this));
-            rvAreas.setAdapter(new CityAdapter(cityList, ExServiceManRegistrationActivity.this));
-            popupWindow.setContentView(view);
-            popupWindow.showAsDropDown(v, Gravity.CENTER, 0, 0);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-//    private void initiatePopupWindowForArea(View v) {
-//        try {
-//            popupWindow = new PopupWindow(this);
-//            popupWindow.setFocusable(true);
-//            View view = LayoutInflater.from(ExServiceManRegistrationActivity.this).inflate(R.layout.popup_window_area_list, null);
-//            RecyclerView rvAreas = view.findViewById(R.id.rvAreas);
-//            ArrayList<String> areaList = new ArrayList<>();
-//            areaList.add("Domalguda");
-//            areaList.add("Secunderabad");
-//            areaList.add("Bansilapet");
-//            areaList.add("Liberty");
-//            areaList.add("Hyderguda");
-//            areaList.add("Shyamalal");
-//            areaList.add("Ligampalli");
-//            rvAreas.setLayoutManager(new LinearLayoutManager(ExServiceManRegistrationActivity.this));
-//            rvAreas.setAdapter(new AreaAdapter(areaList, ExServiceManRegistrationActivity.this));
-//            popupWindow.setContentView(view);
-//            popupWindow.showAsDropDown(v, Gravity.CENTER, 0, 0);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
-//
-//    private void initiatePopupWindowForLocation(View v) {
-//        try {
-//            popupWindow = new PopupWindow(this);
-//            popupWindow.setFocusable(true);
-//            View view = LayoutInflater.from(ExServiceManRegistrationActivity.this).inflate(R.layout.popup_window_area_list, null);
-//            RecyclerView rvAreas = view.findViewById(R.id.rvAreas);
-//            ArrayList<String> locationList = new ArrayList<>();
-//            locationList.add("Chikkadpally");
-//            locationList.add("Gandhinagar");
-//            locationList.add("Narayanaguda");
-//            locationList.add("Saifbad");
-//            locationList.add("Begumpet");
-//            locationList.add("Mahankali");
-//            rvAreas.setLayoutManager(new LinearLayoutManager(ExServiceManRegistrationActivity.this));
-//            rvAreas.setAdapter(new LocationAdapter(locationList, ExServiceManRegistrationActivity.this));
-//            popupWindow.setContentView(view);
-//            popupWindow.showAsDropDown(v, Gravity.CENTER, 0, 0);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
-
-    @Override
-    public void onAreaSelected(String area) {
-        if (popupWindow != null)
-            popupWindow.dismiss();
-        tvArea.setText(area);
-    }
-
-    @Override
-    public void onCitySelected(String city) {
-        if (popupWindow != null)
-            popupWindow.dismiss();
-
-        tvCity.setText(city);
-    }
-
-    @Override
-    public void onStateSelected(String state) {
-        if (popupWindow != null)
-            popupWindow.dismiss();
-
-        tvState.setText(state);
     }
 }

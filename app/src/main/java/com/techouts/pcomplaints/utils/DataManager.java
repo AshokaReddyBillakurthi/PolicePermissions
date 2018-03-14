@@ -1,7 +1,10 @@
 package com.techouts.pcomplaints.utils;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * Created by TO-OW109 on 05-03-2018.
@@ -42,6 +45,9 @@ public class DataManager {
                     listNames.add("KukatPalli");
                     listNames.add("Gachibowlli");
                     break;
+                default:
+                    Log.i("Data Manager","No List");
+                    break;
             }
         }
         catch(Exception e){
@@ -74,6 +80,9 @@ public class DataManager {
                     menuList.add(AppConstents.SERVICE_MAN_LIST);
                     menuList.add(AppConstents.LOGIN);
                     break;
+                default:
+                    Log.i("Data Manager","No List");
+                    break;
 
             }
         }
@@ -81,5 +90,72 @@ public class DataManager {
             e.printStackTrace();
         }
         return menuList;
+    }
+
+    public static List<String> getServices(String serviceType){
+        List<String>  permissionList = new ArrayList<>();;
+        try{
+            switch (serviceType){
+                case AppConstents.POLICE_PERMISSIONS:
+                    permissionList.add(AppConstents.GUN_LICENCES);
+                    permissionList.add(AppConstents.INTERNET_CAFES);
+                    permissionList.add(AppConstents.SNOOKERS_PARLOURS);
+                    permissionList.add(AppConstents.PARKING_PLACES);
+                    permissionList.add(AppConstents.EVENTS_FUNCTIONS_MIKES);
+                    permissionList.add(AppConstents.LODGES_HOTELS);
+                    permissionList.add(AppConstents.FILM_TV_SHOOTINGS);
+                    permissionList.add(AppConstents.POLICE_BB_FOR_PVT_FUNCTIONS);
+                    break;
+                case AppConstents.MATRIMONIAL_VERIFICATIONS:
+                    permissionList.add(AppConstents.MARTIMONIAL_VERIFICATION);
+                    break;
+                case AppConstents.DRAFTING_COMPLAINTS:
+                    permissionList.add(AppConstents.CRIME_REPORT);
+                    permissionList.add(AppConstents.NOCS);
+                    permissionList.add(AppConstents.LICENCES_RENEWALS);
+                    permissionList.add(AppConstents.CERTIFIED_COPIES);
+                    permissionList.add(AppConstents.RTI_AND_APPEALS_TO_HIGHER_UPS);
+                    break;
+                case AppConstents.POLICE_IDENTITY_ADDRESS_TRACE:
+                    permissionList.add(AppConstents.PHONE_ADDRESSES);
+                    permissionList.add(AppConstents.ADDHAR_ID_PROOFS);
+                    permissionList.add(AppConstents.DECLARED_AND_STATED_ADDRESS);
+                    break;
+                default:
+                    Log.d("Services", "No Services available for this type");
+            }
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        return permissionList;
+    }
+
+
+    public static List<String> getAllServices(){
+        List<String> servicesList = new ArrayList<>();
+        try{
+            servicesList.add(AppConstents.GUN_LICENCES);
+            servicesList.add(AppConstents.INTERNET_CAFES);
+            servicesList.add(AppConstents.SNOOKERS_PARLOURS);
+            servicesList.add(AppConstents.PARKING_PLACES);
+            servicesList.add(AppConstents.EVENTS_FUNCTIONS_MIKES);
+            servicesList.add(AppConstents.LODGES_HOTELS);
+            servicesList.add(AppConstents.FILM_TV_SHOOTINGS);
+            servicesList.add(AppConstents.POLICE_BB_FOR_PVT_FUNCTIONS);
+            servicesList.add(AppConstents.MARTIMONIAL_VERIFICATION);
+            servicesList.add(AppConstents.CRIME_REPORT);
+            servicesList.add(AppConstents.NOCS);
+            servicesList.add(AppConstents.LICENCES_RENEWALS);
+            servicesList.add(AppConstents.CERTIFIED_COPIES);
+            servicesList.add(AppConstents.RTI_AND_APPEALS_TO_HIGHER_UPS);
+            servicesList.add(AppConstents.PHONE_ADDRESSES);
+            servicesList.add(AppConstents.ADDHAR_ID_PROOFS);
+            servicesList.add(AppConstents.DECLARED_AND_STATED_ADDRESS);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        return servicesList;
     }
 }

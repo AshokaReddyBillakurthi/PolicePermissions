@@ -3,28 +3,27 @@ package com.techouts.pcomplaints;
 import android.os.AsyncTask;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import com.techouts.pcomplaints.adapters.ApplicationsListAdapter;
+import com.techouts.pcomplaints.custom.CustomDialog;
 import com.techouts.pcomplaints.datahandler.DatabaseHandler;
 import com.techouts.pcomplaints.entities.PermissionApplication;
-import com.techouts.pcomplaints.adapters.ApplicationsListAdapter;
-import com.techouts.pcomplaints.adapters.AreaAdapter;
+import com.techouts.pcomplaints.utils.AppConstents;
+import com.techouts.pcomplaints.utils.DataManager;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class ApplicationListActivity extends BaseActivity implements AreaAdapter.OnAreaClickListener {
+public class ApplicationListActivity extends BaseActivity  {
 
     private RecyclerView rvApplications;
     private ApplicationsListAdapter applicationsListAdapter;
-    private TextView tvTitle,tvArea,tvNoApplications;
-    private ImageView ivBack;
-    private PopupWindow popupWindow;
+    private TextView tvSearchBy;
+    private TextView tvNoApplications;
+    private CustomDialog customDialog;
+    private String searchBy = "";
 
     @Override
     public int getRootLayout() {
@@ -33,16 +32,25 @@ public class ApplicationListActivity extends BaseActivity implements AreaAdapter
 
     @Override
     public void initGUI() {
+
+        if(getIntent().getExtras()!=null){
+            searchBy = getIntent().getStringExtra(AppConstents.EXTRA_SEARCH_BY);
+        }
         rvApplications = findViewById(R.id.rvApplications);
-        ivBack = findViewById(R.id.ivBack);
-        tvTitle = findViewById(R.id.tvTitle);
         tvNoApplications = findViewById(R.id.tvNoApplications);
-        tvArea = findViewById(R.id.tvListName);
+        tvSearchBy = findViewById(R.id.tvSearchBy);
         rvApplications.setLayoutManager(new LinearLayoutManager(ApplicationListActivity.this));
         applicationsListAdapter = new ApplicationsListAdapter();
         rvApplications.setAdapter(applicationsListAdapter);
+        ImageView ivBack = findViewById(R.id.ivBack);
+        TextView tvTitle = findViewById(R.id.tvTitle);
 
         tvTitle.setText("Applications");
+
+        if(searchBy.equalsIgnoreCase(AppConstents.SEARCH_BY_AREA))
+            tvSearchBy.setHint("Select Area");
+        else if(searchBy.equalsIgnoreCase(AppConstents.SEARCH_BY_APPLICATION_TYPE))
+            tvSearchBy.setHint("Select Application Type");
 
         ivBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -51,42 +59,49 @@ public class ApplicationListActivity extends BaseActivity implements AreaAdapter
             }
         });
 
-        tvArea.setOnClickListener(new View.OnClickListener() {
+        tvSearchBy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                initiatePopupWindow(v);
+                List<String> list = null;
+                if(searchBy.equalsIgnoreCase(AppConstents.SEARCH_BY_AREA)){
+                    list = DataManager.getList(AppConstents.TYPE_AREA);
+                }
+                else if(searchBy.equalsIgnoreCase(AppConstents.SEARCH_BY_APPLICATION_TYPE)){
+                    list = DataManager.getAllServices();
+                }
+
+                customDialog = new CustomDialog(ApplicationListActivity.this, list,
+                        new CustomDialog.NameSelectedListener() {
+                            @Override
+                            public void onNameSelected(String listName) {
+                                tvSearchBy.setText(listName);
+                                new GetApplicationsAsyncTask().execute(listName);
+                                customDialog.dismiss();
+                            }
+                        });
+                customDialog.show();
             }
         });
     }
 
     @Override
     public void initData() {
-
+        /* need to do */
     }
-
-    @Override
-    public void onAreaSelected(String area) {
-        if(popupWindow!=null)
-            popupWindow.dismiss();
-        tvArea.setText(area);
-
-        new GetApplicationsAsyncTask().execute(area);
-    }
-
 
     class GetApplicationsAsyncTask extends AsyncTask<String,Void,List<PermissionApplication>>{
 
         @Override
         protected List<PermissionApplication> doInBackground(String... strings) {
-            List<PermissionApplication> permissionApplicationList = DatabaseHandler.getInstance(getApplicationContext())
+            return  DatabaseHandler.getInstance(getApplicationContext())
                     .permissionApplicationDao().getAllApplicationsByArea(strings[0]);
-            return permissionApplicationList;
+
         }
 
         @Override
         protected void onPostExecute(List<PermissionApplication> permissionApplications) {
             super.onPostExecute(permissionApplications);
-            if(permissionApplications!=null&&permissionApplications.size()>0){
+            if(permissionApplications!=null&&!permissionApplications.isEmpty()){
                 applicationsListAdapter.refresh(permissionApplications);
                 tvNoApplications.setVisibility(View.GONE);
                 rvApplications.setVisibility(View.VISIBLE);
@@ -97,29 +112,4 @@ public class ApplicationListActivity extends BaseActivity implements AreaAdapter
             }
         }
     }
-
-
-    private void initiatePopupWindow(View v) {
-        try {
-            popupWindow  = new PopupWindow(this);
-            popupWindow.setFocusable(true);
-            View view = LayoutInflater.from(ApplicationListActivity.this).inflate(R.layout.popup_window_area_list,null);
-            RecyclerView rvAreas = view.findViewById(R.id.rvAreas);
-            ArrayList<String> areaList = new ArrayList<>();
-            areaList.add("Domalguda");
-            areaList.add("Secunderabad");
-            areaList.add("Bansilapet");
-            areaList.add("Liberty");
-            areaList.add("Hyderguda");
-            areaList.add("Shyamalal");
-            areaList.add("Ligampalli");
-            rvAreas.setLayoutManager(new LinearLayoutManager(ApplicationListActivity.this));
-            rvAreas.setAdapter(new AreaAdapter(areaList,ApplicationListActivity.this));
-            popupWindow.setContentView(view);
-            popupWindow.showAsDropDown(v, Gravity.CENTER,0, 0);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
 }

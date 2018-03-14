@@ -30,10 +30,8 @@ public class CustomDialog extends Dialog{
 
     private EditText edtSearch;
     private ImageView ivCross;
-    private RecyclerView rvList;
     private Context mContext;
     private ListNamesAdapter listNamesAdapter;
-    private List<String> tempList;
     private List<String> listNames;
     private NameSelectedListener nameSelectedListener;
 
@@ -52,7 +50,7 @@ public class CustomDialog extends Dialog{
         setContentView(R.layout.custom_dialog_layout);
         edtSearch = findViewById(R.id.edtSearch);
         ivCross = findViewById(R.id.ivCross);
-        rvList = findViewById(R.id.rvList);
+        RecyclerView rvList = findViewById(R.id.rvList);
         rvList.setLayoutManager(new LinearLayoutManager(mContext));
         listNamesAdapter = new ListNamesAdapter();
         rvList.setAdapter(listNamesAdapter);
@@ -62,7 +60,7 @@ public class CustomDialog extends Dialog{
         edtSearch.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
+                /*some text*/
             }
 
             @Override
@@ -75,9 +73,9 @@ public class CustomDialog extends Dialog{
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (s != null && s.length() >= 3) {
+                if (null!=s && s.length() >= 3) {
                     searchText(s.toString());
-                } else if (s.length() == 0) {
+                } else if (s==null||s.length()==0) {
                     ivCross.setVisibility(View.GONE);
                     searchText("");
                 }
@@ -98,16 +96,14 @@ public class CustomDialog extends Dialog{
 
     private void searchText(String searchText){
         try {
-            tempList = new ArrayList<>();
+            List<String> tempList = new ArrayList<>();
             if (!TextUtils.isEmpty(searchText)) {
                 for (String string : listNames) {
-                    if ((string.contains(searchText))) {
+                    if ((string.toLowerCase().contains(searchText.toLowerCase()))) {
                         tempList.add(string);
                     }
                 }
-                if (tempList != null && tempList.size() > 0) {
-                    listNamesAdapter.refresh(tempList);
-                }
+                listNamesAdapter.refresh(tempList);
             } else {
                 listNamesAdapter.refresh(listNames);
             }

@@ -3,26 +3,16 @@ package com.techouts.pcomplaints;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
-import android.provider.ContactsContract;
 import android.provider.MediaStore;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Patterns;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.techouts.pcomplaints.adapters.AreaAdapter;
-import com.techouts.pcomplaints.adapters.CityAdapter;
-import com.techouts.pcomplaints.adapters.LocationAdapter;
-import com.techouts.pcomplaints.adapters.StateAdapter;
 import com.techouts.pcomplaints.custom.CustomDialog;
 import com.techouts.pcomplaints.datahandler.DatabaseHandler;
 import com.techouts.pcomplaints.entities.User;
@@ -46,8 +36,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class UserRegistrationActivity extends BaseActivity implements CityAdapter.OnCityClickListener,
-        StateAdapter.OnStateClickListener{
+public class UserRegistrationActivity extends BaseActivity {
 
     private TextView tvTitle, tvState, tvCity, tvArea;
     private ImageView ivBack;
@@ -58,7 +47,6 @@ public class UserRegistrationActivity extends BaseActivity implements CityAdapte
     private static final int CAMERA_CAPTURE = 1;
     public static final String TAG = UserRegistrationActivity.class.getSimpleName();
     private String userType = "";
-    private PopupWindow popupWindow;
     private boolean isPosted = false;
     private CustomDialog customDialog;
 
@@ -112,7 +100,16 @@ public class UserRegistrationActivity extends BaseActivity implements CityAdapte
         tvState.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                initiatePopupWindowForState(v);
+                List<String> areaList = DataManager.getList(AppConstents.TYPE_STATE);
+                customDialog = new CustomDialog(UserRegistrationActivity.this, areaList,
+                        new CustomDialog.NameSelectedListener() {
+                            @Override
+                            public void onNameSelected(String listName) {
+                                tvState.setText(listName);
+                                customDialog.dismiss();
+                            }
+                        });
+                customDialog.show();
             }
         });
 
@@ -124,7 +121,16 @@ public class UserRegistrationActivity extends BaseActivity implements CityAdapte
                     showToast("Please select state first");
                 }
                 else{
-                    initiatePopupWindowForCity(v);
+                    List<String> areaList = DataManager.getList(AppConstents.TYPE_CITY);
+                    customDialog = new CustomDialog(UserRegistrationActivity.this, areaList,
+                            new CustomDialog.NameSelectedListener() {
+                                @Override
+                                public void onNameSelected(String listName) {
+                                    tvCity.setText(listName);
+                                    customDialog.dismiss();
+                                }
+                            });
+                    customDialog.show();
                 }
             }
         });
@@ -199,20 +205,6 @@ public class UserRegistrationActivity extends BaseActivity implements CityAdapte
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    @Override
-    public void onCitySelected(String city) {
-        if (popupWindow != null)
-            popupWindow.dismiss();
-        tvCity.setText(city);
-    }
-
-    @Override
-    public void onStateSelected(String state) {
-        if (popupWindow != null)
-            popupWindow.dismiss();
-        tvState.setText(state);
     }
 
     private boolean postDataToServer(User user) {
@@ -363,82 +355,4 @@ public class UserRegistrationActivity extends BaseActivity implements CityAdapte
             }
         }
     }
-
-    private void initiatePopupWindowForState(View v) {
-        try {
-            popupWindow = new PopupWindow(this);
-            popupWindow.setFocusable(true);
-            View view = LayoutInflater.from(UserRegistrationActivity.this).inflate(R.layout.popup_window_area_list, null);
-            RecyclerView rvAreas = view.findViewById(R.id.rvAreas);
-            List<String> stateList = DataManager.getList(AppConstents.TYPE_STATE);
-            rvAreas.setLayoutManager(new LinearLayoutManager(UserRegistrationActivity.this));
-            rvAreas.setAdapter(new StateAdapter(stateList, UserRegistrationActivity.this));
-            popupWindow.setContentView(view);
-            popupWindow.showAsDropDown(v, Gravity.CENTER, 0, 0);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void initiatePopupWindowForCity(View v) {
-        try {
-            popupWindow = new PopupWindow(this);
-            popupWindow.setFocusable(true);
-            View view = LayoutInflater.from(UserRegistrationActivity.this).inflate(R.layout.popup_window_area_list, null);
-            RecyclerView rvAreas = view.findViewById(R.id.rvAreas);
-            List<String> cityList = DataManager.getList(AppConstents.TYPE_CITY);
-            rvAreas.setLayoutManager(new LinearLayoutManager(UserRegistrationActivity.this));
-            rvAreas.setAdapter(new CityAdapter(cityList, UserRegistrationActivity.this));
-            popupWindow.setContentView(view);
-            popupWindow.showAsDropDown(v, Gravity.CENTER, 0, 0);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-//    private void initiatePopupWindowForArea(View v) {
-//        try {
-//            popupWindow = new PopupWindow(this);
-//            popupWindow.setFocusable(true);
-//            View view = LayoutInflater.from(UserRegistrationActivity.this).inflate(R.layout.popup_window_area_list, null);
-//            RecyclerView rvAreas = view.findViewById(R.id.rvAreas);
-//            ArrayList<String> areaList = new ArrayList<>();
-//            areaList.add("Domalguda");
-//            areaList.add("Secunderabad");
-//            areaList.add("Bansilapet");
-//            areaList.add("Liberty");
-//            areaList.add("Hyderguda");
-//            areaList.add("Shyamalal");
-//            areaList.add("Ligampalli");
-//            rvAreas.setLayoutManager(new LinearLayoutManager(UserRegistrationActivity.this));
-//            rvAreas.setAdapter(new AreaAdapter(areaList, UserRegistrationActivity.this));
-//            popupWindow.setContentView(view);
-//            popupWindow.showAsDropDown(v, Gravity.CENTER, 0, 0);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
-
-//    private void initiatePopupWindowForLocation(View v) {
-//        try {
-//            popupWindow = new PopupWindow(this);
-//            popupWindow.setFocusable(true);
-//            View view = LayoutInflater.from(UserRegistrationActivity.this).inflate(R.layout.popup_window_area_list, null);
-//            RecyclerView rvAreas = view.findViewById(R.id.rvAreas);
-//            ArrayList<String> locationList = new ArrayList<>();
-//            locationList.add("Chikkadpally");
-//            locationList.add("Gandhinagar");
-//            locationList.add("Narayanaguda");
-//            locationList.add("Saifbad");
-//            locationList.add("Begumpet");
-//            locationList.add("Mahankali");
-//            rvAreas.setLayoutManager(new LinearLayoutManager(UserRegistrationActivity.this));
-//            rvAreas.setAdapter(new LocationAdapter(locationList, UserRegistrationActivity.this));
-//            popupWindow.setContentView(view);
-//            popupWindow.showAsDropDown(v, Gravity.CENTER, 0, 0);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
-
 }

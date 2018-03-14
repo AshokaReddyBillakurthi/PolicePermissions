@@ -25,6 +25,8 @@ public interface AppConstents {
     String USER_TYPE_ADMIN = "Admin";
     String FINISH = "Finish";
     String LOGIN_TYPE_NONE = "None";
+    String SEARCH_BY_AREA = "Search by Area";
+    String SEARCH_BY_APPLICATION_TYPE = "Search by Application Type";
 
     //Extras
     String EXTRA_USER_TYPE = "UserType";
@@ -34,6 +36,7 @@ public interface AppConstents {
     String EXTRA_SEARVICE_TYPE = "SearviceType";
     String EXTRA_USER = "User";
     String EXTRA_PERMISSION_APPLICATION = "PermissionApplication";
+    String EXTRA_SEARCH_BY = "Search By";
 
     String TYPE_STATE = "State";
     String TYPE_CITY = "City";
@@ -71,7 +74,7 @@ public interface AppConstents {
     String MARTIMONIAL_VERIFICATION = "Matrimonial Verification";
     String IMARTIMONIAL_ISSUES = "Imatrimonial Issues";
     String CRIME_REPORT = "Crime Report";
-    String Nocs = "Nocs";
+    String NOCS = "Nocs";
     String LICENCES_RENEWALS = "Licences/Renewals";
     String CERTIFIED_COPIES = "Certified Copies";
     String RTI_AND_APPEALS_TO_HIGHER_UPS = "Rti and Appeals to Higher Ups";
