@@ -1,5 +1,6 @@
 package com.techouts.pcomplaints.utils;
 
+import android.app.Application;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -157,5 +158,19 @@ public class DataManager {
             e.printStackTrace();
         }
         return servicesList;
+    }
+
+
+    public static  List<String> getUserLoginTypes(){
+        List<String> userLoginType = new ArrayList<>();
+        try{
+            userLoginType.add(AppConstents.LOGIN_ADMIN);
+            userLoginType.add(AppConstents.LOGIN_SERVICE_MAN);
+            userLoginType.add(AppConstents.LOGIN_CUSTOMER);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        return userLoginType;
     }
 }

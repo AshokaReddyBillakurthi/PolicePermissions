@@ -13,15 +13,18 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.techouts.pcomplaints.custom.CustomDialog;
 import com.techouts.pcomplaints.datahandler.DatabaseHandler;
 import com.techouts.pcomplaints.utils.ApiServiceConstants;
 import com.techouts.pcomplaints.utils.AppConstents;
+import com.techouts.pcomplaints.utils.DataManager;
 import com.techouts.pcomplaints.utils.OkHttpUtils;
 import com.techouts.pcomplaints.utils.SharedPreferenceUtils;
 
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.List;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -37,6 +40,7 @@ public class LoginActivity extends BaseActivity {
     private String loginType = "";
     private String userType = "";
     private TextView tvSkipLogin;
+    private CustomDialog customDialog;
 
     @Override
     public int getRootLayout() {
@@ -54,7 +58,29 @@ public class LoginActivity extends BaseActivity {
         tvLoginType.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                initiatePopupWindow(v);
+                List<String> userLoginTypes = DataManager.getUserLoginTypes();
+                customDialog = new CustomDialog(LoginActivity.this, userLoginTypes,
+                        "Select Login Type",false,
+                        new CustomDialog.NameSelectedListener() {
+                            @Override
+                            public void onNameSelected(String listName) {
+                                if(listName.equalsIgnoreCase(AppConstents.LOGIN_ADMIN)){
+                                    btnRegister.setVisibility(View.GONE);
+                                    userType = AppConstents.USER_TYPE_ADMIN;
+                                }
+                                else if(listName.equalsIgnoreCase(AppConstents.LOGIN_SERVICE_MAN)){
+                                    userType = AppConstents.USER_TYPE_SERVICEMAN;
+                                    btnRegister.setVisibility(View.VISIBLE);
+                                }
+                                else if(listName.equalsIgnoreCase(AppConstents.LOGIN_CUSTOMER)){
+                                    userType = AppConstents.USER_TYPE_CUSTOMER;
+                                    btnRegister.setVisibility(View.VISIBLE);
+                                }
+                                tvLoginType.setText(listName);
+                                customDialog.dismiss();
+                            }
+                        });
+                customDialog.show();
             }
         });
     }
@@ -188,50 +214,50 @@ public class LoginActivity extends BaseActivity {
         return isValid;
     }
 
-    private void initiatePopupWindow(View v) {
-        try {
-            final PopupWindow popupWindow = new PopupWindow(this);
-            popupWindow.setFocusable(true);
-            View view = LayoutInflater.from(LoginActivity.this).inflate(R.layout.popup_window_logintype,null);
-            final TextView tvAdminLogin = view.findViewById(R.id.tvAdminLogin);
-            final TextView tvServiceManLogin = view.findViewById(R.id.tvServiceManLogin);
-            final TextView tvCustomerLogin = view.findViewById(R.id.tvCustomerLogin);
-            tvAdminLogin.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    loginType = tvAdminLogin.getText().toString();
-                    btnRegister.setVisibility(View.GONE);
-                    userType = AppConstents.USER_TYPE_ADMIN;
-                    tvLoginType.setText(loginType+"");
-                    popupWindow.dismiss();
-                }
-            });
-            tvServiceManLogin.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    loginType = tvServiceManLogin.getText().toString();
-                    userType = AppConstents.USER_TYPE_SERVICEMAN;
-                    btnRegister.setVisibility(View.VISIBLE);
-                    tvLoginType.setText(loginType+"");
-                    popupWindow.dismiss();
-                }
-            });
-            tvCustomerLogin.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    loginType = tvCustomerLogin.getText().toString();
-                    userType = AppConstents.USER_TYPE_CUSTOMER;
-                    btnRegister.setVisibility(View.VISIBLE);
-                    tvLoginType.setText(loginType+"");
-                    popupWindow.dismiss();
-                }
-            });
-            popupWindow.setContentView(view);
-            popupWindow.showAsDropDown(v, Gravity.CENTER,0, 0);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+//    private void initiatePopupWindow(View v) {
+//        try {
+//            final PopupWindow popupWindow = new PopupWindow(this);
+//            popupWindow.setFocusable(true);
+//            View view = LayoutInflater.from(LoginActivity.this).inflate(R.layout.popup_window_logintype,null);
+//            final TextView tvAdminLogin = view.findViewById(R.id.tvAdminLogin);
+//            final TextView tvServiceManLogin = view.findViewById(R.id.tvServiceManLogin);
+//            final TextView tvCustomerLogin = view.findViewById(R.id.tvCustomerLogin);
+//            tvAdminLogin.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    loginType = tvAdminLogin.getText().toString();
+//                    btnRegister.setVisibility(View.GONE);
+//                    userType = AppConstents.USER_TYPE_ADMIN;
+//                    tvLoginType.setText(loginType+"");
+//                    popupWindow.dismiss();
+//                }
+//            });
+//            tvServiceManLogin.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    loginType = tvServiceManLogin.getText().toString();
+//                    userType = AppConstents.USER_TYPE_SERVICEMAN;
+//                    btnRegister.setVisibility(View.VISIBLE);
+//                    tvLoginType.setText(loginType+"");
+//                    popupWindow.dismiss();
+//                }
+//            });
+//            tvCustomerLogin.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    loginType = tvCustomerLogin.getText().toString();
+//                    userType = AppConstents.USER_TYPE_CUSTOMER;
+//                    btnRegister.setVisibility(View.VISIBLE);
+//                    tvLoginType.setText(loginType+"");
+//                    popupWindow.dismiss();
+//                }
+//            });
+//            popupWindow.setContentView(view);
+//            popupWindow.showAsDropDown(v, Gravity.CENTER,0, 0);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
 
     private void checkLogin(String email,String password){
         try{

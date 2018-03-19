@@ -99,6 +99,7 @@ public class ExServiceManRegistrationActivity extends BaseActivity {
                 else{
                     List<String> areaList = DataManager.getList(AppConstents.TYPE_AREA);
                     customDialog = new CustomDialog(ExServiceManRegistrationActivity.this, areaList,
+                            "Select Area",true,
                             new CustomDialog.NameSelectedListener() {
                                 @Override
                                 public void onNameSelected(String listName) {
@@ -121,6 +122,7 @@ public class ExServiceManRegistrationActivity extends BaseActivity {
                 else {
                     List<String> areaList = DataManager.getList(AppConstents.TYPE_CITY);
                     customDialog = new CustomDialog(ExServiceManRegistrationActivity.this, areaList,
+                            "Select City",true,
                             new CustomDialog.NameSelectedListener() {
                                 @Override
                                 public void onNameSelected(String listName) {
@@ -139,6 +141,7 @@ public class ExServiceManRegistrationActivity extends BaseActivity {
             public void onClick(View v) {
                 List<String> areaList = DataManager.getList(AppConstents.TYPE_STATE);
                 customDialog = new CustomDialog(ExServiceManRegistrationActivity.this, areaList,
+                        "Select State",true,
                         new CustomDialog.NameSelectedListener() {
                             @Override
                             public void onNameSelected(String listName) {

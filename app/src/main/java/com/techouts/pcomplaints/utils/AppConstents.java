@@ -7,7 +7,7 @@ package com.techouts.pcomplaints.utils;
 public interface AppConstents {
 
     String LOGIN_ADMIN = "Login As Admin";
-    String LOGIN_SERVICE_MAN = "Login As Service Man";
+    String LOGIN_SERVICE_MAN = "Login As Ex.Service Man";
     String LOGIN_CUSTOMER = "Login As Customer";
     String CREATE_SERVICE_MAN = "Create Service Man";
     String CREATE_SERVICE = "Create Service";

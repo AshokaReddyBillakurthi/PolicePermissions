@@ -2,12 +2,27 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:background="@color/white"
-    android:padding="5dp"
     android:layout_gravity="center"
     android:gravity="center"
-    android:layout_height="300dp"
     android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Select Area"
+        android:textSize="20sp"
+        android:textColor="@color/app_color"
+        android:layout_gravity="center_vertical"
+        android:padding="10dp"
+        android:typeface="serif"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2px"
+        android:background="@color/app_color"/>
 
     <include layout="@layout/layout_search"/>
 

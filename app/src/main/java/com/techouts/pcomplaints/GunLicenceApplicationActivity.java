@@ -91,6 +91,7 @@ public class GunLicenceApplicationActivity extends BaseActivity{
             public void onClick(View v) {
                 List<String> areaList = DataManager.getList(AppConstents.TYPE_AREA);
                 customDialog = new CustomDialog(GunLicenceApplicationActivity.this, areaList,
+                        "Select Area", true,
                         new CustomDialog.NameSelectedListener() {
                             @Override
                             public void onNameSelected(String listName) {

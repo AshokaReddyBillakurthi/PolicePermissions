@@ -91,7 +91,8 @@ public class CrimeReportApplicationActivity extends BaseActivity{
             @Override
             public void onClick(View v) {
                 List<String> areaList = DataManager.getList(AppConstents.TYPE_AREA);
-                customDialog = new CustomDialog(CrimeReportApplicationActivity.this, areaList,
+                customDialog = new CustomDialog(CrimeReportApplicationActivity.this,areaList,
+                        "Select Area",true,
                         new CustomDialog.NameSelectedListener() {
                             @Override
                             public void onNameSelected(String listName) {

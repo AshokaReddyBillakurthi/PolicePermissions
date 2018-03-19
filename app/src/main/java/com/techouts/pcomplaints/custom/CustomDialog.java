@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.techouts.pcomplaints.R;
@@ -31,15 +32,22 @@ public class CustomDialog extends Dialog{
     private EditText edtSearch;
     private ImageView ivCross;
     private Context mContext;
+    private LinearLayout llSearch;
     private ListNamesAdapter listNamesAdapter;
     private List<String> listNames;
     private NameSelectedListener nameSelectedListener;
+    private boolean isSearchReq;
+    private TextView tvTitle;
+    private String title;
 
 
-    public CustomDialog(@NonNull Context context,List<String> listNames,NameSelectedListener nameSelectedListener) {
+    public CustomDialog(@NonNull Context context,List<String> listNames,String title,
+                        boolean isSearchReq,NameSelectedListener nameSelectedListener) {
         super(context);
         this.mContext = context;
         this.listNames = listNames;
+        this.isSearchReq = isSearchReq;
+        this.title = title;
         this.nameSelectedListener = nameSelectedListener;
     }
 
@@ -50,12 +58,21 @@ public class CustomDialog extends Dialog{
         setContentView(R.layout.custom_dialog_layout);
         edtSearch = findViewById(R.id.edtSearch);
         ivCross = findViewById(R.id.ivCross);
+        llSearch = findViewById(R.id.llSearch);
+        tvTitle = findViewById(R.id.tvTitle);
         RecyclerView rvList = findViewById(R.id.rvList);
         rvList.setLayoutManager(new LinearLayoutManager(mContext));
         listNamesAdapter = new ListNamesAdapter();
         rvList.setAdapter(listNamesAdapter);
         listNamesAdapter.refresh(listNames);
-        edtSearch.setHint("Search Area(Min. 3 Letters)");
+        edtSearch.setHint("Search (Min. 3 Letters)");
+
+        tvTitle.setText(title);
+
+        if(isSearchReq)
+            llSearch.setVisibility(View.VISIBLE);
+        else
+            llSearch.setVisibility(View.GONE);
 
         edtSearch.addTextChangedListener(new TextWatcher() {
             @Override
@@ -86,7 +103,7 @@ public class CustomDialog extends Dialog{
             @Override
             public void onClick(View v) {
                 edtSearch.setText("");
-                edtSearch.setHint("Search Area(Min. 3 Letters)");
+                edtSearch.setHint("Search (Min. 3 Letters)");
                 ivCross.setVisibility(View.GONE);
                 searchText("");
             }

@@ -63,14 +63,17 @@ public class ApplicationListActivity extends BaseActivity  {
             @Override
             public void onClick(View v) {
                 List<String> list = null;
+                String title = "";
                 if(searchBy.equalsIgnoreCase(AppConstents.SEARCH_BY_AREA)){
                     list = DataManager.getList(AppConstents.TYPE_AREA);
+                    title = "Select Area";
                 }
                 else if(searchBy.equalsIgnoreCase(AppConstents.SEARCH_BY_APPLICATION_TYPE)){
                     list = DataManager.getAllServices();
+                    title = "Select Application Type";
                 }
 
-                customDialog = new CustomDialog(ApplicationListActivity.this, list,
+                customDialog = new CustomDialog(ApplicationListActivity.this, list, title, true,
                         new CustomDialog.NameSelectedListener() {
                             @Override
                             public void onNameSelected(String listName) {
@@ -93,8 +96,12 @@ public class ApplicationListActivity extends BaseActivity  {
 
         @Override
         protected List<PermissionApplication> doInBackground(String... strings) {
-            return  DatabaseHandler.getInstance(getApplicationContext())
+            if(searchBy.equalsIgnoreCase(AppConstents.SEARCH_BY_AREA))
+                return  DatabaseHandler.getInstance(getApplicationContext())
                     .permissionApplicationDao().getAllApplicationsByArea(strings[0]);
+            else
+                return  DatabaseHandler.getInstance(getApplicationContext())
+                        .permissionApplicationDao().getAllApplicationsByApplicationType(strings[0]);
 
         }
 
