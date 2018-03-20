@@ -11,4 +11,4 @@
     android:padding="10dp"
     android:textColor="@color/black"
     android:textColorHint="@color/gray"
-    android:textSize="18sp" />
+    android:textSize="16sp" />

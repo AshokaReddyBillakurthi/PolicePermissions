@@ -15,7 +15,8 @@
         android:gravity="center"
         android:text="Telangana State Police"
         android:textColor="@color/black"
-        android:textSize="22sp"
+        android:textSize="18sp"
+        android:fontFamily="sans-serif"
         android:textStyle="bold"
         android:id="@+id/textView" />
 
@@ -39,7 +40,8 @@
         android:gravity="center"
         android:text="Welcome To Police Services"
         android:textColor="@color/black"
-        android:textSize="22sp"
+        android:textSize="18sp"
+        android:fontFamily="sans-serif"
         android:textStyle="bold" />
 
 </RelativeLayout>

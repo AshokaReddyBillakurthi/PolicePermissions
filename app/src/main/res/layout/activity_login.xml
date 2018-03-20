@@ -19,8 +19,8 @@
             android:paddingRight="20dp">
 
             <ImageView
-                android:layout_width="250dp"
-                android:layout_height="250dp"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
                 android:src="@drawable/logo" />
@@ -33,11 +33,12 @@
                 android:background="@drawable/rect_bg"
                 android:drawablePadding="5dp"
                 android:drawableRight="@drawable/ic_down_arrow_red"
+                android:drawableTint="@color/app_color"
                 android:hint="Select Login Type"
-                android:padding="10dp"
+                android:padding="8dp"
                 android:textColor="@color/input_login"
                 android:textColorHint="@color/input_login_hint"
-                android:textSize="18sp" />
+                android:textSize="16sp" />
 
             <EditText
                 android:id="@+id/edtEmail"
@@ -48,8 +49,9 @@
                 android:background="@drawable/rect_bg"
                 android:hint="Email"
                 android:inputType="textEmailAddress"
-                android:padding="10dp"
+                android:padding="8dp"
                 android:singleLine="true"
+                android:textSize="16sp"
                 android:textColor="@color/input_login"
                 android:textColorHint="@color/input_login_hint" />
 
@@ -61,8 +63,9 @@
                 android:background="@drawable/rect_bg"
                 android:hint="Password"
                 android:inputType="textPassword"
-                android:padding="10dp"
+                android:padding="8dp"
                 android:singleLine="true"
+                android:textSize="16sp"
                 android:textColor="@color/input_login"
                 android:textColorHint="@color/input_login_hint" />
 
@@ -74,7 +77,7 @@
                 android:background="@color/btn_login_bg"
                 android:text="Login"
                 android:textColor="@color/btn_login"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 android:textStyle="bold" />
 
             <Button
@@ -86,7 +89,7 @@
                 android:text="@string/btn_link_to_register"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 android:visibility="visible" />
         </LinearLayout>
 
@@ -102,7 +105,7 @@
             android:padding="5dp"
             android:text="Skip Login"
             android:textColor="@color/white"
-            android:textSize="18sp"
+            android:textSize="16sp"
             android:textStyle="bold" />
     </LinearLayout>
 </LinearLayout>

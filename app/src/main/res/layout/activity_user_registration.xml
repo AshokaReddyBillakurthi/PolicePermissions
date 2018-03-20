@@ -29,7 +29,7 @@
                 android:textColorHint="@color/gray"
                 android:inputType="text"
                 android:hint="First Name"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 android:textColor="@color/black" />
 
             <EditText
@@ -40,7 +40,7 @@
                 android:inputType="text"
                 android:layout_marginTop="10dp"
                 android:padding="10dp"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 android:textColorHint="@color/gray"
                 android:hint="Last Name"
                 android:textColor="@color/black"/>
@@ -55,7 +55,7 @@
                 android:maxLines="1"
                 android:layout_marginTop="10dp"
                 android:padding="10dp"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 android:textColorHint="@color/gray"
                 android:hint="Mobile Number"
                 android:textColor="@color/black"/>
@@ -68,7 +68,7 @@
                 android:inputType="textEmailAddress"
                 android:layout_marginTop="10dp"
                 android:padding="10dp"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 android:textColorHint="@color/gray"
                 android:hint="Email"
                 android:textColor="@color/black"/>
@@ -81,7 +81,7 @@
                 android:inputType="textPassword"
                 android:layout_marginTop="10dp"
                 android:padding="10dp"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 android:textColorHint="@color/gray"
                 android:hint="Password"
                 android:textColor="@color/black"/>
@@ -95,7 +95,7 @@
                 android:inputType="text"
                 android:layout_marginTop="10dp"
                 android:padding="10dp"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 android:textColorHint="@color/gray"
                 android:hint="Select State"
                 android:textColor="@color/black"/>
@@ -109,7 +109,7 @@
                 android:drawableRight="@drawable/ic_arrow_down_black"
                 android:layout_marginTop="10dp"
                 android:padding="10dp"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 android:textColorHint="@color/gray"
                 android:hint="Select City"
                 android:textColor="@color/black"/>
@@ -123,7 +123,7 @@
                 android:drawableRight="@drawable/ic_arrow_down_black"
                 android:layout_marginTop="10dp"
                 android:padding="10dp"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 android:textColorHint="@color/gray"
                 android:hint="Select Area"
                 android:textColor="@color/black"/>
@@ -137,7 +137,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="10dp"
-                    android:src="@drawable/ic_camera"/>
+                    android:src="@drawable/ic_camera"
+                    android:tint="@color/app_color"/>
                 <ImageView
                     android:id="@+id/ivUserImg"
                     android:layout_width="100dp"

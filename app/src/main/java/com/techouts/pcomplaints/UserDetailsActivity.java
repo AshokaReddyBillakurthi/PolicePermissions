@@ -1,19 +1,25 @@
 package com.techouts.pcomplaints;
 
 import android.graphics.Bitmap;
+import android.os.AsyncTask;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.techouts.pcomplaints.datahandler.DatabaseHandler;
 import com.techouts.pcomplaints.entities.User;
 import com.techouts.pcomplaints.utils.AppConstents;
+import com.techouts.pcomplaints.utils.PreferencesManager;
+
+import java.util.List;
 
 public class UserDetailsActivity extends BaseActivity {
-
     private TextView tvTitle, tvFirstName, tvLastName, tvArea,
             tvCity, tvState,tvEmail,tvMobileNo;
     private ImageView ivBack, ivUserImage;
     private User user;
+    private String email;
 
     @Override
     public int getRootLayout() {
@@ -23,7 +29,10 @@ public class UserDetailsActivity extends BaseActivity {
     @Override
     public void initGUI() {
         if (getIntent().getExtras() != null) {
-            user = (User) getIntent().getExtras().getSerializable(AppConstents.EXTRA_USER);
+            if(getIntent().hasExtra(AppConstents.EXTRA_EMAIL_ID))
+                email = getIntent().getStringExtra(AppConstents.EXTRA_EMAIL_ID);
+            if(getIntent().hasExtra(AppConstents.EXTRA_USER))
+                user = (User) getIntent().getExtras().getSerializable(AppConstents.EXTRA_USER);
         }
         tvTitle = findViewById(R.id.tvTitle);
         tvFirstName = findViewById(R.id.tvFirstName);
@@ -47,6 +56,31 @@ public class UserDetailsActivity extends BaseActivity {
     @Override
     public void initData() {
         if (user != null) {
+            setUserData(user);
+        }
+        else if(!TextUtils.isEmpty(email)){
+            new GetUserDetailsTask().execute(email);
+        }
+    }
+
+
+    class GetUserDetailsTask extends AsyncTask<String, Void, User> {
+
+        @Override
+        protected User doInBackground(String... strings) {
+            user = DatabaseHandler.getInstance(getApplicationContext()).userDao().getUserDetailsByEmailId(strings[0]);
+            return user;
+        }
+
+        @Override
+        protected void onPostExecute(User user) {
+            super.onPostExecute(user);
+            setUserData(user);
+        }
+    }
+
+    private void setUserData(User user){
+        if (null!=user) {
             tvTitle.setText(user.firstName+" "+user.lastName);
             tvFirstName.setText(user.firstName+ "");
             tvLastName.setText(user.lastName + "");

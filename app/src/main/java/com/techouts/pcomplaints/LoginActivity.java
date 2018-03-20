@@ -4,12 +4,9 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.text.TextUtils;
 import android.util.Patterns;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -76,6 +73,7 @@ public class LoginActivity extends BaseActivity {
                                     userType = AppConstents.USER_TYPE_CUSTOMER;
                                     btnRegister.setVisibility(View.VISIBLE);
                                 }
+                                loginType = listName;
                                 tvLoginType.setText(listName);
                                 customDialog.dismiss();
                             }
@@ -132,8 +130,10 @@ public class LoginActivity extends BaseActivity {
     private void validateLogin(String email,String password,String loginType){
         try{
             if(isValidData(email,password,loginType)){
-                if(email.equalsIgnoreCase("admin@gmail.com") &&password.equalsIgnoreCase("password")){
+                if(email.equalsIgnoreCase("admin@gmail.com") && password.equalsIgnoreCase("password")){
                     Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                    SharedPreferenceUtils.putStaringValue(AppConstents.EMAIL_ID,"admin@gmail.com");
+                    SharedPreferenceUtils.putStaringValue(AppConstents.PASSWORD,"password");
                     SharedPreferenceUtils.putBooleanValue(SharedPreferenceUtils.IS_LOGGEDIN,true);
                     intent.putExtra(AppConstents.EXTRA_LOGIN_TYPE, loginType);
                     startActivity(intent);
@@ -144,10 +144,11 @@ public class LoginActivity extends BaseActivity {
                     args[0] = email;
                     args[1] = password;
                     args[2] = userType;
-
+                    SharedPreferenceUtils.putStaringValue(AppConstents.EMAIL_ID,email);
+                    SharedPreferenceUtils.putStaringValue(AppConstents.PASSWORD,password);
                     new LoginAsyncTask().execute(args);
                 }
-                checkLogin(email,password);
+//                checkLogin(email,password);
             }
             else{
                 showToast("Please enter proper details");
@@ -286,13 +287,8 @@ public class LoginActivity extends BaseActivity {
                             try {
                                 JSONObject jsonObject = new JSONObject(body);
                                 String message = jsonObject.getString("msg");
-                                boolean status = jsonObject.getBoolean("status");
-                                if(status) {
-                                    Toast.makeText(LoginActivity.this, message, Toast.LENGTH_LONG).show();
-                                }
-                                else {
-                                    Toast.makeText(LoginActivity.this, message, Toast.LENGTH_LONG).show();
-                                }
+//                                boolean status = jsonObject.getBoolean("status");
+                                showToast(message);
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }

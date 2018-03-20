@@ -37,7 +37,7 @@
                     android:textColorHint="@color/gray"
                     android:inputType="text"
                     android:hint="First Name"
-                    android:textSize="18sp"
+                    android:textSize="16sp"
                     android:textColor="@color/black" />
 
                 <EditText
@@ -52,7 +52,7 @@
                     android:textColorHint="@color/gray"
                     android:inputType="text"
                     android:hint="Last Name"
-                    android:textSize="18sp"
+                    android:textSize="16sp"
                     android:textColor="@color/black" />
             </LinearLayout>
 
@@ -65,7 +65,7 @@
                 android:inputType="text"
                 android:layout_marginTop="10dp"
                 android:padding="10dp"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 android:textColorHint="@color/gray"
                 android:hint="Occupation"
                 android:textColor="@color/black"/>
@@ -79,7 +79,7 @@
                 android:inputType="textEmailAddress"
                 android:layout_marginTop="10dp"
                 android:padding="10dp"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 android:textColorHint="@color/gray"
                 android:hint="Email Id"
                 android:textColor="@color/black"/>
@@ -93,7 +93,7 @@
                 android:inputType="phone"
                 android:layout_marginTop="10dp"
                 android:padding="10dp"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 android:textColorHint="@color/gray"
                 android:hint="Phone No"
                 android:textColor="@color/black"/>
@@ -109,7 +109,7 @@
                     android:layout_height="wrap_content"
                     android:maxLines="1"
                     android:layout_marginTop="3dp"
-                    android:textSize="18sp"
+                    android:textSize="16sp"
                     android:textColorHint="@color/gray"
                     android:hint="Sex:"
                     android:textColor="@color/black"/>
@@ -149,7 +149,7 @@
                     android:layout_height="wrap_content"
                     android:text="Location Where Crime Occurred:"
                     android:textColor="@color/gray"
-                    android:textSize="18sp"/>
+                    android:textSize="16sp"/>
 
                 <RadioGroup
                     android:id="@+id/rgPlace"
@@ -199,7 +199,7 @@
                 android:padding="10dp"
                 android:textColor="@color/black"
                 android:textColorHint="@color/gray"
-                android:textSize="18sp" />
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/tvListName"
@@ -210,7 +210,7 @@
                 android:drawableRight="@drawable/ic_arrow_down_black"
                 android:layout_marginTop="10dp"
                 android:padding="10dp"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 android:textColorHint="@color/gray"
                 android:hint="Select area"
                 android:textColor="@color/black"/>
@@ -226,7 +226,7 @@
                     android:layout_height="wrap_content"
                     android:maxLines="1"
                     android:layout_marginTop="3dp"
-                    android:textSize="18sp"
+                    android:textSize="16sp"
                     android:textColorHint="@color/gray"
                     android:hint="Status/Condition of Property:"
                     android:textColor="@color/black"/>
@@ -264,7 +264,7 @@
                 android:inputType="numberDecimal"
                 android:layout_marginTop="10dp"
                 android:padding="10dp"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 android:textColorHint="@color/gray"
                 android:hint="Value of Property"
                 android:textColor="@color/black"/>
@@ -277,14 +277,15 @@
                     android:layout_height="wrap_content"
                     android:padding="10dp"
                     android:text="Please Capture Applicant Image"
-                    android:textSize="18sp"
+                    android:textSize="16sp"
                     android:textColor="@color/gray"/>
                 <ImageView
                     android:id="@+id/ivCamera"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="10dp"
-                    android:src="@drawable/ic_camera"/>
+                    android:src="@drawable/ic_camera"
+                    android:tint="@color/app_color"/>
                 <ImageView
                     android:id="@+id/ivUserImg"
                     android:layout_width="100dp"
@@ -308,7 +309,7 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:text="Apply"
-            android:textSize="18sp"
+            android:textSize="16sp"
             android:textColor="@color/white"
             android:textStyle="bold"/>
     </LinearLayout>

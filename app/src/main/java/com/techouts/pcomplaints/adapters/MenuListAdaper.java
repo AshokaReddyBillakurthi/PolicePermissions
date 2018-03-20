@@ -11,12 +11,15 @@ import android.widget.TextView;
 
 import com.techouts.pcomplaints.CreateServiceActivity;
 import com.techouts.pcomplaints.ExServiceManListActivity;
+import com.techouts.pcomplaints.UserDetailsActivity;
 import com.techouts.pcomplaints.utils.AppConstents;
 import com.techouts.pcomplaints.ApplicationListActivity;
 import com.techouts.pcomplaints.HomeActivity;
 import com.techouts.pcomplaints.R;
 import com.techouts.pcomplaints.ServicesActivity;
 import com.techouts.pcomplaints.UserListActivity;
+import com.techouts.pcomplaints.utils.PreferencesManager;
+import com.techouts.pcomplaints.utils.SharedPreferenceUtils;
 
 import java.util.List;
 
@@ -71,6 +74,14 @@ public class MenuListAdaper extends RecyclerView.Adapter<MenuListAdaper.MenuView
                             llChildItems.setVisibility(View.GONE);
                             ((HomeActivity)itemView.getContext()).closeDrawer();
                             Intent intent = new Intent(itemView.getContext(), ServicesActivity.class);
+                            itemView.getContext().startActivity(intent);
+                            break;
+                        }
+                        case AppConstents.MY_ACCOUNT:{
+                            llChildItems.setVisibility(View.GONE);
+                            ((HomeActivity)itemView.getContext()).closeDrawer();
+                            Intent intent = new Intent(itemView.getContext(), UserDetailsActivity.class);
+                            intent.putExtra(AppConstents.EXTRA_EMAIL_ID, SharedPreferenceUtils.getStringValue(AppConstents.EMAIL_ID));
                             itemView.getContext().startActivity(intent);
                             break;
                         }

@@ -54,7 +54,7 @@
                         android:layout_weight="1"
                         android:gravity="center"
                         android:textColor="@color/white"
-                        android:textSize="22sp"
+                        android:textSize="17sp"
                         android:textStyle="bold" />
 
                     <ImageView
@@ -64,7 +64,8 @@
                         android:layout_marginLeft="10dp"
                         android:layout_marginTop="10dp"
                         android:gravity="center"
-                        android:src="@drawable/logo" />
+                        android:src="@drawable/logo"
+                        android:visibility="invisible"/>
                 </LinearLayout>
             </android.support.v7.widget.Toolbar>
         </android.support.design.widget.AppBarLayout>

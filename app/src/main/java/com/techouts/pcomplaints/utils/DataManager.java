@@ -74,6 +74,7 @@ public class DataManager {
                     break;
                 case AppConstents.LOGIN_CUSTOMER:
                     menuList.add(AppConstents.SERVICES);
+                    menuList.add(AppConstents.MY_ACCOUNT);
                     menuList.add(AppConstents.LOGOUT);
                     break;
                 case AppConstents.LOGIN_TYPE_NONE:

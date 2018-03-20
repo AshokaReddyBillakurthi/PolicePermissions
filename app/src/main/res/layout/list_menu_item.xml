@@ -21,7 +21,7 @@
                 android:layout_height="wrap_content"
                 android:padding="15dp"
                 android:text="Admin"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 android:textStyle="bold"
                 android:textColor="@color/app_color"
                 android:fontFamily="sans-serif" />
@@ -29,7 +29,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_arrow_right_red"
-                android:layout_gravity="center_vertical"/>
+                android:layout_gravity="center_vertical"
+                android:tint="@color/app_color"/>
         </LinearLayout>
         <View
             android:layout_width="match_parent"
