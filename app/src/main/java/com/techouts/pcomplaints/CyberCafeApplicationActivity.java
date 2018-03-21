@@ -169,7 +169,7 @@ public class CyberCafeApplicationActivity extends BaseActivity {
                 permissionApplication.noOfTerminals = noOfTerminals;
                 permissionApplication.applicantImg = userImg;
                 permissionApplication.area = area;
-                permissionApplication.applicationType = applicationType;
+                permissionApplication.applicationType = AppConstents.INTERNET_CAFES;
                 listPermissionApplications.add(permissionApplication);
                 new ApplyPermissionAsyncTask().execute(listPermissionApplications);
             }

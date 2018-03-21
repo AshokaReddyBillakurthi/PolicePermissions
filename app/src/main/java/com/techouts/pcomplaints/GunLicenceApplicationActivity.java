@@ -161,7 +161,7 @@ public class GunLicenceApplicationActivity extends BaseActivity{
                 permissionApplication.oldLicenseNo = oldLicenseNo;
                 permissionApplication.applicantImg = userImg;
                 permissionApplication.area = area;
-                permissionApplication.applicationType = "Gun Licence";
+                permissionApplication.applicationType =AppConstents.GUN_LICENCES;
                 listPermissionApplications.add(permissionApplication);
                 new GunLicenceAsyncTask().execute(listPermissionApplications);
             }

@@ -120,11 +120,11 @@ public class PermissionsAndVerificationActivity extends BaseActivity {
             if(!TextUtils.isEmpty(searchText)){
                 tempSearchList = new ArrayList<>();
                 for(String permission :permissionList){
-                    if(permission.contains(searchText)){
+                    if(permission.toLowerCase().contains(searchText.toLowerCase())){
                         tempSearchList.add(permission);
                     }
                 }
-                if(tempSearchList!=null&&tempSearchList.size()>0)
+                if(tempSearchList!=null&&!tempSearchList.isEmpty())
                     permissionListAdapter.refresh(tempSearchList);
             }
             else {

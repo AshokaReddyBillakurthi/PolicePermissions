@@ -23,8 +23,9 @@
             android:padding="10dp"
             android:hint="Select Area"
             android:textColorHint="@color/gray"
-            android:textSize="18sp"
-            android:textColor="@color/black"/>
+            android:textSize="16sp"
+            android:textColor="@color/black"
+            android:fontFamily="sans-serif"/>
     </LinearLayout>
 
     <LinearLayout
@@ -49,7 +50,8 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:text="No Applications Found In This Area"
-            android:textSize="18sp"
-            android:textColor="@color/black"/>
+            android:textSize="16sp"
+            android:textColor="@color/black"
+            android:fontFamily="sans-serif"/>
     </LinearLayout>
 </LinearLayout>

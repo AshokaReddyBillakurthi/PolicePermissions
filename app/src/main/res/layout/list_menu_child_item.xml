@@ -50,7 +50,7 @@
                 android:layout_height="wrap_content"
                 android:padding="15dp"
                 android:text="Search by Application Type"
-                android:textSize="14sp"
+                android:textSize="16sp"
                 android:textColor="@color/app_color"
                 android:fontFamily="sans-serif" />
             <ImageView
