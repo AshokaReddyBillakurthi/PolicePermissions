@@ -73,7 +73,8 @@ public class ApplicationListActivity extends BaseActivity  {
                     title = "Select Application Type";
                 }
 
-                customDialog = new CustomDialog(ApplicationListActivity.this, list, title, true,
+                customDialog = new CustomDialog(ApplicationListActivity.this, list, title,
+                        true,false,
                         new CustomDialog.NameSelectedListener() {
                             @Override
                             public void onNameSelected(String listName) {
@@ -82,6 +83,7 @@ public class ApplicationListActivity extends BaseActivity  {
                                 customDialog.dismiss();
                             }
                         });
+
                 customDialog.show();
             }
         });

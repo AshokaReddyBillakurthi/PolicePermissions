@@ -31,4 +31,9 @@
 
     <style name="NoActionBar.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="MyAlertDialogTheme" parent="Base.Theme.AppCompat.Light.Dialog.Alert">
+        <item name="windowFixedWidthMajor">60%</item>
+        <item name="windowFixedWidthMinor">60%</item>
+    </style>
+
 </resources>

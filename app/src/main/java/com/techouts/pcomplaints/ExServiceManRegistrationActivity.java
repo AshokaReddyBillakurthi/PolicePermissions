@@ -11,6 +11,7 @@ import android.util.Log;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -99,7 +100,7 @@ public class ExServiceManRegistrationActivity extends BaseActivity {
                 else{
                     List<String> areaList = DataManager.getList(AppConstents.TYPE_AREA);
                     customDialog = new CustomDialog(ExServiceManRegistrationActivity.this, areaList,
-                            "Select Area",true,
+                            "Select Area",true,true,
                             new CustomDialog.NameSelectedListener() {
                                 @Override
                                 public void onNameSelected(String listName) {
@@ -122,7 +123,7 @@ public class ExServiceManRegistrationActivity extends BaseActivity {
                 else {
                     List<String> areaList = DataManager.getList(AppConstents.TYPE_CITY);
                     customDialog = new CustomDialog(ExServiceManRegistrationActivity.this, areaList,
-                            "Select City",true,
+                            "Select City",true,false,
                             new CustomDialog.NameSelectedListener() {
                                 @Override
                                 public void onNameSelected(String listName) {
@@ -141,7 +142,7 @@ public class ExServiceManRegistrationActivity extends BaseActivity {
             public void onClick(View v) {
                 List<String> areaList = DataManager.getList(AppConstents.TYPE_STATE);
                 customDialog = new CustomDialog(ExServiceManRegistrationActivity.this, areaList,
-                        "Select State",true,
+                        "Select State",true,false,
                         new CustomDialog.NameSelectedListener() {
                             @Override
                             public void onNameSelected(String listName) {

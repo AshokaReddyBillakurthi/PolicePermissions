@@ -7,6 +7,7 @@ import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Patterns;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -102,7 +103,7 @@ public class UserRegistrationActivity extends BaseActivity {
             public void onClick(View v) {
                 List<String> areaList = DataManager.getList(AppConstents.TYPE_STATE);
                 customDialog = new CustomDialog(UserRegistrationActivity.this, areaList,
-                        "Select State",true,
+                        "Select State",true,false,
                         new CustomDialog.NameSelectedListener() {
                             @Override
                             public void onNameSelected(String listName) {
@@ -124,7 +125,7 @@ public class UserRegistrationActivity extends BaseActivity {
                 else{
                     List<String> areaList = DataManager.getList(AppConstents.TYPE_CITY);
                     customDialog = new CustomDialog(UserRegistrationActivity.this, areaList,
-                            "Select City",true,
+                            "Select City",true,false,
                             new CustomDialog.NameSelectedListener() {
                                 @Override
                                 public void onNameSelected(String listName) {
@@ -147,7 +148,7 @@ public class UserRegistrationActivity extends BaseActivity {
                 else{
                     List<String> areaList = DataManager.getList(AppConstents.TYPE_AREA);
                     customDialog = new CustomDialog(UserRegistrationActivity.this, areaList,
-                            "Select Area",true,
+                            "Select Area",true,false,
                             new CustomDialog.NameSelectedListener() {
                                 @Override
                                 public void onNameSelected(String listName) {

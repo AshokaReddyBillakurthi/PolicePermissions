@@ -57,7 +57,7 @@ public class LoginActivity extends BaseActivity {
             public void onClick(View v) {
                 List<String> userLoginTypes = DataManager.getUserLoginTypes();
                 customDialog = new CustomDialog(LoginActivity.this, userLoginTypes,
-                        "Select Login Type",false,
+                        "Select Login Type",false,false,
                         new CustomDialog.NameSelectedListener() {
                             @Override
                             public void onNameSelected(String listName) {

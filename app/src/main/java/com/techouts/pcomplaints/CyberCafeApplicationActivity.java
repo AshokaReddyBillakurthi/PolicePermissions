@@ -110,7 +110,7 @@ public class CyberCafeApplicationActivity extends BaseActivity {
                     public void onClick(View v) {
                         List<String> areaList = DataManager.getList(AppConstents.TYPE_AREA);
                         customDialog = new CustomDialog(CyberCafeApplicationActivity.this, areaList,
-                                "Select Area",true,
+                                "Select Area",true,false,
                                 new CustomDialog.NameSelectedListener() {
                                     @Override
                                     public void onNameSelected(String listName) {

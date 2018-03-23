@@ -13,6 +13,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -33,20 +35,24 @@ public class CustomDialog extends Dialog{
     private ImageView ivCross;
     private Context mContext;
     private LinearLayout llSearch;
+    private LinearLayout llBtns;
     private ListNamesAdapter listNamesAdapter;
     private List<String> listNames;
     private NameSelectedListener nameSelectedListener;
     private boolean isSearchReq;
+    private boolean isCheckboxNeed = false;
     private TextView tvTitle;
+    private Button btnOk;
     private String title;
 
 
     public CustomDialog(@NonNull Context context,List<String> listNames,String title,
-                        boolean isSearchReq,NameSelectedListener nameSelectedListener) {
+                        boolean isSearchReq,boolean isCheckboxNeed,NameSelectedListener nameSelectedListener) {
         super(context);
         this.mContext = context;
         this.listNames = listNames;
         this.isSearchReq = isSearchReq;
+        this.isCheckboxNeed = isCheckboxNeed;
         this.title = title;
         this.nameSelectedListener = nameSelectedListener;
     }
@@ -59,15 +65,23 @@ public class CustomDialog extends Dialog{
         edtSearch = findViewById(R.id.edtSearch);
         ivCross = findViewById(R.id.ivCross);
         llSearch = findViewById(R.id.llSearch);
+        llBtns = findViewById(R.id.llBtns);
+        btnOk = findViewById(R.id.btnOk);
         tvTitle = findViewById(R.id.tvTitle);
-        RecyclerView rvList = findViewById(R.id.rvList);
+        CustomRecyclerView rvList = findViewById(R.id.rvList);
         rvList.setLayoutManager(new LinearLayoutManager(mContext));
+        rvList.setHasFixedSize(true);
         listNamesAdapter = new ListNamesAdapter();
         rvList.setAdapter(listNamesAdapter);
         listNamesAdapter.refresh(listNames);
         edtSearch.setHint("Search (Min. 3 Letters)");
 
         tvTitle.setText(title);
+
+        if(isCheckboxNeed)
+            llBtns.setVisibility(View.VISIBLE);
+        else
+            llBtns.setVisibility(View.GONE);
 
         if(isSearchReq)
             llSearch.setVisibility(View.VISIBLE);
@@ -132,9 +146,11 @@ public class CustomDialog extends Dialog{
     class ListNamesAdapter extends RecyclerView.Adapter<ListNamesAdapter.NamesHolder>{
 
         private List<String> listNames;
+        private List<String> selectedList;
 
         public ListNamesAdapter(){
             this.listNames = new ArrayList<>();
+            this.selectedList = new ArrayList<>();
         }
 
         @Override
@@ -160,10 +176,14 @@ public class CustomDialog extends Dialog{
 
         class NamesHolder extends RecyclerView.ViewHolder {
             private TextView tvListName;
-
+            private CheckBox cbxChecked;
             public NamesHolder(View itemView) {
                 super(itemView);
                 tvListName = itemView.findViewById(R.id.tvListName);
+                cbxChecked = itemView.findViewById(R.id.cbxChecked);
+
+                if(isCheckboxNeed)
+                    cbxChecked.setVisibility(View.VISIBLE);
                 itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
