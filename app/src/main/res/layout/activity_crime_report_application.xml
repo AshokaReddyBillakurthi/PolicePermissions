@@ -70,8 +70,8 @@
                 android:hint="Occupation"
                 android:textColor="@color/black"/>
 
-            <EditText
-                android:id="@+id/edtEmail"
+            <TextView
+                android:id="@+id/tvEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/rect_bg"
@@ -92,6 +92,7 @@
                 android:maxLines="1"
                 android:inputType="phone"
                 android:layout_marginTop="10dp"
+                android:maxLength="10"
                 android:padding="10dp"
                 android:textSize="16sp"
                 android:textColorHint="@color/gray"
@@ -308,7 +309,7 @@
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="Apply"
+            android:text="@string/apply_proceed_pay"
             android:textSize="16sp"
             android:textColor="@color/white"
             android:textStyle="bold"/>

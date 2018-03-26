@@ -21,6 +21,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.techouts.pcomplaints.R;
+import com.techouts.pcomplaints.adapters.AreaAdapter;
+import com.techouts.pcomplaints.adapters.CityAdapter;
+import com.techouts.pcomplaints.adapters.StateAdapter;
+import com.techouts.pcomplaints.entities.Area;
+import com.techouts.pcomplaints.entities.City;
+import com.techouts.pcomplaints.entities.State;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,12 +44,21 @@ public class CustomDialog extends Dialog{
     private LinearLayout llBtns;
     private ListNamesAdapter listNamesAdapter;
     private List<String> listNames;
+    private List<Area> areaList;
+    private List<City> cityList;
+    private List<State> stateList;
     private NameSelectedListener nameSelectedListener;
     private boolean isSearchReq;
     private boolean isCheckboxNeed = false;
     private TextView tvTitle;
     private Button btnOk;
     private String title;
+    private boolean isArea = false;
+    private boolean isCity = false;
+    private boolean isState = false;
+    private AreaAdapter areaAdapter;
+    private CityAdapter cityAdapter;
+    private StateAdapter stateAdapter;
 
 
     public CustomDialog(@NonNull Context context,List<String> listNames,String title,
@@ -56,6 +71,43 @@ public class CustomDialog extends Dialog{
         this.title = title;
         this.nameSelectedListener = nameSelectedListener;
     }
+
+    public CustomDialog(@NonNull Context context, List<Area> areaList, String title,boolean isArea,
+                        boolean isSearchReq, boolean isCheckboxNeed, NameSelectedListener nameSelectedListener) {
+        super(context);
+        this.mContext = context;
+        this.areaList = areaList;
+        this.isSearchReq = isSearchReq;
+        this.isCheckboxNeed = isCheckboxNeed;
+        this.title = title;
+        this.nameSelectedListener = nameSelectedListener;
+        this.isArea = isArea;
+    }
+
+    public CustomDialog(@NonNull Context context, List<City> cityList, boolean isCity, String title,
+                        boolean isSearchReq, boolean isCheckboxNeed, NameSelectedListener nameSelectedListener) {
+        super(context);
+        this.mContext = context;
+        this.cityList = cityList;
+        this.isSearchReq = isSearchReq;
+        this.isCheckboxNeed = isCheckboxNeed;
+        this.title = title;
+        this.nameSelectedListener = nameSelectedListener;
+        this.isCity = isCity;
+    }
+
+    public CustomDialog(@NonNull Context context, boolean isState, List<State> stateList, String title,
+                        boolean isSearchReq, boolean isCheckboxNeed, NameSelectedListener nameSelectedListener) {
+        super(context);
+        this.mContext = context;
+        this.stateList = stateList;
+        this.isSearchReq = isSearchReq;
+        this.isCheckboxNeed = isCheckboxNeed;
+        this.title = title;
+        this.nameSelectedListener = nameSelectedListener;
+        this.isState = isState;
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,9 +123,42 @@ public class CustomDialog extends Dialog{
         CustomRecyclerView rvList = findViewById(R.id.rvList);
         rvList.setLayoutManager(new LinearLayoutManager(mContext));
         rvList.setHasFixedSize(true);
-        listNamesAdapter = new ListNamesAdapter();
-        rvList.setAdapter(listNamesAdapter);
-        listNamesAdapter.refresh(listNames);
+
+        if(isArea){
+            areaAdapter = new AreaAdapter(areaList,isCheckboxNeed,nameSelectedListener);
+            rvList.setAdapter(areaAdapter);
+        }
+        else if(isCity){
+            cityAdapter = new CityAdapter(cityList,nameSelectedListener);
+            rvList.setAdapter(cityAdapter);
+        }
+        else if(isState){
+            stateAdapter = new StateAdapter(stateList,nameSelectedListener);
+            rvList.setAdapter(stateAdapter);
+        }else{
+            listNamesAdapter = new ListNamesAdapter();
+            rvList.setAdapter(listNamesAdapter);
+            listNamesAdapter.refresh(listNames);
+        }
+
+        btnOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                StringBuilder stringBuilder = new StringBuilder();
+                List<Area> areas = areaAdapter.getSelectedAreas();
+                for(Area area: areas){
+                    stringBuilder.append(area.areaName).append(",");
+                }
+                int index = -1;
+                String areaStr="";
+                index = stringBuilder.toString().lastIndexOf(",");
+                if(index>=0) {
+                    areaStr = stringBuilder.toString().substring(0, index);
+                    nameSelectedListener.onNameSelected(areaStr);
+                }
+            }
+        });
+
         edtSearch.setHint("Search (Min. 3 Letters)");
 
         tvTitle.setText(title);
@@ -122,22 +207,65 @@ public class CustomDialog extends Dialog{
                 searchText("");
             }
         });
+
     }
 
 
     private void searchText(String searchText){
         try {
-            List<String> tempList = new ArrayList<>();
-            if (!TextUtils.isEmpty(searchText)) {
-                for (String string : listNames) {
-                    if ((string.toLowerCase().contains(searchText.toLowerCase()))) {
-                        tempList.add(string);
+            if(isState){
+                List<State> tempList = new ArrayList<>();
+                if (!TextUtils.isEmpty(searchText)) {
+                    for (State state : stateList) {
+                        if ((state.stateName.toLowerCase().contains(searchText.toLowerCase()))) {
+                            tempList.add(state);
+                        }
                     }
+                    stateAdapter.refresh(tempList);
+                } else {
+                    stateAdapter.refresh(stateList);
                 }
-                listNamesAdapter.refresh(tempList);
-            } else {
-                listNamesAdapter.refresh(listNames);
             }
+            else if(isCity){
+                List<City> tempList = new ArrayList<>();
+                if (!TextUtils.isEmpty(searchText)) {
+                    for (City city : cityList) {
+                        if ((city.cityName.toLowerCase().contains(searchText.toLowerCase()))) {
+                            tempList.add(city);
+                        }
+                    }
+                    cityAdapter.refresh(tempList);
+                } else {
+                    cityAdapter.refresh(cityList);
+                }
+            }
+            else if(isArea){
+                List<Area> tempList = new ArrayList<>();
+                if (!TextUtils.isEmpty(searchText)) {
+                    for (Area area : areaList) {
+                        if ((area.areaName.toLowerCase().contains(searchText.toLowerCase()))) {
+                            tempList.add(area);
+                        }
+                    }
+                    areaAdapter.refresh(tempList);
+                } else {
+                    areaAdapter.refresh(areaList);
+                }
+            }
+            else{
+                List<String> tempList = new ArrayList<>();
+                if (!TextUtils.isEmpty(searchText)) {
+                    for (String string : listNames) {
+                        if ((string.toLowerCase().contains(searchText.toLowerCase()))) {
+                            tempList.add(string);
+                        }
+                    }
+                    listNamesAdapter.refresh(tempList);
+                } else {
+                    listNamesAdapter.refresh(listNames);
+                }
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }

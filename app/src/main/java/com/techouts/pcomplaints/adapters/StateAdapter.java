@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.techouts.pcomplaints.R;
+import com.techouts.pcomplaints.custom.CustomDialog;
+import com.techouts.pcomplaints.entities.State;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,12 +19,12 @@ import java.util.List;
 
 public class StateAdapter extends RecyclerView.Adapter<StateAdapter.StateViewHolder>  {
 
-    private List<String> cityList;
-    private StateAdapter.OnStateClickListener listener;
+    private List<State> stateList;
+    private CustomDialog.NameSelectedListener nameSelectedListener;
 
-    public StateAdapter(List<String> cityList, StateAdapter.OnStateClickListener listener){
-        this.cityList = cityList;
-        this.listener = listener;
+    public StateAdapter(List<State> stateList,CustomDialog.NameSelectedListener nameSelectedListener){
+        this.stateList = stateList;
+        this.nameSelectedListener = nameSelectedListener;
     }
 
     @Override
@@ -33,13 +35,18 @@ public class StateAdapter extends RecyclerView.Adapter<StateAdapter.StateViewHol
 
     @Override
     public void onBindViewHolder(StateViewHolder holder, int position) {
-        holder.tvArea.setText(cityList.get(position).toString());
+        holder.tvArea.setText(stateList.get(position).stateName.toString());
+    }
+
+    public void refresh(List<State> stateList){
+        this.stateList = stateList;
+        notifyDataSetChanged();
     }
 
 
     @Override
     public int getItemCount() {
-        return cityList.size();
+        return stateList.size();
     }
 
     class StateViewHolder extends RecyclerView.ViewHolder{
@@ -51,13 +58,9 @@ public class StateAdapter extends RecyclerView.Adapter<StateAdapter.StateViewHol
                 @Override
                 public void onClick(View v) {
                     String area = tvArea.getText().toString();
-                    listener.onStateSelected(area);
+                    nameSelectedListener.onNameSelected(area);
                 }
             });
         }
-    }
-
-    public interface OnStateClickListener{
-        void onStateSelected(String state);
     }
 }

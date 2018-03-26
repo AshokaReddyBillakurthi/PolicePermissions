@@ -1,5 +1,6 @@
 package com.techouts.pcomplaints;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
@@ -7,6 +8,7 @@ import android.provider.MediaStore;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -19,30 +21,50 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import com.payumoney.core.PayUmoneyConfig;
+import com.payumoney.core.PayUmoneyConstants;
+import com.payumoney.core.PayUmoneySdkInitializer;
+import com.payumoney.core.entity.TransactionResponse;
+import com.payumoney.sdkui.ui.utils.PayUmoneyFlowManager;
+import com.payumoney.sdkui.ui.utils.ResultModel;
 import com.techouts.pcomplaints.custom.CustomDialog;
 import com.techouts.pcomplaints.datahandler.DatabaseHandler;
+import com.techouts.pcomplaints.entities.Area;
 import com.techouts.pcomplaints.utils.AppConstents;
 import com.techouts.pcomplaints.adapters.AreaAdapter;
 import com.techouts.pcomplaints.entities.PermissionApplication;
 import com.techouts.pcomplaints.utils.DataManager;
 import com.techouts.pcomplaints.utils.DialogUtils;
+import com.techouts.pcomplaints.utils.PayUConfigDetails;
 import com.techouts.pcomplaints.utils.SharedPreferenceUtils;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 public class GunLicenceApplicationActivity extends BaseActivity{
 
     private EditText edtFullName,edtOccupation,edtParentage,edtNationality,edtHeadForLicense,
-            edtTelephone,edtPurposeOfArms,edtDescriptionOfArms,edtQtyAmmunition,edtOldLicenseNo,edtEmail;
+            edtTelephone,edtPurposeOfArms,edtDescriptionOfArms,edtQtyAmmunition,edtOldLicenseNo;
     private RadioGroup rgSocialStatus;
-    private TextView tvArea,tvTitle;
+    private TextView tvArea,tvTitle,tvEmail;
     private ImageView ivBack,ivCamera,ivUserImg;
     private String socialStatus="";
     private LinearLayout llApply;
     private static final int CAMERA_CAPTURE = 1;
     private static final String TAG = CyberCafeApplicationActivity.class.getSimpleName();
     private CustomDialog customDialog;
+
 
     @Override
     public int getRootLayout() {
@@ -56,7 +78,7 @@ public class GunLicenceApplicationActivity extends BaseActivity{
         edtParentage = findViewById(R.id.edtParentage);
         edtNationality = findViewById(R.id.edtNationality);
         edtHeadForLicense = findViewById(R.id.edtHeadForLicense);
-        edtEmail = findViewById(R.id.edtEmail);
+        tvEmail = findViewById(R.id.tvEmail);
         edtTelephone = findViewById(R.id.edtTelephone);
         edtPurposeOfArms = findViewById(R.id.edtPurposeOfArms);
         edtDescriptionOfArms = findViewById(R.id.edtDescriptionOfArms);
@@ -68,19 +90,15 @@ public class GunLicenceApplicationActivity extends BaseActivity{
         llApply = findViewById(R.id.llApply);
         ivCamera = findViewById(R.id.ivCamera);
         ivUserImg = findViewById(R.id.ivUserImg);
-
         ivBack = findViewById(R.id.ivBack);
-
         ivBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
-
         tvTitle.setText("Gun Licence Application");
-
-
+        tvEmail.setText(SharedPreferenceUtils.getStringValue(AppConstents.EMAIL_ID)+"");
     }
 
     @Override
@@ -89,9 +107,9 @@ public class GunLicenceApplicationActivity extends BaseActivity{
         tvArea.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                List<String> areaList = DataManager.getList(AppConstents.TYPE_AREA);
+                List<Area> areaList = DataManager.getAreaList();
                 customDialog = new CustomDialog(GunLicenceApplicationActivity.this, areaList,
-                        "Select Area", true,false,
+                        "Select Area",true,true,true,
                         new CustomDialog.NameSelectedListener() {
                             @Override
                             public void onNameSelected(String listName) {
@@ -125,7 +143,7 @@ public class GunLicenceApplicationActivity extends BaseActivity{
             String parentage = edtParentage.getText().toString().trim();
             String nationality = edtNationality.getText().toString().trim();
             String headForLicense = edtHeadForLicense.getText().toString().trim();
-            String email = edtEmail.getText().toString().trim();
+            String email = tvEmail.getText().toString().trim();
             String telephoneNo = edtTelephone.getText().toString().trim();
             String qtyAmmuition = edtQtyAmmunition.getText().toString().trim();
             String oldLicenseNo = edtOldLicenseNo.getText().toString().trim();
@@ -171,7 +189,7 @@ public class GunLicenceApplicationActivity extends BaseActivity{
     }
 
     private boolean validateData(String fullName, String occupation, String parentage,String nationality,
-                            String headForLicense,String email, String telephoneNo,String purposeOfArms,
+                                 String headForLicense,String email, String telephoneNo,String purposeOfArms,
                                  String descriptionOfArms, String qtyAmmuition, String oldLicenseNo,String area){
 
         boolean isValid = true;
@@ -247,7 +265,8 @@ public class GunLicenceApplicationActivity extends BaseActivity{
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            DialogUtils.showDialog(GunLicenceApplicationActivity.this,"Application Submitted Successfully", AppConstents.FINISH,false);
+            launchPayUMoneyFlow();
+//            DialogUtils.showDialog(GunLicenceApplicationActivity.this,"Application Submitted Successfully", AppConstents.FINISH,false);
         }
     }
 
@@ -258,17 +277,54 @@ public class GunLicenceApplicationActivity extends BaseActivity{
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == CAMERA_CAPTURE) {
-            if (resultCode == RESULT_OK) {
+        if (resultCode == RESULT_OK) {
+            if (requestCode == CAMERA_CAPTURE) {
                 Bitmap bitmap = (Bitmap) data.getExtras().get("data");
                 storeImage(bitmap);
                 ivUserImg.setImageBitmap(bitmap);
-            } else if (resultCode == RESULT_CANCELED) {
-                showToast("User cancelled image capture");
-            } else {
-                showToast("Failed to capture image");
+            }
+            else if (requestCode == PayUmoneyFlowManager.REQUEST_CODE_PAYMENT && null != data) {
+                TransactionResponse transactionResponse = data.getParcelableExtra(PayUmoneyFlowManager
+                        .INTENT_EXTRA_TRANSACTION_RESPONSE);
+
+                ResultModel resultModel = data.getParcelableExtra(PayUmoneyFlowManager.ARG_RESULT);
+
+                // Check which object is non-null
+                if (transactionResponse != null && transactionResponse.getPayuResponse() != null) {
+                    if (transactionResponse.getTransactionStatus().equals(TransactionResponse.TransactionStatus.SUCCESSFUL)) {
+                        //Success Transaction
+                            DialogUtils.showDialog(GunLicenceApplicationActivity.this,"Payment Successful", AppConstents.FINISH,false);
+                    } else {
+                        //Failure Transaction
+                            DialogUtils.showDialog(GunLicenceApplicationActivity.this,getResources().getString(R.string.error_message), AppConstents.FINISH,false);
+                    }
+
+                    // Response from Payumoney
+                    String payuResponse = transactionResponse.getPayuResponse();
+
+                    // Response from SURl and FURL
+                    String merchantResponse = transactionResponse.getTransactionDetails();
+
+//                    DialogUtils.showDialog(GunLicenceApplicationActivity.this, "Payment Successful", AppConstents.FINISH, false);
+
+
+//                    new AlertDialog.Builder(this)
+//                            .setCancelable(false)
+//                            .setMessage("Payment Successful")
+//                            .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+//                                public void onClick(DialogInterface dialog, int whichButton) {
+//                                    dialog.dismiss();
+//                                    finish();
+//                                }
+//                            }).show();
+
+                } else if (resultModel != null && resultModel.getError() != null) {
+                    Log.d(TAG, "Error response : " + resultModel.getError().getTransactionResponse());
+                } else {
+                    Log.d(TAG, "Both objects are null!");
+                }
+
             }
         }
     }
-
 }

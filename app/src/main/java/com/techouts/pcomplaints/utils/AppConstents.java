@@ -12,7 +12,8 @@ public interface AppConstents {
     String CREATE_SERVICE_MAN = "Create Service Man";
     String CREATE_SERVICE = "Create Service";
     String SERVICES = "Services";
-    String MY_ACCOUNT = "My Account";
+    String MY_ACCOUNT = "My Profile";
+    String MY_COMPLAINTS = "My Complaints";
     String ADMIN = "Admin";
     String SERVICE_MAN = "Ex.Service Man";
     String CUSTOMER = "Customer";
@@ -30,6 +31,9 @@ public interface AppConstents {
     String SEARCH_BY_APPLICATION_TYPE = "Search by Application Type";
     String EMAIL_ID = "Email Id";
     String PASSWORD = "Password";
+    String PENDING = "Pending";
+    String INPROGRESS = "In Progress";
+    String COMPLETED ="Completed";
 
     //Extras
     String EXTRA_USER_TYPE = "UserType";

@@ -22,7 +22,10 @@ import android.widget.Toast;
 
 import com.techouts.pcomplaints.custom.CustomDialog;
 import com.techouts.pcomplaints.datahandler.DatabaseHandler;
+import com.techouts.pcomplaints.entities.Area;
+import com.techouts.pcomplaints.entities.City;
 import com.techouts.pcomplaints.entities.ExServiceMan;
+import com.techouts.pcomplaints.entities.State;
 import com.techouts.pcomplaints.utils.AppConstents;
 import com.techouts.pcomplaints.utils.DataManager;
 import com.techouts.pcomplaints.utils.DialogUtils;
@@ -98,9 +101,9 @@ public class ExServiceManRegistrationActivity extends BaseActivity {
                     showToast("Please select city first");
                 }
                 else{
-                    List<String> areaList = DataManager.getList(AppConstents.TYPE_AREA);
+                    List<Area> areaList = DataManager.getAreaList();
                     customDialog = new CustomDialog(ExServiceManRegistrationActivity.this, areaList,
-                            "Select Area",true,true,
+                            "Select Area",true,true,true,
                             new CustomDialog.NameSelectedListener() {
                                 @Override
                                 public void onNameSelected(String listName) {
@@ -121,9 +124,9 @@ public class ExServiceManRegistrationActivity extends BaseActivity {
                     showToast("Please select state first");
                 }
                 else {
-                    List<String> areaList = DataManager.getList(AppConstents.TYPE_CITY);
-                    customDialog = new CustomDialog(ExServiceManRegistrationActivity.this, areaList,
-                            "Select City",true,false,
+                    List<City> cityList = DataManager.getCityList();
+                    customDialog = new CustomDialog(ExServiceManRegistrationActivity.this,
+                            cityList,true,"Select City",true,false,
                             new CustomDialog.NameSelectedListener() {
                                 @Override
                                 public void onNameSelected(String listName) {
@@ -140,8 +143,8 @@ public class ExServiceManRegistrationActivity extends BaseActivity {
         tvState.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                List<String> areaList = DataManager.getList(AppConstents.TYPE_STATE);
-                customDialog = new CustomDialog(ExServiceManRegistrationActivity.this, areaList,
+                List<State> stateList = DataManager.getStateList();
+                customDialog = new CustomDialog(ExServiceManRegistrationActivity.this,true, stateList ,
                         "Select State",true,false,
                         new CustomDialog.NameSelectedListener() {
                             @Override

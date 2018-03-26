@@ -89,8 +89,8 @@
                 android:textColorHint="@color/gray"
                 android:textSize="16sp" />
 
-            <EditText
-                android:id="@+id/edtEmail"
+            <TextView
+                android:id="@+id/tvEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -299,7 +299,7 @@
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="Apply"
+            android:text="@string/apply_proceed_pay"
             android:textColor="@color/white"
             android:textSize="18sp"
             android:textStyle="bold" />

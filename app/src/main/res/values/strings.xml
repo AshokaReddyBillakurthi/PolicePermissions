@@ -9,6 +9,8 @@
     <string name="btn_link_to_register">Not a member? Sign up now.</string>
     <string name="title_activity_cyber_cafe_application_form">CyberCafeApplicationFormActivity
     </string>
+    <string name="matri_enquiry">Submit Enquiry &amp; Proceed To Pay</string>
+    <string name="apply_proceed_pay">Apply &amp; Proceed To Pay</string>
     <string name="error_message">Oops! Something went wrong</string>
 
     <!-- TODO: Remove or change this placeholder text -->

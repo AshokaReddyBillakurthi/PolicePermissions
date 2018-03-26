@@ -61,5 +61,6 @@ public class PermissionApplication implements Serializable {
     public String condOfProp;
     @ColumnInfo(name="address")
     public String address;
-
+    @ColumnInfo(name = "status")
+    public int status = 0;
 }

@@ -2,23 +2,22 @@ package com.techouts.pcomplaints.adapters;
 
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.techouts.pcomplaints.ApplicationListActivity;
 import com.techouts.pcomplaints.CreateServiceActivity;
 import com.techouts.pcomplaints.ExServiceManListActivity;
-import com.techouts.pcomplaints.UserDetailsActivity;
-import com.techouts.pcomplaints.utils.AppConstents;
-import com.techouts.pcomplaints.ApplicationListActivity;
 import com.techouts.pcomplaints.HomeActivity;
+import com.techouts.pcomplaints.MyCompliaintsActivity;
 import com.techouts.pcomplaints.R;
 import com.techouts.pcomplaints.ServicesActivity;
+import com.techouts.pcomplaints.UserDetailsActivity;
 import com.techouts.pcomplaints.UserListActivity;
-import com.techouts.pcomplaints.utils.PreferencesManager;
+import com.techouts.pcomplaints.utils.AppConstents;
 import com.techouts.pcomplaints.utils.SharedPreferenceUtils;
 
 import java.util.List;
@@ -82,6 +81,13 @@ public class MenuListAdaper extends RecyclerView.Adapter<MenuListAdaper.MenuView
                             ((HomeActivity)itemView.getContext()).closeDrawer();
                             Intent intent = new Intent(itemView.getContext(), UserDetailsActivity.class);
                             intent.putExtra(AppConstents.EXTRA_EMAIL_ID, SharedPreferenceUtils.getStringValue(AppConstents.EMAIL_ID));
+                            itemView.getContext().startActivity(intent);
+                            break;
+                        }
+                        case AppConstents.MY_COMPLAINTS:{
+                            llChildItems.setVisibility(View.GONE);
+                            ((HomeActivity)itemView.getContext()).closeDrawer();
+                            Intent intent = new Intent(itemView.getContext(), MyCompliaintsActivity.class);
                             itemView.getContext().startActivity(intent);
                             break;
                         }

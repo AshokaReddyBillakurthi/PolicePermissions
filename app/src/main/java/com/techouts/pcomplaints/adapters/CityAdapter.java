@@ -7,8 +7,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.techouts.pcomplaints.R;
+import com.techouts.pcomplaints.custom.CustomDialog;
+import com.techouts.pcomplaints.entities.City;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,12 +18,12 @@ import java.util.List;
 
 public class CityAdapter extends RecyclerView.Adapter<CityAdapter.CityViewHolder> {
 
-    private List<String> cityList;
-    private CityAdapter.OnCityClickListener listener;
+    private List<City> cityList;
+    private CustomDialog.NameSelectedListener nameSelectedListener;
 
-    public CityAdapter(List<String> cityList, CityAdapter.OnCityClickListener listener){
+    public CityAdapter(List<City> cityList, CustomDialog.NameSelectedListener nameSelectedListener){
         this.cityList = cityList;
-        this.listener = listener;
+        this.nameSelectedListener = nameSelectedListener;
     }
 
     @Override
@@ -33,7 +34,12 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.CityViewHolder
 
     @Override
     public void onBindViewHolder(CityViewHolder holder, int position) {
-        holder.tvArea.setText(cityList.get(position).toString());
+        holder.tvArea.setText(cityList.get(position).cityName.toString());
+    }
+
+    public void refresh(List<City> cityList){
+        this.cityList = cityList;
+        notifyDataSetChanged();
     }
 
 
@@ -51,13 +57,9 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.CityViewHolder
                 @Override
                 public void onClick(View v) {
                     String area = tvArea.getText().toString();
-                    listener.onCitySelected(area);
+                    nameSelectedListener.onNameSelected(area);
                 }
             });
         }
-    }
-
-    public interface OnCityClickListener{
-        void onCitySelected(String city);
     }
 }

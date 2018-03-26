@@ -1,11 +1,13 @@
 package com.techouts.pcomplaints.utils;
 
-import android.app.Application;
 import android.util.Log;
+
+import com.techouts.pcomplaints.entities.Area;
+import com.techouts.pcomplaints.entities.City;
+import com.techouts.pcomplaints.entities.State;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 /**
  * Created by TO-OW109 on 05-03-2018.
@@ -58,6 +60,109 @@ public class DataManager {
         return listNames;
     }
 
+    public static List<State> getStateList(){
+        List<State> listStates = new ArrayList<>();
+        State state = null;
+        try{
+            state = new State();
+            state.stateName = AppConstents.TELANGANA;
+            listStates.add(state);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        return listStates;
+    }
+
+    public static List<City> getCityList(){
+        List<City> listCities = new ArrayList<>();
+        City city = null;
+        try{
+            city = new City();
+            city.cityName = AppConstents.HYDERABAD;
+            listCities.add(city);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        return listCities;
+    }
+
+    public static List<Area> getAreaList(){
+        List<Area> listAreas = new ArrayList<>();
+        Area area = null;
+        try{
+            area = new Area();
+            area.areaName = "South Banjara Hills";
+            listAreas.add(area);
+            area = new Area();
+            area.areaName = "Madhapur";
+            listAreas.add(area);
+            area = new Area();
+            area.areaName = "Jubilee Hills";
+            listAreas.add(area);
+            area = new Area();
+            area.areaName = "Liberty";
+            listAreas.add(area);
+            area = new Area();
+            area.areaName = "Cyberabad";
+            listAreas.add(area);
+            area = new Area();
+            area.areaName = "Vijay Nagar Colony";
+            listAreas.add(area);
+            area = new Area();
+            area.areaName = "Somajiguda";
+            listAreas.add(area);
+            area = new Area();
+            area.areaName = "Seetharampet";
+            listAreas.add(area);
+            area = new Area();
+            area.areaName = "Ramkoti";
+            listAreas.add(area);
+            area = new Area();
+            area.areaName = "Gandhi Bhavan";
+            listAreas.add(area);
+            area = new Area();
+            area.areaName = "RajBolaram";
+            listAreas.add(area);
+            area = new Area();
+            area.areaName = "Sriranga Colony";
+            listAreas.add(area);
+            area = new Area();
+            area.areaName = "Vidya nagar";
+            listAreas.add(area);
+            area = new Area();
+            area.areaName = "Uppal";
+            listAreas.add(area);
+            area = new Area();
+            area.areaName = "Stn Kachiguda";
+            listAreas.add(area);
+            area = new Area();
+            area.areaName = "Snehapuri Colony";
+            listAreas.add(area);
+            area = new Area();
+            area.areaName = "Santhosh Nagar Colony";
+            listAreas.add(area);
+            area = new Area();
+            area.areaName = "L.B. Nagar";
+            listAreas.add(area);
+            area = new Area();
+            area.areaName = "Jntu";
+            listAreas.add(area);
+            area = new Area();
+            area.areaName = "KukatPalli";
+            listAreas.add(area);
+            area = new Area();
+            area.areaName = "Gachibowlli";
+            listAreas.add(area);
+
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        return listAreas;
+    }
+
     public static List<String> getMenuList(String loginType){
         List<String> menuList = new ArrayList<>();
         try{
@@ -75,6 +180,7 @@ public class DataManager {
                 case AppConstents.LOGIN_CUSTOMER:
                     menuList.add(AppConstents.SERVICES);
                     menuList.add(AppConstents.MY_ACCOUNT);
+                    menuList.add(AppConstents.MY_COMPLAINTS);
                     menuList.add(AppConstents.LOGOUT);
                     break;
                 case AppConstents.LOGIN_TYPE_NONE:
@@ -95,7 +201,7 @@ public class DataManager {
     }
 
     public static List<String> getServices(String serviceType){
-        List<String>  permissionList = new ArrayList<>();;
+        List<String>  permissionList = new ArrayList<>();
         try{
             switch (serviceType){
                 case AppConstents.POLICE_PERMISSIONS:

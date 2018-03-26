@@ -16,6 +16,9 @@ import android.widget.Toast;
 
 import com.techouts.pcomplaints.custom.CustomDialog;
 import com.techouts.pcomplaints.datahandler.DatabaseHandler;
+import com.techouts.pcomplaints.entities.Area;
+import com.techouts.pcomplaints.entities.City;
+import com.techouts.pcomplaints.entities.State;
 import com.techouts.pcomplaints.entities.User;
 import com.techouts.pcomplaints.utils.ApiServiceConstants;
 import com.techouts.pcomplaints.utils.AppConstents;
@@ -98,11 +101,58 @@ public class UserRegistrationActivity extends BaseActivity {
             }
         });
 
+        tvArea.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String city = tvCity.getText().toString();
+                if(TextUtils.isEmpty(city)){
+                    showToast("Please select city first");
+                }
+                else{
+                    List<Area> areaList = DataManager.getAreaList();
+                    customDialog = new CustomDialog(UserRegistrationActivity.this, areaList,
+                            "Select Area",true,true,true,
+                            new CustomDialog.NameSelectedListener() {
+                                @Override
+                                public void onNameSelected(String listName) {
+                                    tvArea.setText(listName);
+                                    customDialog.dismiss();
+                                }
+                            });
+                    customDialog.show();
+                }
+            }
+        });
+
+        tvCity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String state = tvState.getText().toString();
+                if(TextUtils.isEmpty(state)){
+                    showToast("Please select state first");
+                }
+                else {
+                    List<City> cityList = DataManager.getCityList();
+                    customDialog = new CustomDialog(UserRegistrationActivity.this,
+                            cityList,true,"Select City",true,false,
+                            new CustomDialog.NameSelectedListener() {
+                                @Override
+                                public void onNameSelected(String listName) {
+                                    tvCity.setText(listName);
+                                    customDialog.dismiss();
+                                }
+                            });
+                    customDialog.show();
+                }
+
+            }
+        });
+
         tvState.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                List<String> areaList = DataManager.getList(AppConstents.TYPE_STATE);
-                customDialog = new CustomDialog(UserRegistrationActivity.this, areaList,
+                List<State> stateList = DataManager.getStateList();
+                customDialog = new CustomDialog(UserRegistrationActivity.this,true, stateList ,
                         "Select State",true,false,
                         new CustomDialog.NameSelectedListener() {
                             @Override
@@ -114,54 +164,6 @@ public class UserRegistrationActivity extends BaseActivity {
                 customDialog.show();
             }
         });
-
-        tvCity.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String state = tvState.getText().toString();
-                if(TextUtils.isEmpty(state)){
-                    showToast("Please select state first");
-                }
-                else{
-                    List<String> areaList = DataManager.getList(AppConstents.TYPE_CITY);
-                    customDialog = new CustomDialog(UserRegistrationActivity.this, areaList,
-                            "Select City",true,false,
-                            new CustomDialog.NameSelectedListener() {
-                                @Override
-                                public void onNameSelected(String listName) {
-                                    tvCity.setText(listName);
-                                    customDialog.dismiss();
-                                }
-                            });
-                    customDialog.show();
-                }
-            }
-        });
-
-        tvArea.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String city = tvCity.getText().toString();
-                if(TextUtils.isEmpty(city)){
-                    showToast("Please select city first");
-                }
-                else{
-                    List<String> areaList = DataManager.getList(AppConstents.TYPE_AREA);
-                    customDialog = new CustomDialog(UserRegistrationActivity.this, areaList,
-                            "Select Area",true,false,
-                            new CustomDialog.NameSelectedListener() {
-                                @Override
-                                public void onNameSelected(String listName) {
-                                    tvArea.setText(listName);
-                                    customDialog.dismiss();
-                                }
-                            });
-                    customDialog.show();
-                }
-
-            }
-        });
-
         ivCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
