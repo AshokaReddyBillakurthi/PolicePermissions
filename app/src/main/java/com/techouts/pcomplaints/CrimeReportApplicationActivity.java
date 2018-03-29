@@ -1,7 +1,6 @@
 package com.techouts.pcomplaints;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
@@ -18,8 +17,6 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
-import com.payumoney.core.PayUmoneyConfig;
-import com.payumoney.core.PayUmoneyConstants;
 import com.payumoney.core.PayUmoneySdkInitializer;
 import com.payumoney.core.entity.TransactionResponse;
 import com.payumoney.sdkui.ui.utils.PayUmoneyFlowManager;
@@ -31,21 +28,9 @@ import com.techouts.pcomplaints.entities.PermissionApplication;
 import com.techouts.pcomplaints.utils.AppConstents;
 import com.techouts.pcomplaints.utils.DataManager;
 import com.techouts.pcomplaints.utils.DialogUtils;
-import com.techouts.pcomplaints.utils.PayUConfigDetails;
 import com.techouts.pcomplaints.utils.SharedPreferenceUtils;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 
 public class CrimeReportApplicationActivity extends BaseActivity{
@@ -111,7 +96,7 @@ public class CrimeReportApplicationActivity extends BaseActivity{
             public void onClick(View v) {
                 List<Area> areaList = DataManager.getAreaList();
                 customDialog = new CustomDialog(CrimeReportApplicationActivity.this, areaList,
-                        "Select Area",true,true,true,
+                        "Select Area",true,true,false,
                         new CustomDialog.NameSelectedListener() {
                             @Override
                             public void onNameSelected(String listName) {

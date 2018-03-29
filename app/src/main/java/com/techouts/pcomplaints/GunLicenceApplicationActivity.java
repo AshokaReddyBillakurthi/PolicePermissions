@@ -1,55 +1,33 @@
 package com.techouts.pcomplaints;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.provider.MediaStore;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.Patterns;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.PopupWindow;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
-import com.payumoney.core.PayUmoneyConfig;
-import com.payumoney.core.PayUmoneyConstants;
-import com.payumoney.core.PayUmoneySdkInitializer;
 import com.payumoney.core.entity.TransactionResponse;
 import com.payumoney.sdkui.ui.utils.PayUmoneyFlowManager;
 import com.payumoney.sdkui.ui.utils.ResultModel;
 import com.techouts.pcomplaints.custom.CustomDialog;
 import com.techouts.pcomplaints.datahandler.DatabaseHandler;
 import com.techouts.pcomplaints.entities.Area;
-import com.techouts.pcomplaints.utils.AppConstents;
-import com.techouts.pcomplaints.adapters.AreaAdapter;
 import com.techouts.pcomplaints.entities.PermissionApplication;
+import com.techouts.pcomplaints.utils.AppConstents;
 import com.techouts.pcomplaints.utils.DataManager;
 import com.techouts.pcomplaints.utils.DialogUtils;
-import com.techouts.pcomplaints.utils.PayUConfigDetails;
 import com.techouts.pcomplaints.utils.SharedPreferenceUtils;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 
 public class GunLicenceApplicationActivity extends BaseActivity{
@@ -109,7 +87,7 @@ public class GunLicenceApplicationActivity extends BaseActivity{
             public void onClick(View v) {
                 List<Area> areaList = DataManager.getAreaList();
                 customDialog = new CustomDialog(GunLicenceApplicationActivity.this, areaList,
-                        "Select Area",true,true,true,
+                        "Select Area",true,true,false,
                         new CustomDialog.NameSelectedListener() {
                             @Override
                             public void onNameSelected(String listName) {

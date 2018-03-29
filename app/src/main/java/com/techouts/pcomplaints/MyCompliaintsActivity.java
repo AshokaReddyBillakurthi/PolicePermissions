@@ -46,7 +46,7 @@ public class MyCompliaintsActivity extends BaseActivity {
         applicationsListAdapter = new ApplicationsListAdapter();
         rvAppcationList.setAdapter(applicationsListAdapter);
 
-        tvTitle.setText("My Applications");
+        tvTitle.setText(AppConstents.MY_COMPLAINTS);
 
         ivBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,9 +96,9 @@ public class MyCompliaintsActivity extends BaseActivity {
             tempPermissionApplication = new ArrayList<>();
             if (!TextUtils.isEmpty(searchText)) {
                 for (PermissionApplication permissionApplication : permissionApplicationList) {
-                    if ((permissionApplication.area.contains(searchText))
-                            || (permissionApplication.fullName.contains(searchText))
-                            || (permissionApplication.applicationType.contains(searchText))) {
+                    if ((permissionApplication.area.toLowerCase().contains(searchText))
+                            || (permissionApplication.fullName.toLowerCase().contains(searchText))
+                            || (permissionApplication.applicationType.toLowerCase().contains(searchText))) {
                         tempPermissionApplication.add(permissionApplication);
                     }
                 }

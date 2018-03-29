@@ -64,14 +64,20 @@ public class LoginActivity extends BaseActivity {
                                 if(listName.equalsIgnoreCase(AppConstents.LOGIN_ADMIN)){
                                     btnRegister.setVisibility(View.GONE);
                                     userType = AppConstents.USER_TYPE_ADMIN;
+                                    edtEmail.setText("");
+                                    edtPassword.setText("");
                                 }
                                 else if(listName.equalsIgnoreCase(AppConstents.LOGIN_SERVICE_MAN)){
                                     userType = AppConstents.USER_TYPE_SERVICEMAN;
                                     btnRegister.setVisibility(View.VISIBLE);
+                                    edtEmail.setText("");
+                                    edtPassword.setText("");
                                 }
                                 else if(listName.equalsIgnoreCase(AppConstents.LOGIN_CUSTOMER)){
                                     userType = AppConstents.USER_TYPE_CUSTOMER;
                                     btnRegister.setVisibility(View.VISIBLE);
+                                    edtEmail.setText("");
+                                    edtPassword.setText("");
                                 }
                                 loginType = listName;
                                 tvLoginType.setText(listName);
