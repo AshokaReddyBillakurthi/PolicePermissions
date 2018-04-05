@@ -7,6 +7,7 @@ import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Patterns;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -41,10 +42,11 @@ import okhttp3.Response;
 
 public class UserRegistrationActivity extends BaseActivity {
 
-    private TextView tvTitle, tvState, tvCity, tvArea;
+    private TextView tvTitle, tvState, tvCity, tvArea,tvTermsandConditions;
     private ImageView ivBack;
     private EditText edtFirstName, edtLastName, edtMobileNumber,
             edtEmail, edtPassword;
+    private CheckBox cbxTermsAndConditions;
     private LinearLayout llRegister;
     private ImageView ivCamera, ivUserImg;
     private static final int CAMERA_CAPTURE = 1;
@@ -65,6 +67,7 @@ public class UserRegistrationActivity extends BaseActivity {
             userType = getIntent().getExtras().getString(AppConstents.EXTRA_USER_TYPE);
         }
         tvTitle = findViewById(R.id.tvTitle);
+        tvTermsandConditions = findViewById(R.id.tvTermsandConditions);
         ivBack = findViewById(R.id.ivBack);
         llRegister = findViewById(R.id.llRegister);
         edtFirstName = findViewById(R.id.edtFirstName);
@@ -77,6 +80,7 @@ public class UserRegistrationActivity extends BaseActivity {
         tvArea = findViewById(R.id.tvArea);
         ivCamera = findViewById(R.id.ivCamera);
         ivUserImg = findViewById(R.id.ivUserImg);
+        cbxTermsAndConditions = findViewById(R.id.cbxTermsAndConditions);
 
         if (userType.equalsIgnoreCase(AppConstents.USER_TYPE_CUSTOMER)) {
             tvTitle.setText("Customer Registration");
@@ -86,6 +90,14 @@ public class UserRegistrationActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 finish();
+            }
+        });
+
+        tvTermsandConditions.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(UserRegistrationActivity.this,TermsAndConditionsActivity.class);
+                startActivity(intent);
             }
         });
     }
@@ -342,6 +354,9 @@ public class UserRegistrationActivity extends BaseActivity {
         } else if (TextUtils.isEmpty(userImg)) {
             isValid = false;
             showToast("Please capture Image");
+        } else if(!cbxTermsAndConditions.isChecked()){
+            isValid = false;
+            showToast("Please accept the Terms and Conditions");
         }
         return isValid;
     }

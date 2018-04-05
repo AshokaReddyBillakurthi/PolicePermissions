@@ -12,9 +12,11 @@ import com.techouts.pcomplaints.MatrimonialVerificationApplicationActivity;
 import com.techouts.pcomplaints.CrimeReportApplicationActivity;
 import com.techouts.pcomplaints.CyberCafeApplicationActivity;
 import com.techouts.pcomplaints.GunLicenceApplicationActivity;
+import com.techouts.pcomplaints.PermissionInstructionActivity;
 import com.techouts.pcomplaints.R;
 import com.techouts.pcomplaints.utils.AppConstents;
 import com.techouts.pcomplaints.utils.DialogUtils;
+import com.techouts.pcomplaints.utils.PermissionInstruConstents;
 import com.techouts.pcomplaints.utils.SharedPreferenceUtils;
 
 import java.util.List;
@@ -64,12 +66,12 @@ public class PermissionListAdapter extends RecyclerView.Adapter<PermissionListAd
                     if(SharedPreferenceUtils.getBoolValue(SharedPreferenceUtils.IS_LOGGEDIN)){
                         String permissionName = tvPermissionName.getText().toString();
                         if(permissionName.equalsIgnoreCase(AppConstents.INTERNET_CAFES)){
-                            Intent intent = new Intent(itemView.getContext(), CyberCafeApplicationActivity.class);
+                            Intent intent = new Intent(itemView.getContext(), PermissionInstructionActivity.class);
                             intent.putExtra(AppConstents.EXTRA_APPLICATION_TYPE,AppConstents.INTERNET_CAFES);
                             (itemView.getContext()).startActivity(intent);
                         }
                         else if (permissionName.equalsIgnoreCase(AppConstents.GUN_LICENCES)) {
-                            Intent intent = new Intent(itemView.getContext(), GunLicenceApplicationActivity.class);
+                            Intent intent = new Intent(itemView.getContext(), PermissionInstructionActivity.class);
                             intent.putExtra(AppConstents.EXTRA_APPLICATION_TYPE,AppConstents.GUN_LICENCES);
                             (itemView.getContext()).startActivity(intent);
                         }

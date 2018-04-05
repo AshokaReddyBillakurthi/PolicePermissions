@@ -175,11 +175,13 @@ public class DataManager {
                     break;
                 case AppConstents.LOGIN_SERVICE_MAN:
                     menuList.add(AppConstents.APPLICATION_LIST);
+                    menuList.add(AppConstents.CHAT);
                     menuList.add(AppConstents.LOGOUT);
                     break;
                 case AppConstents.LOGIN_CUSTOMER:
                     menuList.add(AppConstents.SERVICES);
                     menuList.add(AppConstents.MY_ACCOUNT);
+                    menuList.add(AppConstents.CHAT);
                     menuList.add(AppConstents.MY_COMPLAINTS);
                     menuList.add(AppConstents.LOGOUT);
                     break;
@@ -279,5 +281,68 @@ public class DataManager {
             e.printStackTrace();
         }
         return userLoginType;
+    }
+
+
+    public static  List<String> getInstructionsForCyberCafesPermission(){
+        List<String> listPermissionInstructions = new ArrayList<>();
+        try{
+            listPermissionInstructions.add(PermissionInstruConstents.APPLICATION_ESEVE);
+            listPermissionInstructions.add(PermissionInstruConstents.DETAILS);
+            listPermissionInstructions.add(PermissionInstruConstents.DOCS);
+            listPermissionInstructions.add(PermissionInstruConstents.MUNICIPAL_PERMISSION);
+            listPermissionInstructions.add(PermissionInstruConstents.LEASE_AGR);
+            listPermissionInstructions.add(PermissionInstruConstents.SITE_PLAN);
+            listPermissionInstructions.add(PermissionInstruConstents.RENT_RECEIPTS);
+            listPermissionInstructions.add(PermissionInstruConstents.TAX_RECEIPTS);
+            listPermissionInstructions.add(PermissionInstruConstents.NOC_FIRE_DEPT);
+            listPermissionInstructions.add(PermissionInstruConstents.CER_BSNL_TEL);
+            listPermissionInstructions.add(PermissionInstruConstents.NOC_NEIG);
+            listPermissionInstructions.add(PermissionInstruConstents.GAMBLING_MACH);
+            listPermissionInstructions.add(PermissionInstruConstents.ID_RESIDENTIAL);
+            listPermissionInstructions.add(PermissionInstruConstents.SERVER_CLIENT);
+            listPermissionInstructions.add(PermissionInstruConstents.PARTNERSHIP_DEED);
+            listPermissionInstructions.add(PermissionInstruConstents.MEM_ASSOCI);
+            listPermissionInstructions.add(PermissionInstruConstents.ARTICLE_ASSOCI);
+            listPermissionInstructions.add(PermissionInstruConstents.BOND);
+            listPermissionInstructions.add(PermissionInstruConstents.IT_RETURNS);
+            listPermissionInstructions.add(PermissionInstruConstents.FEE_PAYABLE);
+            listPermissionInstructions.add(PermissionInstruConstents.SERVICE_CHARGES);
+            listPermissionInstructions.add(PermissionInstruConstents.FRESH_LICENCE_CHARGE);
+            listPermissionInstructions.add(PermissionInstruConstents.ANNUAL_RENEWAL_CHARGE);
+            listPermissionInstructions.add(PermissionInstruConstents.SUBMIT_ESEVA);
+            listPermissionInstructions.add(PermissionInstruConstents.LICENCE_ISSUED);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        return listPermissionInstructions;
+    }
+
+    public static List<String> getInstructionForArmsLicense(){
+        List<String> listInstruArmsLicense = new ArrayList<>();
+        try{
+            listInstruArmsLicense.add(PermissionInstruConstents.APPLICATION_ESEVE);
+            listInstruArmsLicense.add(PermissionInstruConstents.FORM_A);
+            listInstruArmsLicense.add(PermissionInstruConstents.DOCS);
+            listInstruArmsLicense.add(PermissionInstruConstents.RESIDENTIAL_PROOF);
+            listInstruArmsLicense.add(PermissionInstruConstents.ORIGINAL_ARMS_LICENCE);
+            listInstruArmsLicense.add(PermissionInstruConstents.ORIGINAL_CHALLAN);
+            listInstruArmsLicense.add(PermissionInstruConstents.NO_OBJECTIONS);
+            listInstruArmsLicense.add(PermissionInstruConstents.NOC_FAMILY_MEMBERS);
+            listInstruArmsLicense.add(PermissionInstruConstents.PASSPORT_PHOTOS);
+            listInstruArmsLicense.add(PermissionInstruConstents.IT_RETURNS);
+            listInstruArmsLicense.add(PermissionInstruConstents.FEE_PAYABLE);
+            listInstruArmsLicense.add(PermissionInstruConstents.SERVICE_CHARGES);
+            listInstruArmsLicense.add(PermissionInstruConstents.FRESH_LICENCE_CHARGE);
+            listInstruArmsLicense.add(PermissionInstruConstents.ANNUAL_RENEWAL_CHARGE);
+            listInstruArmsLicense.add(PermissionInstruConstents.SUBMIT_ESEVA);
+            listInstruArmsLicense.add(PermissionInstruConstents.LICENCE_ISSUED);
+            listInstruArmsLicense.add(PermissionInstruConstents.NOTE);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        return listInstruArmsLicense;
     }
 }

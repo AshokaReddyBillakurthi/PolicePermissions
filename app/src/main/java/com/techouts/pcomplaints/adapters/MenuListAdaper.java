@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.techouts.pcomplaints.ApplicationListActivity;
+import com.techouts.pcomplaints.ChatActivity;
 import com.techouts.pcomplaints.CreateServiceActivity;
 import com.techouts.pcomplaints.ExServiceManListActivity;
 import com.techouts.pcomplaints.HomeActivity;
@@ -104,6 +105,12 @@ public class MenuListAdaper extends RecyclerView.Adapter<MenuListAdaper.MenuView
                             llChildItems.setVisibility(View.GONE);
                             Intent intent = new Intent(itemView.getContext(), UserListActivity.class);
                             intent.putExtra(AppConstents.EXTRA_USER_LIST,AppConstents.CUSTOMER);
+                            itemView.getContext().startActivity(intent);
+                            break;
+                        }
+                        case AppConstents.CHAT:{
+                            llChildItems.setVisibility(View.GONE);
+                            Intent intent = new Intent(itemView.getContext(), ChatActivity.class);
                             itemView.getContext().startActivity(intent);
                             break;
                         }

@@ -11,6 +11,7 @@ public interface AppConstents {
     String LOGIN_CUSTOMER = "Login As Customer";
     String CREATE_SERVICE_MAN = "Create Service Man";
     String CREATE_SERVICE = "Create Service";
+    String CHAT = "Chat";
     String SERVICES = "Services";
     String MY_ACCOUNT = "My Profile";
     String MY_COMPLAINTS = "My Complaints";
