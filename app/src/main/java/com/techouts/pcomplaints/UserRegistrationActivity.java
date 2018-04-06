@@ -213,10 +213,14 @@ public class UserRegistrationActivity extends BaseActivity {
                 user.area = area;
                 user.userImg = userImg;
                 user.userType = userType;
-//                if(postDataToServer(user)){
+                if(postDataToServer(user)){
 //                    arrayList.add(user);
 //                    new UserAsyncTask().execute(arrayList);
-//                }
+                    showToast("Data posted Successfully");
+                }
+                else{
+                    showToast("Failed");
+                }
                 arrayList.add(user);
                 new UserAsyncTask().execute(arrayList);
             }
@@ -231,14 +235,14 @@ public class UserRegistrationActivity extends BaseActivity {
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("firstName", user.firstName);
             jsonObject.put("lastName", user.lastName);
-            jsonObject.put("exPoliceId", "");
             jsonObject.put("email", user.email);
             jsonObject.put("password", user.password);
-            jsonObject.put("mobile", user.mobileNo);
+            jsonObject.put("mobileNumber", user.mobileNo);
+            jsonObject.put("isActive", true);
             jsonObject.put("state", user.state);
             jsonObject.put("city", user.city);
             jsonObject.put("area", user.area);
-            jsonObject.put("userImg", user.userImg);
+            jsonObject.put("image", user.userImg);
             jsonObject.put("userType", user.userType);
             String body = jsonObject.toString();
             RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), body);

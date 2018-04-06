@@ -20,19 +20,34 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.JsonArray;
 import com.techouts.pcomplaints.custom.CustomDialog;
 import com.techouts.pcomplaints.datahandler.DatabaseHandler;
 import com.techouts.pcomplaints.entities.Area;
 import com.techouts.pcomplaints.entities.City;
 import com.techouts.pcomplaints.entities.ExServiceMan;
 import com.techouts.pcomplaints.entities.State;
+import com.techouts.pcomplaints.entities.User;
+import com.techouts.pcomplaints.utils.ApiServiceConstants;
 import com.techouts.pcomplaints.utils.AppConstents;
 import com.techouts.pcomplaints.utils.DataManager;
 import com.techouts.pcomplaints.utils.DialogUtils;
 import com.techouts.pcomplaints.utils.FilePathUtils;
+import com.techouts.pcomplaints.utils.OkHttpUtils;
 
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 
 public class ExServiceManRegistrationActivity extends BaseActivity {
@@ -240,6 +255,12 @@ public class ExServiceManRegistrationActivity extends BaseActivity {
                 }
                 exServiceMan.reqDocs = strDoc.toString();
                 exServiceMan.services = strServices.toString();
+                if(postDataToServer(exServiceMan)){
+                    showToast("Successfully Inserted");
+                }
+                else{
+                    showToast("Insertion Failed");
+                }
                 arrayList.add(exServiceMan);
                 new ExServiceManRegistrationAsyncTask().execute(arrayList);
             }
@@ -247,6 +268,80 @@ public class ExServiceManRegistrationActivity extends BaseActivity {
             e.printStackTrace();
         }
     }
+
+    private boolean isPosted = false;
+    private boolean postDataToServer(ExServiceMan exServiceMan) {
+        try {
+            OkHttpClient client = OkHttpUtils.getOkHttpClient();
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("firstName", exServiceMan.firstName);
+            jsonObject.put("lastName", exServiceMan.lastName);
+            jsonObject.put("email", exServiceMan.email);
+            jsonObject.put("password", exServiceMan.password);
+            jsonObject.put("mobileNumber", exServiceMan.mobileNo);
+            jsonObject.put("exPoliceId",exServiceMan.exPoliceId);
+            jsonObject.put("isActive", true);
+            jsonObject.put("state", exServiceMan.state);
+            jsonObject.put("city", exServiceMan.city);
+            jsonObject.put("area", exServiceMan.area);
+            jsonObject.put("image", exServiceMan.userImg);
+            jsonObject.put("userType", exServiceMan.userType);
+            JsonArray jsonElements = new JsonArray();
+            jsonElements.add("license");
+            jsonElements.add("crime");
+            jsonObject.put("serviceAbility",jsonElements);
+            String body = jsonObject.toString();
+            RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), body);
+            Request.Builder builder = new Request.Builder();
+            builder.url(ApiServiceConstants.MAIN_URL + ApiServiceConstants.X_SERVICEMAN_REGISTRATION).addHeader("Content-Type", "application/json")
+                    .addHeader("cache-control", "no-cache")
+                    .post(requestBody);
+            Request request = builder.build();
+            client.newCall(request).enqueue(new  Callback() {
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            isPosted = false;
+                            Toast.makeText(ExServiceManRegistrationActivity.this, R.string.error_message, Toast.LENGTH_LONG).show();
+                        }
+                    });
+                }
+
+                @Override
+                public void onResponse(Call call, final Response response) throws IOException {
+                    final String body = response.body().string().toString();
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                if (response.message().equalsIgnoreCase("OK")) {
+                                    isPosted = true;
+//                                    JSONObject jsonObj = new JSONObject(body);
+//                                    String message = jsonObj.getString("msg");
+//                                    DialogUtils.showDialog(UserRegistrationActivity.this,message.toString(),AppConstents.FINISH,false);
+//                                    Toast.makeText(UserRegistrationActivity.this,message.toString(),Toast.LENGTH_LONG).show();
+                                } else {
+                                    isPosted = false;
+//                                    Toast.makeText(UserRegistrationActivity.this,R.string.error_message,Toast.LENGTH_LONG).show();
+                                    DialogUtils.showDialog(ExServiceManRegistrationActivity.this, getResources().getString(R.string.error_message), AppConstents.FINISH, false);
+                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        boolean isValid = isPosted;
+        return isValid;
+    }
+
+
 
 
     class ExServiceManRegistrationAsyncTask extends AsyncTask<ArrayList<ExServiceMan>, Integer, Boolean> {
