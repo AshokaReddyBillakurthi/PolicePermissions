@@ -1,6 +1,5 @@
 package com.techouts.pcomplaints;
 
-import android.os.AsyncTask;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.text.Editable;
@@ -11,7 +10,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.techouts.pcomplaints.adapters.ExServiceManPagerAdapter;
-import com.techouts.pcomplaints.datahandler.DatabaseHandler;
 import com.techouts.pcomplaints.entities.ExServiceMan;
 import com.techouts.pcomplaints.utils.AppConstents;
 
