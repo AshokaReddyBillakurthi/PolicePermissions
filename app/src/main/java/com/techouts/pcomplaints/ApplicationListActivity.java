@@ -104,7 +104,6 @@ public class ApplicationListActivity extends BaseActivity  {
             else
                 return  DatabaseHandler.getInstance(getApplicationContext())
                         .permissionApplicationDao().getAllApplicationsByApplicationType(strings[0]);
-
         }
 
         @Override

@@ -75,8 +75,8 @@
                 android:hint="Nationality"
                 android:textColor="@color/black"/>
 
-            <EditText
-                android:id="@+id/edtOwnerEmail"
+            <TextView
+                android:id="@+id/tvOwnerEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/rect_bg"
@@ -224,7 +224,32 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="@dimen/dimen_10dp"
+                android:layout_marginRight="@dimen/dimen_10dp"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="Amount(For 3 months service):"
+                    android:textSize="16sp"
+                    android:textColor="@color/gray"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="₹ 200"
+                    android:textSize="16sp"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginTop="5dp"
                 android:orientation="vertical">
                 <TextView
                     android:layout_width="match_parent"
@@ -262,7 +287,7 @@
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="Apply"
+            android:text="@string/apply_proceed_pay"
             android:textSize="18sp"
             android:textColor="@color/white"
             android:textStyle="bold"/>

@@ -22,6 +22,9 @@ public interface PermissionApplicationDao {
     @Query("Select * From PermissionApplication Where area LIKE :area ")
     List<PermissionApplication> getAllApplicationsByArea(String area);
 
+    @Query("Select * From PermissionApplication Where owneremail LIKE :email")
+    List<PermissionApplication> getAllApplicationsByEmail(String email);
+
     @Query("Select * From PermissionApplication Where applicationType LIKE :applicationType")
     List<PermissionApplication> getAllApplicationsByApplicationType(String applicationType);
 

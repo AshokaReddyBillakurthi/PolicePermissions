@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "528264679287",
+    "firebase_url": "https://xpoliceservice.firebaseio.com",
+    "project_id": "xpoliceservice",
+    "storage_bucket": "xpoliceservice.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:528264679287:android:1a57e481e02a34e7",
+        "android_client_info": {
+          "package_name": "com.techouts.pcomplaints"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "528264679287-hav0gov487401ji2e1gnq1qquhpqb8q8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDR2ZnHULJbaD_cT11pLgu5vaXpPYr_no0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

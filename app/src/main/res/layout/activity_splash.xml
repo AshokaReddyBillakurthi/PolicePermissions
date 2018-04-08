@@ -14,7 +14,7 @@
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:layout_gravity="center"
-            android:background="@drawable/circler_bg">
+            android:background="@drawable/circler_white_bg">
 
             <ImageView
                 android:layout_width="45dp"

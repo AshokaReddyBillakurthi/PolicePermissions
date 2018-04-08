@@ -1,49 +1,48 @@
 package com.techouts.pcomplaints;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.provider.MediaStore;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.Patterns;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.PopupWindow;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import com.payumoney.core.entity.TransactionResponse;
+import com.payumoney.sdkui.ui.utils.PayUmoneyFlowManager;
+import com.payumoney.sdkui.ui.utils.ResultModel;
 import com.techouts.pcomplaints.custom.CustomDialog;
 import com.techouts.pcomplaints.datahandler.DatabaseHandler;
+import com.techouts.pcomplaints.entities.Area;
 import com.techouts.pcomplaints.entities.PermissionApplication;
 import com.techouts.pcomplaints.utils.AppConstents;
 import com.techouts.pcomplaints.utils.DataManager;
 import com.techouts.pcomplaints.utils.DialogUtils;
 import com.techouts.pcomplaints.utils.SharedPreferenceUtils;
-import com.techouts.pcomplaints.adapters.AreaAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class CyberCafeApplicationActivity extends BaseActivity {
     private EditText edtFullName, edtOccupation, edtParentage, edtNationality,
-            edtOwnerEmail, edtTelephone, edtCyberCafeEmail, edtNoOfBranchs, edtAreaOfPremise,
+             edtTelephone, edtCyberCafeEmail, edtNoOfBranchs, edtAreaOfPremise,
             edtNoOfTerminals;
     private RadioGroup rbGroup;
     private LinearLayout llApply;
-    private TextView tvTitle,tvArea;
+    private TextView tvTitle,tvArea,tvOwnerEmail;
     private ImageView ivBack, ivCamera, ivUserImg;
     private static final int CAMERA_CAPTURE = 1;
     private static final String TAG = CyberCafeApplicationActivity.class.getSimpleName();
     private String premise = "";
     private PermissionApplication permissionApplication;
-    private PopupWindow popupWindow;
     private String applicationType = "";
     private CustomDialog customDialog;
 
@@ -61,7 +60,7 @@ public class CyberCafeApplicationActivity extends BaseActivity {
         edtOccupation = findViewById(R.id.edtOccupation);
         edtParentage = findViewById(R.id.edtParentage);
         edtNationality = findViewById(R.id.edtNationality);
-        edtOwnerEmail = findViewById(R.id.edtOwnerEmail);
+        tvOwnerEmail = findViewById(R.id.tvOwnerEmail);
         edtTelephone = findViewById(R.id.edtTelephone);
         edtCyberCafeEmail = findViewById(R.id.edtCyberCafeEmail);
         edtNoOfBranchs = findViewById(R.id.edtNoOfBranchs);
@@ -76,6 +75,8 @@ public class CyberCafeApplicationActivity extends BaseActivity {
         ivUserImg = findViewById(R.id.ivUserImg);
 
         tvTitle.setText(applicationType+" Application");
+
+        tvOwnerEmail.setText(SharedPreferenceUtils.getStringValue(AppConstents.EMAIL_ID)+"");
 
     }
 
@@ -105,23 +106,17 @@ public class CyberCafeApplicationActivity extends BaseActivity {
         tvArea.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                tvArea.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        List<String> areaList = DataManager.getList(AppConstents.TYPE_AREA);
-                        customDialog = new CustomDialog(CyberCafeApplicationActivity.this, areaList,
-                                "Select Area",true,false,
-                                new CustomDialog.NameSelectedListener() {
-                                    @Override
-                                    public void onNameSelected(String listName) {
-                                        tvArea.setText(listName);
-                                        customDialog.dismiss();
-                                    }
-                                });
-                        customDialog.show();
-                    }
-                });
-
+                List<Area> areaList = DataManager.getAreaList();
+                customDialog = new CustomDialog(CyberCafeApplicationActivity.this, areaList,
+                        "Select Area",true,true,false,
+                        new CustomDialog.NameSelectedListener() {
+                            @Override
+                            public void onNameSelected(String listName) {
+                                tvArea.setText(listName);
+                                customDialog.dismiss();
+                            }
+                        });
+                customDialog.show();
             }
         });
     }
@@ -133,7 +128,7 @@ public class CyberCafeApplicationActivity extends BaseActivity {
             String occupation = edtOccupation.getText().toString().trim();
             String parentage = edtParentage.getText().toString().trim();
             String nationality = edtNationality.getText().toString().trim();
-            String owneremail = edtOwnerEmail.getText().toString().trim();
+            String owneremail = tvOwnerEmail.getText().toString().trim();
             String telephoneNo = edtTelephone.getText().toString().trim();
             String cyberCafeEmail = edtCyberCafeEmail.getText().toString().trim();
             String noOfBranchs = edtNoOfBranchs.getText().toString().trim();
@@ -251,7 +246,8 @@ public class CyberCafeApplicationActivity extends BaseActivity {
         @Override
         protected void onPostExecute(Boolean aBoolean) {
             super.onPostExecute(aBoolean);
-            DialogUtils.showDialog(CyberCafeApplicationActivity.this,"Application Submitted Successfully", AppConstents.FINISH,false);
+            launchPayUMoneyFlow();
+//            DialogUtils.showDialog(CyberCafeApplicationActivity.this,"Application Submitted Successfully", AppConstents.FINISH,false);
         }
     }
 
@@ -262,15 +258,52 @@ public class CyberCafeApplicationActivity extends BaseActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == CAMERA_CAPTURE) {
-            if (resultCode == RESULT_OK) {
+        if(resultCode == Activity.RESULT_OK) {
+            if (requestCode == CAMERA_CAPTURE) {
                 Bitmap bitmap = (Bitmap) data.getExtras().get("data");
                 storeImage(bitmap);
                 ivUserImg.setImageBitmap(bitmap);
-            } else if (resultCode == RESULT_CANCELED) {
-                showToast("User cancelled image capture");
-            } else {
-                showToast("Failed to capture image");
+            }
+            else if(requestCode == PayUmoneyFlowManager.REQUEST_CODE_PAYMENT&&null!=data){
+                TransactionResponse transactionResponse = data.getParcelableExtra(PayUmoneyFlowManager
+                        .INTENT_EXTRA_TRANSACTION_RESPONSE);
+
+                ResultModel resultModel = data.getParcelableExtra(PayUmoneyFlowManager.ARG_RESULT);
+
+                // Check which object is non-null
+                if (transactionResponse != null && transactionResponse.getPayuResponse() != null) {
+                    if (transactionResponse.getTransactionStatus().equals(TransactionResponse.TransactionStatus.SUCCESSFUL)) {
+                        //Success Transaction
+//                    DialogUtils.showDialog(CyberCafeApplicationActivity.this,"Payment Successful", AppConstents.FINISH,false);
+                    } else {
+                        //Failure Transaction
+//                    DialogUtils.showDialog(CyberCafeApplicationActivity.this,getResources().getString(R.string.error_message), AppConstents.FINISH,false);
+                    }
+
+                    // Response from Payumoney
+                    String payuResponse = transactionResponse.getPayuResponse();
+
+                    // Response from SURl and FURL
+                    String merchantResponse = transactionResponse.getTransactionDetails();
+
+                    DialogUtils.showDialog(CyberCafeApplicationActivity.this,"Payment Successful", AppConstents.FINISH,false);
+
+//                    new AlertDialog.Builder(this)
+//                            .setCancelable(false)
+//                            .setMessage("Payment Successful")
+//                            .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+//                                public void onClick(DialogInterface dialog, int whichButton) {
+//                                    dialog.dismiss();
+//                                    finish();
+//                                }
+//                            }).show();
+
+                } else if (resultModel != null && resultModel.getError() != null) {
+                    Log.d(TAG, "Error response : " + resultModel.getError().getTransactionResponse());
+                } else {
+                    Log.d(TAG, "Both objects are null!");
+                }
+
             }
         }
     }

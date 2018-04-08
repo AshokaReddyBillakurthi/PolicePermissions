@@ -11,7 +11,7 @@ import com.techouts.pcomplaints.utils.AppConstents;
 public class ApplicationDetailsActivity extends BaseActivity {
 
     private TextView tvTitle,tvFullName,tvEmail,tvMobileNo,tvApplicationType,
-            tvArea,tvCity,tvState,tvOccupation;
+            tvArea,tvOccupation,tvStatus;
     private ImageView ivBack,ivUserImage;
     private PermissionApplication permissionApplication;
 
@@ -33,6 +33,7 @@ public class ApplicationDetailsActivity extends BaseActivity {
         tvMobileNo = findViewById(R.id.tvMobileNo);
         tvApplicationType = findViewById(R.id.tvApplicationType);
         tvArea = findViewById(R.id.tvListName);
+        tvStatus = findViewById(R.id.tvStatus);
 //        tvCity = findViewById(R.id.tvCity);
 //        tvState = findViewById(R.id.tvState);
         ivBack = findViewById(R.id.ivBack);
@@ -55,7 +56,19 @@ public class ApplicationDetailsActivity extends BaseActivity {
             tvMobileNo.setText(permissionApplication.telephoneNo+"");
             tvApplicationType.setText(permissionApplication.applicationType+"");
             tvArea.setText(permissionApplication.area+"");
-            tvTitle.setText(permissionApplication.applicationType+" Application");
+            tvTitle.setText(permissionApplication.applicationType+"");
+            if(permissionApplication.status == 0) {
+               tvStatus.setText(AppConstents.PENDING);
+               tvStatus.setTextColor(getColor(R.color.error_strip));
+            }
+            else if(permissionApplication.status == 1){
+                tvStatus.setText(AppConstents.INPROGRESS);
+                tvStatus.setTextColor(getColor(R.color.orange));
+            }
+            else if(permissionApplication.status == 2){
+               tvStatus.setText(AppConstents.COMPLETED);
+               tvStatus.setTextColor(getColor(R.color.button_green));
+            }
             Bitmap bitmap = getUserImageBitMap(permissionApplication.applicantImg);
             if(bitmap!=null){
                 ivUserImage.setImageBitmap(bitmap);

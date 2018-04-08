@@ -7,7 +7,7 @@ import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Patterns;
 import android.view.View;
-import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -16,6 +16,9 @@ import android.widget.Toast;
 
 import com.techouts.pcomplaints.custom.CustomDialog;
 import com.techouts.pcomplaints.datahandler.DatabaseHandler;
+import com.techouts.pcomplaints.entities.Area;
+import com.techouts.pcomplaints.entities.City;
+import com.techouts.pcomplaints.entities.State;
 import com.techouts.pcomplaints.entities.User;
 import com.techouts.pcomplaints.utils.ApiServiceConstants;
 import com.techouts.pcomplaints.utils.AppConstents;
@@ -39,10 +42,11 @@ import okhttp3.Response;
 
 public class UserRegistrationActivity extends BaseActivity {
 
-    private TextView tvTitle, tvState, tvCity, tvArea;
+    private TextView tvTitle, tvState, tvCity, tvArea,tvTermsandConditions;
     private ImageView ivBack;
     private EditText edtFirstName, edtLastName, edtMobileNumber,
             edtEmail, edtPassword;
+    private CheckBox cbxTermsAndConditions;
     private LinearLayout llRegister;
     private ImageView ivCamera, ivUserImg;
     private static final int CAMERA_CAPTURE = 1;
@@ -63,6 +67,7 @@ public class UserRegistrationActivity extends BaseActivity {
             userType = getIntent().getExtras().getString(AppConstents.EXTRA_USER_TYPE);
         }
         tvTitle = findViewById(R.id.tvTitle);
+        tvTermsandConditions = findViewById(R.id.tvTermsandConditions);
         ivBack = findViewById(R.id.ivBack);
         llRegister = findViewById(R.id.llRegister);
         edtFirstName = findViewById(R.id.edtFirstName);
@@ -75,6 +80,7 @@ public class UserRegistrationActivity extends BaseActivity {
         tvArea = findViewById(R.id.tvArea);
         ivCamera = findViewById(R.id.ivCamera);
         ivUserImg = findViewById(R.id.ivUserImg);
+        cbxTermsAndConditions = findViewById(R.id.cbxTermsAndConditions);
 
         if (userType.equalsIgnoreCase(AppConstents.USER_TYPE_CUSTOMER)) {
             tvTitle.setText("Customer Registration");
@@ -84,6 +90,14 @@ public class UserRegistrationActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 finish();
+            }
+        });
+
+        tvTermsandConditions.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(UserRegistrationActivity.this,TermsAndConditionsActivity.class);
+                startActivity(intent);
             }
         });
     }
@@ -98,11 +112,58 @@ public class UserRegistrationActivity extends BaseActivity {
             }
         });
 
+        tvArea.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String city = tvCity.getText().toString();
+                if(TextUtils.isEmpty(city)){
+                    showToast("Please select city first");
+                }
+                else{
+                    List<Area> areaList = DataManager.getAreaList();
+                    customDialog = new CustomDialog(UserRegistrationActivity.this, areaList,
+                            "Select Area",true,true,false,
+                            new CustomDialog.NameSelectedListener() {
+                                @Override
+                                public void onNameSelected(String listName) {
+                                    tvArea.setText(listName);
+                                    customDialog.dismiss();
+                                }
+                            });
+                    customDialog.show();
+                }
+            }
+        });
+
+        tvCity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String state = tvState.getText().toString();
+                if(TextUtils.isEmpty(state)){
+                    showToast("Please select state first");
+                }
+                else {
+                    List<City> cityList = DataManager.getCityList();
+                    customDialog = new CustomDialog(UserRegistrationActivity.this,
+                            cityList,true,"Select City",true,false,
+                            new CustomDialog.NameSelectedListener() {
+                                @Override
+                                public void onNameSelected(String listName) {
+                                    tvCity.setText(listName);
+                                    customDialog.dismiss();
+                                }
+                            });
+                    customDialog.show();
+                }
+
+            }
+        });
+
         tvState.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                List<String> areaList = DataManager.getList(AppConstents.TYPE_STATE);
-                customDialog = new CustomDialog(UserRegistrationActivity.this, areaList,
+                List<State> stateList = DataManager.getStateList();
+                customDialog = new CustomDialog(UserRegistrationActivity.this,true, stateList ,
                         "Select State",true,false,
                         new CustomDialog.NameSelectedListener() {
                             @Override
@@ -114,60 +175,13 @@ public class UserRegistrationActivity extends BaseActivity {
                 customDialog.show();
             }
         });
-
-        tvCity.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String state = tvState.getText().toString();
-                if(TextUtils.isEmpty(state)){
-                    showToast("Please select state first");
-                }
-                else{
-                    List<String> areaList = DataManager.getList(AppConstents.TYPE_CITY);
-                    customDialog = new CustomDialog(UserRegistrationActivity.this, areaList,
-                            "Select City",true,false,
-                            new CustomDialog.NameSelectedListener() {
-                                @Override
-                                public void onNameSelected(String listName) {
-                                    tvCity.setText(listName);
-                                    customDialog.dismiss();
-                                }
-                            });
-                    customDialog.show();
-                }
-            }
-        });
-
-        tvArea.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String city = tvCity.getText().toString();
-                if(TextUtils.isEmpty(city)){
-                    showToast("Please select city first");
-                }
-                else{
-                    List<String> areaList = DataManager.getList(AppConstents.TYPE_AREA);
-                    customDialog = new CustomDialog(UserRegistrationActivity.this, areaList,
-                            "Select Area",true,false,
-                            new CustomDialog.NameSelectedListener() {
-                                @Override
-                                public void onNameSelected(String listName) {
-                                    tvArea.setText(listName);
-                                    customDialog.dismiss();
-                                }
-                            });
-                    customDialog.show();
-                }
-
-            }
-        });
-
         ivCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 openCamera();
             }
         });
+
     }
 
     private void openCamera() {
@@ -199,10 +213,14 @@ public class UserRegistrationActivity extends BaseActivity {
                 user.area = area;
                 user.userImg = userImg;
                 user.userType = userType;
-//                if(postDataToServer(user)){
+                if(postDataToServer(user)){
 //                    arrayList.add(user);
 //                    new UserAsyncTask().execute(arrayList);
-//                }
+                    showToast("Data posted Successfully");
+                }
+                else{
+                    showToast("Failed");
+                }
                 arrayList.add(user);
                 new UserAsyncTask().execute(arrayList);
             }
@@ -217,14 +235,14 @@ public class UserRegistrationActivity extends BaseActivity {
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("firstName", user.firstName);
             jsonObject.put("lastName", user.lastName);
-            jsonObject.put("exPoliceId", "");
             jsonObject.put("email", user.email);
             jsonObject.put("password", user.password);
-            jsonObject.put("mobile", user.mobileNo);
+            jsonObject.put("mobileNumber", user.mobileNo);
+            jsonObject.put("isActive", true);
             jsonObject.put("state", user.state);
             jsonObject.put("city", user.city);
             jsonObject.put("area", user.area);
-            jsonObject.put("userImg", user.userImg);
+            jsonObject.put("image", user.userImg);
             jsonObject.put("userType", user.userType);
             String body = jsonObject.toString();
             RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), body);
@@ -233,7 +251,7 @@ public class UserRegistrationActivity extends BaseActivity {
                     .addHeader("cache-control", "no-cache")
                     .post(requestBody);
             Request request = builder.build();
-            client.newCall(request).enqueue(new Callback() {
+            client.newCall(request).enqueue(new  Callback() {
                 @Override
                 public void onFailure(Call call, IOException e) {
                     runOnUiThread(new Runnable() {
@@ -340,6 +358,9 @@ public class UserRegistrationActivity extends BaseActivity {
         } else if (TextUtils.isEmpty(userImg)) {
             isValid = false;
             showToast("Please capture Image");
+        } else if(!cbxTermsAndConditions.isChecked()){
+            isValid = false;
+            showToast("Please accept the Terms and Conditions");
         }
         return isValid;
     }

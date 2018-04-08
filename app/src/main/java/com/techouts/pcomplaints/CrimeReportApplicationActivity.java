@@ -1,10 +1,12 @@
 package com.techouts.pcomplaints;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.EditText;
@@ -15,8 +17,13 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import com.payumoney.core.PayUmoneySdkInitializer;
+import com.payumoney.core.entity.TransactionResponse;
+import com.payumoney.sdkui.ui.utils.PayUmoneyFlowManager;
+import com.payumoney.sdkui.ui.utils.ResultModel;
 import com.techouts.pcomplaints.custom.CustomDialog;
 import com.techouts.pcomplaints.datahandler.DatabaseHandler;
+import com.techouts.pcomplaints.entities.Area;
 import com.techouts.pcomplaints.entities.PermissionApplication;
 import com.techouts.pcomplaints.utils.AppConstents;
 import com.techouts.pcomplaints.utils.DataManager;
@@ -28,10 +35,10 @@ import java.util.List;
 
 public class CrimeReportApplicationActivity extends BaseActivity{
 
-    private EditText edtFirstName, edtLastName, edtOccupation, edtEmail,
+    private EditText edtFirstName, edtLastName, edtOccupation,
             edtMobileNo, edtAddress, edtValueOfProperty;
     private RadioGroup rgSex, rgPlace, rgConditionOfProperty;
-    private TextView tvTitle, tvArea;
+    private TextView tvTitle, tvArea,tvEmail;
     private ImageView ivBack, ivCamera, ivUserImg;
     private LinearLayout llApply;
     private String applicationType = "";
@@ -40,6 +47,7 @@ public class CrimeReportApplicationActivity extends BaseActivity{
     private PopupWindow popupWindow;
     private PermissionApplication permissionApplication;
     private CustomDialog customDialog;
+    private PayUmoneySdkInitializer.PaymentParam mPaymentParams;
 
 
     @Override
@@ -57,7 +65,7 @@ public class CrimeReportApplicationActivity extends BaseActivity{
         edtFirstName = findViewById(R.id.edtFirstName);
         edtLastName = findViewById(R.id.edtLastName);
         edtOccupation = findViewById(R.id.edtOccupation);
-        edtEmail = findViewById(R.id.edtEmail);
+        tvEmail = findViewById(R.id.tvEmail);
         edtMobileNo = findViewById(R.id.edtMobileNo);
         edtAddress = findViewById(R.id.edtAddress);
         edtValueOfProperty = findViewById(R.id.edtValueOfProperty);
@@ -70,6 +78,7 @@ public class CrimeReportApplicationActivity extends BaseActivity{
         llApply = findViewById(R.id.llApply);
 
         tvTitle.setText(applicationType + " Application");
+        tvEmail.setText(SharedPreferenceUtils.getStringValue(AppConstents.EMAIL_ID)+"");
 
     }
 
@@ -85,9 +94,9 @@ public class CrimeReportApplicationActivity extends BaseActivity{
         tvArea.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                List<String> areaList = DataManager.getList(AppConstents.TYPE_AREA);
-                customDialog = new CustomDialog(CrimeReportApplicationActivity.this,areaList,
-                        "Select Area",true,false,
+                List<Area> areaList = DataManager.getAreaList();
+                customDialog = new CustomDialog(CrimeReportApplicationActivity.this, areaList,
+                        "Select Area",true,true,false,
                         new CustomDialog.NameSelectedListener() {
                             @Override
                             public void onNameSelected(String listName) {
@@ -98,7 +107,6 @@ public class CrimeReportApplicationActivity extends BaseActivity{
                 customDialog.show();
             }
         });
-
         ivCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -119,7 +127,7 @@ public class CrimeReportApplicationActivity extends BaseActivity{
             String firstName = edtFirstName.getText().toString().trim();
             String occupation = edtOccupation.getText().toString().trim();
             String lastName = edtLastName.getText().toString().trim();
-            String email = edtEmail.getText().toString().trim();
+            String email = tvEmail.getText().toString().trim();
             String telephoneNo = edtMobileNo.getText().toString().trim();
             String address = edtAddress.getText().toString().trim();
             String valueOfProperty = edtValueOfProperty.getText().toString().trim();
@@ -176,9 +184,11 @@ public class CrimeReportApplicationActivity extends BaseActivity{
         @Override
         protected void onPostExecute(Boolean aBoolean) {
             super.onPostExecute(aBoolean);
-            DialogUtils.showDialog(CrimeReportApplicationActivity.this,"Application Submitted Successfully", AppConstents.FINISH,false);
+            launchPayUMoneyFlow();
+//            DialogUtils.showDialog(CrimeReportApplicationActivity.this,"Application Submitted Successfully", AppConstents.FINISH,false);
         }
     }
+
 
     private boolean validateData(String firstName, String lastName, String occupation, String email,
                                  String telephoneNo, String address, String valueOfProperty, String area) {
@@ -227,18 +237,53 @@ public class CrimeReportApplicationActivity extends BaseActivity{
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == CAMERA_CAPTURE) {
-            if (resultCode == RESULT_OK) {
+        if(resultCode == Activity.RESULT_OK){
+            if (requestCode == CAMERA_CAPTURE&&null!=data) {
                 Bitmap bitmap = (Bitmap) data.getExtras().get("data");
                 storeImage(bitmap);
                 ivUserImg.setImageBitmap(bitmap);
-            } else if (resultCode == RESULT_CANCELED) {
-                showToast("User cancelled image capture");
-            } else {
-                showToast("Failed to capture image");
+            }
+            else if(requestCode == PayUmoneyFlowManager.REQUEST_CODE_PAYMENT&&null!=data){
+                TransactionResponse transactionResponse = data.getParcelableExtra(PayUmoneyFlowManager
+                        .INTENT_EXTRA_TRANSACTION_RESPONSE);
+
+                ResultModel resultModel = data.getParcelableExtra(PayUmoneyFlowManager.ARG_RESULT);
+
+                // Check which object is non-null
+                if (transactionResponse != null && transactionResponse.getPayuResponse() != null) {
+                    if (transactionResponse.getTransactionStatus().equals(TransactionResponse.TransactionStatus.SUCCESSFUL)) {
+                        //Success Transaction
+//                        DialogUtils.showDialog(CrimeReportApplicationActivity.this,"Payment Successful", AppConstents.FINISH,false);
+                    } else {
+                        //Failure Transaction
+//                        DialogUtils.showDialog(CrimeReportApplicationActivity.this,getResources().getString(R.string.error_message), AppConstents.FINISH,false);
+                    }
+
+                    // Response from Payumoney
+                    String payuResponse = transactionResponse.getPayuResponse();
+
+                    // Response from SURl and FURL
+                    String merchantResponse = transactionResponse.getTransactionDetails();
+
+
+                    DialogUtils.showDialog(CrimeReportApplicationActivity.this,"Payment Successful", AppConstents.FINISH,false);
+//                    new AlertDialog.Builder(this)
+//                            .setCancelable(false)
+//                            .setMessage("Payment Successful")
+//                            .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+//                                public void onClick(DialogInterface dialog, int whichButton) {
+//                                    dialog.dismiss();
+//                                    finish();
+//                                }
+//                            }).show();
+
+                } else if (resultModel != null && resultModel.getError() != null) {
+                    Log.d(TAG, "Error response : " + resultModel.getError().getTransactionResponse());
+                } else {
+                    Log.d(TAG, "Both objects are null!");
+                }
+
             }
         }
     }
-
-
 }

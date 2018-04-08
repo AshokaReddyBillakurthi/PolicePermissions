@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -47,6 +48,20 @@ public class ApplicationsListAdapter extends RecyclerView.Adapter<ApplicationsLi
         holder.tvMobileNo.setText(permissionApplicationList.get(position).telephoneNo+"");
         holder.tvApplicationType.setText(permissionApplicationList.get(position).applicationType+"");
         holder.tvArea.setText(permissionApplicationList.get(position).area+"");
+
+        if(permissionApplicationList.get(position).status == 0) {
+            holder.tvStatus.setText(AppConstents.PENDING);
+            holder.tvStatus.setTextColor(mContext.getColor(R.color.error_strip));
+        }
+        else if(permissionApplicationList.get(position).status == 1){
+            holder.tvStatus.setText(AppConstents.INPROGRESS);
+            holder.tvStatus.setTextColor(mContext.getColor(R.color.orange));
+        }
+        else if(permissionApplicationList.get(position).status == 2){
+            holder.tvStatus.setText(AppConstents.COMPLETED);
+            holder.tvStatus.setTextColor(mContext.getColor(R.color.button_green));
+        }
+
         getImageOfServiceMan(permissionApplicationList.get(position).applicantImg,holder.ivApplicantImg);
     }
 
@@ -63,7 +78,7 @@ public class ApplicationsListAdapter extends RecyclerView.Adapter<ApplicationsLi
     class ApplicationViewHolder extends RecyclerView.ViewHolder{
 
         ImageView ivApplicantImg;
-        TextView tvName,tvEmail,tvMobileNo,tvApplicationType,tvArea;
+        TextView tvName,tvEmail,tvMobileNo,tvApplicationType,tvArea,tvStatus;
 
         public ApplicationViewHolder(View itemView) {
             super(itemView);
@@ -73,13 +88,15 @@ public class ApplicationsListAdapter extends RecyclerView.Adapter<ApplicationsLi
             tvEmail = itemView.findViewById(R.id.tvEmail);
             tvMobileNo = itemView.findViewById(R.id.tvMobileNo);
             tvArea = itemView.findViewById(R.id.tvArea);
+            tvStatus = itemView.findViewById(R.id.tvStatus);
             tvApplicationType = itemView.findViewById(R.id.tvApplicationType);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(mContext, ApplicationDetailsActivity.class);
-                    intent.putExtra(AppConstents.EXTRA_PERMISSION_APPLICATION,permissionApplicationList.get(getAdapterPosition()));
+                    intent.putExtra(AppConstents.EXTRA_PERMISSION_APPLICATION,
+                            permissionApplicationList.get(getAdapterPosition()));
                     mContext.startActivity(intent);
                 }
             });

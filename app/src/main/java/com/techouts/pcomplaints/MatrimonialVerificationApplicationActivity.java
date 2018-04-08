@@ -12,16 +12,20 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.techouts.pcomplaints.utils.AppConstents;
+import com.techouts.pcomplaints.utils.DialogUtils;
+import com.techouts.pcomplaints.utils.SharedPreferenceUtils;
+
 import java.io.IOException;
 
 public class MatrimonialVerificationApplicationActivity extends BaseActivity {
 
-    private EditText edtFullName, edtOccupation, edtEmail, edtMobileNo, edtRequiredInfo,
+    private EditText edtFullName, edtOccupation, edtMobileNo, edtRequiredInfo,
             edtAddress;
     private Button btnUploadImage;
     private ImageView ivCounterPersonImg, ivBack;
     private LinearLayout llSubmitEnquiry;
-    private TextView tvTitle;
+    private TextView tvTitle,tvEmail;
     private static final int SELECT_FILE = 100;
 
     @Override
@@ -33,7 +37,7 @@ public class MatrimonialVerificationApplicationActivity extends BaseActivity {
     public void initGUI() {
         edtFullName = findViewById(R.id.edtFullName);
         edtOccupation = findViewById(R.id.edtOccupation);
-        edtEmail = findViewById(R.id.edtEmail);
+        tvEmail = findViewById(R.id.tvEmail);
         edtMobileNo = findViewById(R.id.edtMobileNo);
         edtRequiredInfo = findViewById(R.id.edtRequiredInfo);
         edtAddress = findViewById(R.id.edtAddress);
@@ -44,6 +48,8 @@ public class MatrimonialVerificationApplicationActivity extends BaseActivity {
         tvTitle = findViewById(R.id.tvTitle);
 
         tvTitle.setText("Matrimonial Verification Application");
+
+        tvEmail.setText(SharedPreferenceUtils.getStringValue(AppConstents.EMAIL_ID)+"");
     }
 
     @Override
@@ -65,7 +71,7 @@ public class MatrimonialVerificationApplicationActivity extends BaseActivity {
         llSubmitEnquiry.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                applyForMatrimonialVerification();
             }
         });
     }
@@ -74,12 +80,12 @@ public class MatrimonialVerificationApplicationActivity extends BaseActivity {
         try {
             String fullName = edtFullName.getText().toString().trim();
             String occupation = edtOccupation.getText().toString().trim();
-            String email = edtEmail.getText().toString().trim();
+            String email = tvEmail.getText().toString().trim();
             String mobileNo = edtMobileNo.getText().toString().trim();
             String requiredInfo = edtRequiredInfo.getText().toString().trim();
             String address = edtAddress.getText().toString().trim();
             if(isValidData(fullName,occupation,email,mobileNo,requiredInfo,address)){
-
+                DialogUtils.showDialog(MatrimonialVerificationApplicationActivity.this,"Applied Successfully", AppConstents.FINISH,false);
             }
 
         } catch (Exception e) {

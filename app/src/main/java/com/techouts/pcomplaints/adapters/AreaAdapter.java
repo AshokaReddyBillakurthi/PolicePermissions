@@ -4,23 +4,32 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import com.techouts.pcomplaints.R;
+import com.techouts.pcomplaints.custom.CustomDialog;
+import com.techouts.pcomplaints.entities.Area;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by TO-OW109 on 09-02-2018.
  */
 
 public class AreaAdapter extends RecyclerView.Adapter<AreaAdapter.AreaViewHolder>{
-    private ArrayList<String> areaList;
-    private OnAreaClickListener listener;
+    private List<Area> areaList;
+    private CustomDialog.NameSelectedListener nameSelectedListener;
+    private boolean isCheckBxNeed = false;
+    private List<Area> tempSelect;
 
-    public AreaAdapter(ArrayList<String> areaList, OnAreaClickListener listener){
+    public AreaAdapter(List<Area> areaList,boolean isCheckBxNeed, CustomDialog.NameSelectedListener nameSelectedListener){
         this.areaList = areaList;
-        this.listener = listener;
+        this.nameSelectedListener = nameSelectedListener;
+        this.isCheckBxNeed = isCheckBxNeed;
+        this.tempSelect = new ArrayList<>();
     }
 
     @Override
@@ -30,8 +39,37 @@ public class AreaAdapter extends RecyclerView.Adapter<AreaAdapter.AreaViewHolder
     }
 
     @Override
-    public void onBindViewHolder(AreaViewHolder holder, int position) {
-        holder.tvArea.setText(areaList.get(position).toString());
+    public void onBindViewHolder(final AreaViewHolder holder, final int position) {
+        holder.tvArea.setText(areaList.get(position).areaName.toString());
+        if(areaList.get(position).isSelected){
+            holder.cbxChecked.setChecked(true);
+        }
+        else{
+            holder.cbxChecked.setChecked(false);
+        }
+
+        holder.cbxChecked.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(holder.cbxChecked.isChecked()) {
+                    areaList.get(position).isSelected = true;
+                    tempSelect.add(areaList.get(position));
+                }
+                else {
+                    areaList.get(position).isSelected = false;
+                    tempSelect.remove(areaList.get(position));
+                }
+            }
+        });
+    }
+
+    public void refresh(List<Area> areaList){
+        this.areaList = areaList;
+        notifyDataSetChanged();
+    }
+
+    public List<Area> getSelectedAreas(){
+        return tempSelect;
     }
 
     @Override
@@ -41,20 +79,24 @@ public class AreaAdapter extends RecyclerView.Adapter<AreaAdapter.AreaViewHolder
 
     class AreaViewHolder extends RecyclerView.ViewHolder{
         TextView tvArea;
+        private CheckBox cbxChecked;
         public AreaViewHolder(View itemView) {
             super(itemView);
             tvArea = itemView.findViewById(R.id.tvListName);
+            cbxChecked = itemView.findViewById(R.id.cbxChecked);
+
+            if(isCheckBxNeed)
+                cbxChecked.setVisibility(View.VISIBLE);
+
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    String area = tvArea.getText().toString();
-                    listener.onAreaSelected(area);
+                    if(!isCheckBxNeed) {
+                        String area = tvArea.getText().toString();
+                        nameSelectedListener.onNameSelected(area);
+                    }
                 }
             });
         }
-    }
-
-    public interface OnAreaClickListener {
-        void onAreaSelected(String area);
     }
 }

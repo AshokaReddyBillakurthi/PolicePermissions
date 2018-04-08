@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_margin="5dp"
     android:elevation="5dp"
     app:cardBackgroundColor="@color/white">
     <LinearLayout
@@ -12,7 +13,7 @@
         <ImageView
             android:id="@+id/ivApplicantImg"
             android:layout_width="120dp"
-            android:layout_height="130dp"
+            android:layout_height="140dp"
             android:layout_margin="5dp"
             android:scaleType="fitXY" />
         <LinearLayout
@@ -124,6 +125,28 @@
                     android:layout_weight="1"
                     android:text=""
                     android:textColor="@color/black"
+                    android:textSize="16sp" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="Status :"
+                    android:textColor="@color/app_color_lite"
+                    android:textSize="16sp" />
+                <TextView
+                    android:id="@+id/tvStatus"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Pending"
+                    android:textColor="@color/red"
                     android:textSize="16sp" />
             </LinearLayout>
         </LinearLayout>

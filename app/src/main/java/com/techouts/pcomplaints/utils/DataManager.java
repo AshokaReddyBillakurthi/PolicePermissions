@@ -1,11 +1,13 @@
 package com.techouts.pcomplaints.utils;
 
-import android.app.Application;
 import android.util.Log;
+
+import com.techouts.pcomplaints.entities.Area;
+import com.techouts.pcomplaints.entities.City;
+import com.techouts.pcomplaints.entities.State;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 /**
  * Created by TO-OW109 on 05-03-2018.
@@ -58,6 +60,109 @@ public class DataManager {
         return listNames;
     }
 
+    public static List<State> getStateList(){
+        List<State> listStates = new ArrayList<>();
+        State state = null;
+        try{
+            state = new State();
+            state.stateName = AppConstents.TELANGANA;
+            listStates.add(state);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        return listStates;
+    }
+
+    public static List<City> getCityList(){
+        List<City> listCities = new ArrayList<>();
+        City city = null;
+        try{
+            city = new City();
+            city.cityName = AppConstents.HYDERABAD;
+            listCities.add(city);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        return listCities;
+    }
+
+    public static List<Area> getAreaList(){
+        List<Area> listAreas = new ArrayList<>();
+        Area area = null;
+        try{
+            area = new Area();
+            area.areaName = "South Banjara Hills";
+            listAreas.add(area);
+            area = new Area();
+            area.areaName = "Madhapur";
+            listAreas.add(area);
+            area = new Area();
+            area.areaName = "Jubilee Hills";
+            listAreas.add(area);
+            area = new Area();
+            area.areaName = "Liberty";
+            listAreas.add(area);
+            area = new Area();
+            area.areaName = "Cyberabad";
+            listAreas.add(area);
+            area = new Area();
+            area.areaName = "Vijay Nagar Colony";
+            listAreas.add(area);
+            area = new Area();
+            area.areaName = "Somajiguda";
+            listAreas.add(area);
+            area = new Area();
+            area.areaName = "Seetharampet";
+            listAreas.add(area);
+            area = new Area();
+            area.areaName = "Ramkoti";
+            listAreas.add(area);
+            area = new Area();
+            area.areaName = "Gandhi Bhavan";
+            listAreas.add(area);
+            area = new Area();
+            area.areaName = "RajBolaram";
+            listAreas.add(area);
+            area = new Area();
+            area.areaName = "Sriranga Colony";
+            listAreas.add(area);
+            area = new Area();
+            area.areaName = "Vidya nagar";
+            listAreas.add(area);
+            area = new Area();
+            area.areaName = "Uppal";
+            listAreas.add(area);
+            area = new Area();
+            area.areaName = "Stn Kachiguda";
+            listAreas.add(area);
+            area = new Area();
+            area.areaName = "Snehapuri Colony";
+            listAreas.add(area);
+            area = new Area();
+            area.areaName = "Santhosh Nagar Colony";
+            listAreas.add(area);
+            area = new Area();
+            area.areaName = "L.B. Nagar";
+            listAreas.add(area);
+            area = new Area();
+            area.areaName = "Jntu";
+            listAreas.add(area);
+            area = new Area();
+            area.areaName = "KukatPalli";
+            listAreas.add(area);
+            area = new Area();
+            area.areaName = "Gachibowlli";
+            listAreas.add(area);
+
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        return listAreas;
+    }
+
     public static List<String> getMenuList(String loginType){
         List<String> menuList = new ArrayList<>();
         try{
@@ -70,11 +175,14 @@ public class DataManager {
                     break;
                 case AppConstents.LOGIN_SERVICE_MAN:
                     menuList.add(AppConstents.APPLICATION_LIST);
+                    menuList.add(AppConstents.CHAT);
                     menuList.add(AppConstents.LOGOUT);
                     break;
                 case AppConstents.LOGIN_CUSTOMER:
                     menuList.add(AppConstents.SERVICES);
                     menuList.add(AppConstents.MY_ACCOUNT);
+                    menuList.add(AppConstents.CHAT);
+                    menuList.add(AppConstents.MY_COMPLAINTS);
                     menuList.add(AppConstents.LOGOUT);
                     break;
                 case AppConstents.LOGIN_TYPE_NONE:
@@ -95,7 +203,7 @@ public class DataManager {
     }
 
     public static List<String> getServices(String serviceType){
-        List<String>  permissionList = new ArrayList<>();;
+        List<String>  permissionList = new ArrayList<>();
         try{
             switch (serviceType){
                 case AppConstents.POLICE_PERMISSIONS:
@@ -173,5 +281,68 @@ public class DataManager {
             e.printStackTrace();
         }
         return userLoginType;
+    }
+
+
+    public static  List<String> getInstructionsForCyberCafesPermission(){
+        List<String> listPermissionInstructions = new ArrayList<>();
+        try{
+            listPermissionInstructions.add(PermissionInstruConstents.APPLICATION_ESEVE);
+            listPermissionInstructions.add(PermissionInstruConstents.DETAILS);
+            listPermissionInstructions.add(PermissionInstruConstents.DOCS);
+            listPermissionInstructions.add(PermissionInstruConstents.MUNICIPAL_PERMISSION);
+            listPermissionInstructions.add(PermissionInstruConstents.LEASE_AGR);
+            listPermissionInstructions.add(PermissionInstruConstents.SITE_PLAN);
+            listPermissionInstructions.add(PermissionInstruConstents.RENT_RECEIPTS);
+            listPermissionInstructions.add(PermissionInstruConstents.TAX_RECEIPTS);
+            listPermissionInstructions.add(PermissionInstruConstents.NOC_FIRE_DEPT);
+            listPermissionInstructions.add(PermissionInstruConstents.CER_BSNL_TEL);
+            listPermissionInstructions.add(PermissionInstruConstents.NOC_NEIG);
+            listPermissionInstructions.add(PermissionInstruConstents.GAMBLING_MACH);
+            listPermissionInstructions.add(PermissionInstruConstents.ID_RESIDENTIAL);
+            listPermissionInstructions.add(PermissionInstruConstents.SERVER_CLIENT);
+            listPermissionInstructions.add(PermissionInstruConstents.PARTNERSHIP_DEED);
+            listPermissionInstructions.add(PermissionInstruConstents.MEM_ASSOCI);
+            listPermissionInstructions.add(PermissionInstruConstents.ARTICLE_ASSOCI);
+            listPermissionInstructions.add(PermissionInstruConstents.BOND);
+            listPermissionInstructions.add(PermissionInstruConstents.IT_RETURNS);
+            listPermissionInstructions.add(PermissionInstruConstents.FEE_PAYABLE);
+            listPermissionInstructions.add(PermissionInstruConstents.SERVICE_CHARGES);
+            listPermissionInstructions.add(PermissionInstruConstents.FRESH_LICENCE_CHARGE);
+            listPermissionInstructions.add(PermissionInstruConstents.ANNUAL_RENEWAL_CHARGE);
+            listPermissionInstructions.add(PermissionInstruConstents.SUBMIT_ESEVA);
+            listPermissionInstructions.add(PermissionInstruConstents.LICENCE_ISSUED);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        return listPermissionInstructions;
+    }
+
+    public static List<String> getInstructionForArmsLicense(){
+        List<String> listInstruArmsLicense = new ArrayList<>();
+        try{
+            listInstruArmsLicense.add(PermissionInstruConstents.APPLICATION_ESEVE);
+            listInstruArmsLicense.add(PermissionInstruConstents.FORM_A);
+            listInstruArmsLicense.add(PermissionInstruConstents.DOCS);
+            listInstruArmsLicense.add(PermissionInstruConstents.RESIDENTIAL_PROOF);
+            listInstruArmsLicense.add(PermissionInstruConstents.ORIGINAL_ARMS_LICENCE);
+            listInstruArmsLicense.add(PermissionInstruConstents.ORIGINAL_CHALLAN);
+            listInstruArmsLicense.add(PermissionInstruConstents.NO_OBJECTIONS);
+            listInstruArmsLicense.add(PermissionInstruConstents.NOC_FAMILY_MEMBERS);
+            listInstruArmsLicense.add(PermissionInstruConstents.PASSPORT_PHOTOS);
+            listInstruArmsLicense.add(PermissionInstruConstents.IT_RETURNS);
+            listInstruArmsLicense.add(PermissionInstruConstents.FEE_PAYABLE);
+            listInstruArmsLicense.add(PermissionInstruConstents.SERVICE_CHARGES);
+            listInstruArmsLicense.add(PermissionInstruConstents.FRESH_LICENCE_CHARGE);
+            listInstruArmsLicense.add(PermissionInstruConstents.ANNUAL_RENEWAL_CHARGE);
+            listInstruArmsLicense.add(PermissionInstruConstents.SUBMIT_ESEVA);
+            listInstruArmsLicense.add(PermissionInstruConstents.LICENCE_ISSUED);
+            listInstruArmsLicense.add(PermissionInstruConstents.NOTE);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        return listInstruArmsLicense;
     }
 }
