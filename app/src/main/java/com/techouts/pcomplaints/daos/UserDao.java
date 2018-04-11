@@ -22,8 +22,8 @@ public interface UserDao {
     @Query("SELECT * FROM User WHERE email LIKE :email LIMIT 1")
     User getUserDetailsByEmailId(String email);
 
-    @Query("SELECT count(*) FROM User Where email LIKE :email AND password LIKE :password")
-    int findUserByEmailAndPassword(String email,String password);
+    @Query("SELECT count(*) FROM User Where email LIKE :email AND password LIKE :password AND userType Like :userType")
+    int findUserByEmailAndPassword(String email,String password,String userType);
     @Insert
     void insertAll(List<User> users);
 

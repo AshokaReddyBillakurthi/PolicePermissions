@@ -14,7 +14,6 @@ public class SharedPreferenceUtils {
     private static SharedPreferences.Editor editor;
 
     public static String APPLICATION_NO = "APPLICATION_NO";
-    public static String IS_LOGGEDIN = "IS_LOGGEDIN";
 
     public SharedPreferenceUtils(Context context){
         pref = context.getSharedPreferences("PermissionPref", 0);

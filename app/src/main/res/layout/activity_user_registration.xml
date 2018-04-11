@@ -159,15 +159,17 @@
                     android:buttonTint="@color/app_color"
                     android:text="I have read and accept the"
                     android:textColor="@color/black"
-                    android:textSize="14sp" />
+                    android:textSize="13sp" />
                 <TextView
                     android:id="@+id/tvTermsandConditions"
                     android:layout_width="0dp"
                     android:layout_weight="1"
-                    android:layout_marginLeft="5dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:ellipsize="end"
+                    android:maxLines="@integer/int_1"
                     android:text="@string/termsandconditions"
-                    android:textSize="@dimen/dimen_16sp"
+                    android:textSize="@dimen/dimen_14sp"
                     android:textColor="@color/red"/>
             </LinearLayout>
         </LinearLayout>

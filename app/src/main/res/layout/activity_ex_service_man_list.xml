@@ -20,8 +20,9 @@
             android:id="@+id/tabs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:tabBackground="@color/gray"
-            app:tabTextColor="@color/white"
+            app:tabSelectedTextColor="@color/white"
+            app:tabTextColor="@color/lite_white"
+            app:tabBackground="@color/app_color"
             app:tabTextAppearance="@style/Base.TextAppearance.AppCompat.Medium"
             app:tabMode="fixed" />
 

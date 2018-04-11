@@ -63,7 +63,7 @@ public class PermissionListAdapter extends RecyclerView.Adapter<PermissionListAd
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(SharedPreferenceUtils.getBoolValue(SharedPreferenceUtils.IS_LOGGEDIN)){
+                    if(SharedPreferenceUtils.getBoolValue(AppConstents.IS_LOGGEDIN)){
                         String permissionName = tvPermissionName.getText().toString();
                         if(permissionName.equalsIgnoreCase(AppConstents.INTERNET_CAFES)){
                             Intent intent = new Intent(itemView.getContext(), PermissionInstructionActivity.class);

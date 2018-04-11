@@ -1,46 +1,67 @@
 package com.techouts.pcomplaints.entities;
 
-import java.util.Date;
+
+import com.techouts.pcomplaints.data.Tools;
+
+/**
+ * Created by TO-OW109 on 26-03-2018.
+ */
 
 public class ChatMessage {
 
-    private String messageText;
-    private String messageUser;
-    private long messageTime;
+    private String text;
+    private String friendId;
+    private String friendName;
+    private String friendPhoto;
+    private String senderId;
+    private String senderName;
+    private String senderPhoto;
+    private String timestamp;
 
-    public ChatMessage(String messageText, String messageUser) {
-        this.messageText = messageText;
-        this.messageUser = messageUser;
-
-        // Initialize to current time
-        messageTime = new Date().getTime();
+    public ChatMessage(String text, String timestamp, String friendId, String friendName,
+                       String friendPhoto, String senderId, String senderName, String senderPhoto) {
+        this.text = text;
+        this.timestamp = timestamp;
+        this.friendId=friendId;
+        this.friendName=friendName;
+        this.friendPhoto=friendPhoto;
+        this.senderId=senderId;
+        this.senderName=senderName;
+        this.senderPhoto=senderPhoto;
     }
 
-    public ChatMessage(){
-
+    public String getText() {
+        return text;
     }
 
-    public String getMessageText() {
-        return messageText;
+    public void setText(String text) {
+        this.text = text;
     }
 
-    public void setMessageText(String messageText) {
-        this.messageText = messageText;
+    public String getReadableTime()
+    {
+        try {
+            return Tools.formatTime(Long.valueOf(timestamp));
+        }
+        catch (NumberFormatException ignored) {
+            return null;
+        }
     }
 
-    public String getMessageUser() {
-        return messageUser;
+    public Friend getReceiver() {
+        return new Friend(friendId,friendName,"",friendPhoto);
     }
 
-    public void setMessageUser(String messageUser) {
-        this.messageUser = messageUser;
+    public Friend getSender() {
+        return new Friend(senderId,senderName,"", senderPhoto);
     }
 
-    public long getMessageTime() {
-        return messageTime;
+    public String getTimestamp() {
+        return timestamp;
     }
 
-    public void setMessageTime(long messageTime) {
-        this.messageTime = messageTime;
+    public long getComparableTimestamp()
+    {
+        return Long.parseLong(timestamp);
     }
 }

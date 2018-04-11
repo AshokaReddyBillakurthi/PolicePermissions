@@ -1,32 +1,52 @@
 package com.techouts.pcomplaints;
 
 import android.content.Intent;
+import android.os.Build;
+import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
-import android.text.format.DateFormat;
-import android.view.Gravity;
+import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.view.View;
-import android.widget.EditText;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.ProgressBar;
 
-import com.firebase.ui.auth.AuthUI;
-import com.firebase.ui.database.FirebaseListAdapter;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.Scopes;
+import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.techouts.pcomplaints.entities.ChatMessage;
+import com.google.firebase.database.ValueEventListener;
+import com.techouts.pcomplaints.data.SettingsAPI;
+import com.techouts.pcomplaints.data.Tools;
 
-public class ChatActivity extends BaseActivity {
+public class ChatActivity extends BaseActivity implements GoogleApiClient.OnConnectionFailedListener,
+        View.OnClickListener {
 
-    private static final int SIGN_IN_REQUEST_CODE = 101;
-    private FirebaseListAdapter<ChatMessage> adapter;
-    private TextView tvTitle;
-    private ImageView ivBack;
-    private int count = 0;
+    private static final int RC_SIGN_IN = 100;
+    private SignInButton signInButton;
+    private ProgressBar loginProgress;
+    private GoogleApiClient mGoogleApiClient;
+    private FirebaseAuth mFirebaseAuth;
+    private DatabaseReference ref;
+    private SettingsAPI set;
+    public static final String USERS_CHILD = "users";
 
     @Override
     public int getRootLayout() {
@@ -35,147 +55,204 @@ public class ChatActivity extends BaseActivity {
 
     @Override
     public void initGUI() {
+        bindLogo();
 
-        tvTitle = findViewById(R.id.tvTitle);
-        ivBack = findViewById(R.id.ivBack);
+        // Assign fields
+        signInButton = findViewById(R.id.sign_in_button);
+        loginProgress = findViewById(R.id.login_progress);
 
-        tvTitle.setText("Chat");
+        // Set click listeners
+        signInButton.setOnClickListener(this);
 
-        ivBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                signOut();
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .requestProfile()
+                .requestScopes(new Scope(Scopes.PLUS_ME))
+                .requestScopes(new Scope(Scopes.PLUS_LOGIN))
+                .build();
+
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build();
+
+        // Initialize FirebaseAuth
+        mFirebaseAuth = FirebaseAuth.getInstance();
+        set = new SettingsAPI(this);
+
+        if (getIntent().getStringExtra("mode") != null) {
+            if (getIntent().getStringExtra("mode").equals("logout")) {
+                mGoogleApiClient.connect();
+                mGoogleApiClient.registerConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
+                    @Override
+                    public void onConnected(@Nullable Bundle bundle) {
+                        mFirebaseAuth.signOut();
+                        Auth.GoogleSignInApi.signOut(mGoogleApiClient);
+                        set.deleteAllSettings();
+                    }
+
+                    @Override
+                    public void onConnectionSuspended(int i) {
+
+                    }
+                });
             }
-        });
-
+        }
+        if (!mGoogleApiClient.isConnecting()) {
+            if (!set.readSetting("myid").equals("na")) {
+                signInButton.setVisibility(View.GONE);
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        startActivity(new Intent(ChatActivity.this, ActivityMain.class));
+                        finish();
+                    }
+                }, 3000);
+            }
+        }
+        // for system bar in lollipop
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Tools.systemBarLolipop(this);
+        }
     }
 
     @Override
     public void initData() {
 
-        if(FirebaseAuth.getInstance().getCurrentUser() == null) {
-            // Start sign in/sign up activity
-            startActivityForResult(
-                    AuthUI.getInstance()
-                            .createSignInIntentBuilder()
-                            .build(),
-                    SIGN_IN_REQUEST_CODE
-            );
-        } else {
-            // User is already signed in. Therefore, display
-            // a welcome Toast
-            showToast( "Welcome " + FirebaseAuth.getInstance()
-                    .getCurrentUser()
-                    .getDisplayName());
+    }
 
-            // Load chat room contents
-            displayChatMessages();
-        }
 
-        displayChatMessages();
-
-        FloatingActionButton fab = findViewById(R.id.fab);
-
-        fab.setOnClickListener(new View.OnClickListener() {
+    private void bindLogo() {
+        // Start animating the image
+        final ImageView splash =  findViewById(R.id.splash);
+        final AlphaAnimation animation1 = new AlphaAnimation(0.2f, 1.0f);
+        animation1.setDuration(700);
+        final AlphaAnimation animation2 = new AlphaAnimation(1.0f, 0.2f);
+        animation2.setDuration(700);
+        //animation1 AnimationListener
+        animation1.setAnimationListener(new Animation.AnimationListener() {
             @Override
-            public void onClick(View view) {
-                EditText input = (EditText)findViewById(R.id.input);
+            public void onAnimationEnd(Animation arg0) {
+                // start animation2 when animation1 ends (continue)
+                splash.startAnimation(animation2);
+            }
 
-                // Read the input field and push a new instance
-                // of ChatMessage to the Firebase database
-                FirebaseDatabase.getInstance()
-                        .getReference()
-                        .push()
-                        .setValue(new ChatMessage(input.getText().toString(),
-                                FirebaseAuth.getInstance()
-                                        .getCurrentUser()
-                                        .getDisplayName())
-                        );
+            @Override
+            public void onAnimationRepeat(Animation arg0) {
+            }
 
-                // Clear the input
-                input.setText("");
+            @Override
+            public void onAnimationStart(Animation arg0) {
             }
         });
 
-    }
-
-
-    private void displayChatMessages(){
-        ListView listOfMessages =  findViewById(R.id.list_of_messages);
-
-       adapter = new FirebaseListAdapter<ChatMessage>(this, ChatMessage.class,
-                R.layout.message, FirebaseDatabase.getInstance().getReference()) {
+        //animation2 AnimationListener
+        animation2.setAnimationListener(new Animation.AnimationListener() {
             @Override
-            protected void populateView(View v, ChatMessage model, int position) {
-
-                LinearLayout llLayout = v.findViewById(R.id.llLayout);
-                // Get references to the views of message.xml
-                TextView messageText = v.findViewById(R.id.message_text);
-                TextView messageUser = v.findViewById(R.id.message_user);
-                if(model.getMessageUser().equalsIgnoreCase("Ashoka")){
-                    llLayout.setGravity(Gravity.LEFT);
-                    messageText.setGravity(Gravity.LEFT);
-                    messageUser.setGravity(Gravity.LEFT);
-                }
-                else{
-                    llLayout.setGravity(Gravity.RIGHT);
-                    messageText.setGravity(Gravity.RIGHT);
-                    messageUser.setGravity(Gravity.RIGHT);
-                }
-
-                count++;
-
-
-                // Set their text
-                messageText.setText(model.getMessageText());
-                messageUser.setText(model.getMessageUser());
-
-//                // Format the date before showing it
-//                messageTime.setText(DateFormat.format("dd-MM-yyyy (HH:mm:ss)",
-//                        model.getMessageTime()));
+            public void onAnimationEnd(Animation arg0) {
+                // start animation1 when animation2 ends (repeat)
+                splash.startAnimation(animation1);
             }
-        };
 
-        listOfMessages.setAdapter(adapter);
+            @Override
+            public void onAnimationRepeat(Animation arg0) {
+            }
+
+            @Override
+            public void onAnimationStart(Animation arg0) {
+            }
+        });
+
+        splash.startAnimation(animation1);
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode,
-                                    Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.sign_in_button:
+                signIn();
+                break;
+            default:
+                return;
+        }
+    }
 
-        if (requestCode == SIGN_IN_REQUEST_CODE) {
-            if (resultCode == RESULT_OK) {
-                showToast("Successfully signed in. Welcome!");
-                displayChatMessages();
+    private void signIn() {
+        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
+        startActivityForResult(signInIntent, RC_SIGN_IN);
+
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
+        if (requestCode == RC_SIGN_IN) {
+            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+            if (result.isSuccess()) {
+                signInButton.setVisibility(View.GONE);
+                loginProgress.setVisibility(View.VISIBLE);
+                // Google Sign In was successful, authenticate with Firebase
+                GoogleSignInAccount account = result.getSignInAccount();
+                firebaseAuthWithGoogle(account);
             } else {
-                showToast("We couldn't sign you in. Please try again later.");
-                // Close the app
-                finish();
+                Snackbar.make(getWindow().getDecorView(), "Login failed", Snackbar.LENGTH_LONG).show();
             }
         }
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        signOut();
-    }
+    private void firebaseAuthWithGoogle(final GoogleSignInAccount acct) {
+        AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
+        mFirebaseAuth.signInWithCredential(credential)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        // If sign in fails, display a message to the user. If sign in succeeds
+                        // the auth state listener will be notified and logic to handle the
+                        // signed in user can be handled in the listener.
+                        if (!task.isSuccessful()) {
+                            Snackbar.make(getWindow().getDecorView(), "Authentication failed.", Snackbar.LENGTH_LONG).show();
+                        } else {
+                            ref=FirebaseDatabase.getInstance().getReference(USERS_CHILD);
+                            ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot snapshot) {
+                                    final String usrNm = acct.getDisplayName();
+                                    final String usrId = acct.getId();
+                                    final String usrDp = acct.getPhotoUrl().toString();
+                                    final String usrEmail = acct.getEmail();
 
-    private void signOut(){
-        try{
-            AuthUI.getInstance().signOut(this)
-                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            showToast("You have been signed out from chat.");
-                            // Close activity
+                                    set.addUpdateSettings("myid", usrId);
+                                    set.addUpdateSettings("myname", usrNm);
+                                    set.addUpdateSettings("mydp", usrDp);
+                                    set.addUpdateSettings("myemail",usrEmail);
+
+                                    if (!snapshot.hasChild(usrId)) {
+                                        ref.child(usrId + "/email").setValue(usrEmail);
+                                        ref.child(usrId + "/name").setValue(usrNm);
+                                        ref.child(usrId + "/photo").setValue(usrDp);
+                                        ref.child(usrId + "/id").setValue(usrId);
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+                                }
+                            });
+
+                            startActivity(new Intent(ChatActivity.this, ActivityMain.class));
                             finish();
                         }
-                    });
-        }
-        catch (Exception e){
-            e.printStackTrace();
-        }
+                    }
+                });
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+        // An unresolvable error has occurred and Google APIs (including Sign-In) will not
+        // be available.
+        Snackbar.make(getWindow().getDecorView(), "Google Play Services error.", Snackbar.LENGTH_LONG).show();
     }
 }

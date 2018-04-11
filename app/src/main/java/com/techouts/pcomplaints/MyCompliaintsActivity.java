@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import com.techouts.pcomplaints.adapters.ApplicationsListAdapter;
 import com.techouts.pcomplaints.datahandler.DatabaseHandler;
-import com.techouts.pcomplaints.entities.PermissionApplication;
+import com.techouts.pcomplaints.entities.Application;
 import com.techouts.pcomplaints.utils.AppConstents;
 import com.techouts.pcomplaints.utils.SharedPreferenceUtils;
 
@@ -26,9 +26,9 @@ public class MyCompliaintsActivity extends BaseActivity {
     private EditText edtSearch;
     private ImageView ivCross,ivBack;
     private TextView tvTitle;
-    private List<PermissionApplication> tempPermissionApplication;
     private ApplicationsListAdapter applicationsListAdapter;
-    private List<PermissionApplication> permissionApplicationList;
+    private List<Application> tempApplication;
+    private List<Application> applicationList;
     @Override
     public int getRootLayout() {
         return R.layout.activity_my_applications;
@@ -93,20 +93,20 @@ public class MyCompliaintsActivity extends BaseActivity {
 
     private void searchText(String searchText) {
         try {
-            tempPermissionApplication = new ArrayList<>();
+            tempApplication = new ArrayList<>();
             if (!TextUtils.isEmpty(searchText)) {
-                for (PermissionApplication permissionApplication : permissionApplicationList) {
-                    if ((permissionApplication.area.toLowerCase().contains(searchText))
-                            || (permissionApplication.fullName.toLowerCase().contains(searchText))
-                            || (permissionApplication.applicationType.toLowerCase().contains(searchText))) {
-                        tempPermissionApplication.add(permissionApplication);
+                for (Application application : applicationList) {
+                    if ((application.area.toLowerCase().contains(searchText))
+                            || (application.firstName.toLowerCase().contains(searchText))
+                            || (application.applicationType.toLowerCase().contains(searchText))) {
+                        tempApplication.add(application);
                     }
                 }
-                if (tempPermissionApplication != null && tempPermissionApplication.size() > 0) {
-                    applicationsListAdapter.refresh(tempPermissionApplication);
+                if (tempApplication != null && tempApplication.size() > 0) {
+                    applicationsListAdapter.refresh(tempApplication);
                 }
             } else {
-                applicationsListAdapter.refresh(permissionApplicationList);
+                applicationsListAdapter.refresh(applicationList);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -120,20 +120,20 @@ public class MyCompliaintsActivity extends BaseActivity {
     }
 
 
-    class GetApplicationsAsyncTask extends AsyncTask<String,Void,List<PermissionApplication>> {
+    class GetApplicationsAsyncTask extends AsyncTask<String,Void,List<Application>> {
 
         @Override
-        protected List<PermissionApplication> doInBackground(String... strings) {
+        protected List<Application> doInBackground(String... strings) {
                 return  DatabaseHandler.getInstance(getApplicationContext())
-                        .permissionApplicationDao().getAllApplicationsByEmail(strings[0]);
+                        .applicationDao().getApplicationDetailsByEmailId(strings[0]);
 
         }
         @Override
-        protected void onPostExecute(List<PermissionApplication> permissionApplications) {
-            super.onPostExecute(permissionApplications);
-            if(permissionApplications!=null&&!permissionApplications.isEmpty()){
-                permissionApplicationList = permissionApplications;
-                applicationsListAdapter.refresh(permissionApplications);
+        protected void onPostExecute(List<Application> applications) {
+            super.onPostExecute(applications);
+            if(applications!=null&&!applications.isEmpty()){
+                applicationList = applications;
+                applicationsListAdapter.refresh(applications);
             }
         }
     }

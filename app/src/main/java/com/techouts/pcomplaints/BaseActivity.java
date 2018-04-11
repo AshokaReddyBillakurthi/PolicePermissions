@@ -155,7 +155,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
         double amount = 0;
         try {
-            amount = Double.parseDouble("200");
+            amount = Double.parseDouble("1");
 
         } catch (Exception e) {
             e.printStackTrace();

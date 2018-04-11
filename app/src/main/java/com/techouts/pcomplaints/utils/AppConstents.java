@@ -6,9 +6,9 @@ package com.techouts.pcomplaints.utils;
 
 public interface AppConstents {
 
-    String LOGIN_ADMIN = "Login As Admin";
-    String LOGIN_SERVICE_MAN = "Login As Ex.Service Man";
-    String LOGIN_CUSTOMER = "Login As Customer";
+    String LOGIN_ADMIN = "Admin";
+    String LOGIN_SERVICE_MAN = "XService Man";
+    String LOGIN_CUSTOMER = "Customer";
     String CREATE_SERVICE_MAN = "Create Service Man";
     String CREATE_SERVICE = "Create Service";
     String CHAT = "Chat";
@@ -16,7 +16,7 @@ public interface AppConstents {
     String MY_ACCOUNT = "My Profile";
     String MY_COMPLAINTS = "My Complaints";
     String ADMIN = "Admin";
-    String SERVICE_MAN = "Ex.Service Man";
+    String SERVICE_MAN = "XService Man";
     String CUSTOMER = "Customer";
     String HOME = "Home";
     String LOGIN = "Login";
@@ -35,6 +35,9 @@ public interface AppConstents {
     String PENDING = "Pending";
     String INPROGRESS = "In Progress";
     String COMPLETED ="Completed";
+    String USERTYPE = "UserType";
+    String LOGIN_TYPE = "LoginType";
+    String IS_LOGGEDIN = "IS_LOGGEDIN";
 
     //Extras
     String EXTRA_USER_TYPE = "UserType";

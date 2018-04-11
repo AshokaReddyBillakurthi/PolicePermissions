@@ -13,6 +13,9 @@
     <string name="apply_proceed_pay">Apply &amp; Proceed To Pay</string>
     <string name="error_message">Oops! Something went wrong</string>
     <string name="termsandconditions"><u>Terms &amp; Conditions</u></string>
+    <string name="press_again_exit_app">Press again to exit</string>
+    <string name="settings_file_name">com.app.sample.fchat.temp</string>
+    <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

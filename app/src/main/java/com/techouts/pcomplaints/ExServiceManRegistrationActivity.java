@@ -65,6 +65,7 @@ public class ExServiceManRegistrationActivity extends BaseActivity {
     private ArrayList<String> docList;
     private boolean isServiceSelectd = false;
     private CustomDialog customDialog = null;
+    private String userType = "";
 
     @Override
     public int getRootLayout() {
@@ -73,6 +74,10 @@ public class ExServiceManRegistrationActivity extends BaseActivity {
 
     @Override
     public void initGUI() {
+
+        if(getIntent().getExtras()!=null){
+            userType =  getIntent().getStringExtra(AppConstents.EXTRA_USER_TYPE);
+        }
         edtFirstName = findViewById(R.id.edtFirstName);
         edtLastName = findViewById(R.id.edtLastName);
         edtExPoliceId = findViewById(R.id.edtExPoliceId);
@@ -246,6 +251,7 @@ public class ExServiceManRegistrationActivity extends BaseActivity {
                 exServiceMan.state = state;
                 exServiceMan.city = city;
                 exServiceMan.area = area;
+                exServiceMan.userType = userType;
                 exServiceMan.userImg = userImg;
                 exServiceMan.status = 0;
                 if (docList != null && docList.size() > 0) {
@@ -286,10 +292,10 @@ public class ExServiceManRegistrationActivity extends BaseActivity {
             jsonObject.put("area", exServiceMan.area);
             jsonObject.put("image", exServiceMan.userImg);
             jsonObject.put("userType", exServiceMan.userType);
-            JsonArray jsonElements = new JsonArray();
-            jsonElements.add("license");
-            jsonElements.add("crime");
-            jsonObject.put("serviceAbility",jsonElements);
+//            JsonArray jsonElements = new JsonArray();
+//            jsonElements.add("license");
+//            jsonElements.add("crime");
+//            jsonObject.put("serviceAbility",jsonElements);
             String body = jsonObject.toString();
             RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), body);
             Request.Builder builder = new Request.Builder();

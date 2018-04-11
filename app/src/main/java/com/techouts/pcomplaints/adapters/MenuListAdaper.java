@@ -103,6 +103,7 @@ public class MenuListAdaper extends RecyclerView.Adapter<MenuListAdaper.MenuView
                         }
                         case AppConstents.CUSTOMER_LIST:{
                             llChildItems.setVisibility(View.GONE);
+                            ((HomeActivity)itemView.getContext()).closeDrawer();
                             Intent intent = new Intent(itemView.getContext(), UserListActivity.class);
                             intent.putExtra(AppConstents.EXTRA_USER_LIST,AppConstents.CUSTOMER);
                             itemView.getContext().startActivity(intent);
@@ -110,6 +111,7 @@ public class MenuListAdaper extends RecyclerView.Adapter<MenuListAdaper.MenuView
                         }
                         case AppConstents.CHAT:{
                             llChildItems.setVisibility(View.GONE);
+                            ((HomeActivity)itemView.getContext()).closeDrawer();
                             Intent intent = new Intent(itemView.getContext(), ChatActivity.class);
                             itemView.getContext().startActivity(intent);
                             break;

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,8 +12,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.techouts.pcomplaints.ApplicationDetailsActivity;
-import com.techouts.pcomplaints.entities.PermissionApplication;
+import com.techouts.pcomplaints.ChatActivity;
 import com.techouts.pcomplaints.R;
+import com.techouts.pcomplaints.entities.Application;
 import com.techouts.pcomplaints.utils.AppConstents;
 
 import java.io.File;
@@ -27,11 +27,11 @@ import java.util.List;
 
 public class ApplicationsListAdapter extends RecyclerView.Adapter<ApplicationsListAdapter.ApplicationViewHolder>{
 
-    private List<PermissionApplication> permissionApplicationList;
+    private List<Application> applicationList;
     private Context mContext;
 
     public ApplicationsListAdapter(){
-        this.permissionApplicationList = new ArrayList<>();
+        this.applicationList = new ArrayList<>();
     }
 
     @Override
@@ -43,42 +43,52 @@ public class ApplicationsListAdapter extends RecyclerView.Adapter<ApplicationsLi
 
     @Override
     public void onBindViewHolder(ApplicationViewHolder holder, int position) {
-        holder.tvName.setText(permissionApplicationList.get(position).fullName+"");
-        holder.tvEmail.setText(permissionApplicationList.get(position).owneremail+"");
-        holder.tvMobileNo.setText(permissionApplicationList.get(position).telephoneNo+"");
-        holder.tvApplicationType.setText(permissionApplicationList.get(position).applicationType+"");
-        holder.tvArea.setText(permissionApplicationList.get(position).area+"");
+        holder.tvName.setText(applicationList.get(position).firstName+" "+applicationList.get(position).lastName);
+        holder.tvEmail.setText(applicationList.get(position).email+"");
+        holder.tvMobileNo.setText(applicationList.get(position).mobileNo+"");
+        holder.tvApplicationType.setText(applicationList.get(position).applicationType+"");
+        holder.tvArea.setText(applicationList.get(position).area+"");
 
-        if(permissionApplicationList.get(position).status == 0) {
+        if(applicationList.get(position).status == 0) {
             holder.tvStatus.setText(AppConstents.PENDING);
             holder.tvStatus.setTextColor(mContext.getColor(R.color.error_strip));
         }
-        else if(permissionApplicationList.get(position).status == 1){
+        else if(applicationList.get(position).status == 1){
             holder.tvStatus.setText(AppConstents.INPROGRESS);
             holder.tvStatus.setTextColor(mContext.getColor(R.color.orange));
         }
-        else if(permissionApplicationList.get(position).status == 2){
+        else if(applicationList.get(position).status == 2){
             holder.tvStatus.setText(AppConstents.COMPLETED);
             holder.tvStatus.setTextColor(mContext.getColor(R.color.button_green));
         }
 
-        getImageOfServiceMan(permissionApplicationList.get(position).applicantImg,holder.ivApplicantImg);
+        holder.ivMessage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext, ChatActivity.class);
+                intent.putExtra(AppConstents.EXTRA_EMAIL_ID,"ashok.billakurthi@gmail.com");
+                mContext.startActivity(intent);
+            }
+        });
+
+        getImageOfServiceMan(applicationList.get(position).userImg,holder.ivApplicantImg);
     }
 
-    public void refresh(List<PermissionApplication> permissionApplicationList){
-        this.permissionApplicationList = permissionApplicationList;
+    public void refresh(List<Application> applicationList){
+        this.applicationList = applicationList;
         notifyDataSetChanged();
     }
 
     @Override
     public int getItemCount() {
-        return permissionApplicationList.size();
+        return applicationList.size();
     }
 
     class ApplicationViewHolder extends RecyclerView.ViewHolder{
 
-        ImageView ivApplicantImg;
-        TextView tvName,tvEmail,tvMobileNo,tvApplicationType,tvArea,tvStatus;
+        ImageView ivApplicantImg,ivMessage;
+        TextView tvName,tvEmail,tvMobileNo,tvApplicationType,
+                tvArea,tvStatus;
 
         public ApplicationViewHolder(View itemView) {
             super(itemView);
@@ -87,6 +97,7 @@ public class ApplicationsListAdapter extends RecyclerView.Adapter<ApplicationsLi
             tvName = itemView.findViewById(R.id.tvName);
             tvEmail = itemView.findViewById(R.id.tvEmail);
             tvMobileNo = itemView.findViewById(R.id.tvMobileNo);
+            ivMessage = itemView.findViewById(R.id.ivMessage);
             tvArea = itemView.findViewById(R.id.tvArea);
             tvStatus = itemView.findViewById(R.id.tvStatus);
             tvApplicationType = itemView.findViewById(R.id.tvApplicationType);
@@ -96,7 +107,7 @@ public class ApplicationsListAdapter extends RecyclerView.Adapter<ApplicationsLi
                 public void onClick(View v) {
                     Intent intent = new Intent(mContext, ApplicationDetailsActivity.class);
                     intent.putExtra(AppConstents.EXTRA_PERMISSION_APPLICATION,
-                            permissionApplicationList.get(getAdapterPosition()));
+                            applicationList.get(getAdapterPosition()));
                     mContext.startActivity(intent);
                 }
             });

@@ -34,7 +34,7 @@
                 android:drawablePadding="5dp"
                 android:drawableRight="@drawable/ic_down_arrow_red"
                 android:drawableTint="@color/app_color"
-                android:hint="Select Login Type"
+                android:hint="Select User Type"
                 android:padding="8dp"
                 android:textColor="@color/input_login"
                 android:textColorHint="@color/input_login_hint"

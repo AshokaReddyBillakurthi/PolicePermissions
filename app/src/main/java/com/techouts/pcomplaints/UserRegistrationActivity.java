@@ -213,14 +213,14 @@ public class UserRegistrationActivity extends BaseActivity {
                 user.area = area;
                 user.userImg = userImg;
                 user.userType = userType;
-                if(postDataToServer(user)){
-//                    arrayList.add(user);
-//                    new UserAsyncTask().execute(arrayList);
-                    showToast("Data posted Successfully");
-                }
-                else{
-                    showToast("Failed");
-                }
+//                if(postDataToServer(user)){
+////                    arrayList.add(user);
+////                    new UserAsyncTask().execute(arrayList);
+//                    showToast("Data posted Successfully");
+//                }
+//                else{
+//                    showToast("Failed");
+//                }
                 arrayList.add(user);
                 new UserAsyncTask().execute(arrayList);
             }

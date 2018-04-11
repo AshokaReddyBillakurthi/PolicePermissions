@@ -55,36 +55,7 @@ public class LoginActivity extends BaseActivity {
         tvLoginType.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                List<String> userLoginTypes = DataManager.getUserLoginTypes();
-                customDialog = new CustomDialog(LoginActivity.this, userLoginTypes,
-                        "Select Login Type",false,false,
-                        new CustomDialog.NameSelectedListener() {
-                            @Override
-                            public void onNameSelected(String listName) {
-                                if(listName.equalsIgnoreCase(AppConstents.LOGIN_ADMIN)){
-                                    btnRegister.setVisibility(View.GONE);
-                                    userType = AppConstents.USER_TYPE_ADMIN;
-                                    edtEmail.setText("");
-                                    edtPassword.setText("");
-                                }
-                                else if(listName.equalsIgnoreCase(AppConstents.LOGIN_SERVICE_MAN)){
-                                    userType = AppConstents.USER_TYPE_SERVICEMAN;
-                                    btnRegister.setVisibility(View.VISIBLE);
-                                    edtEmail.setText("");
-                                    edtPassword.setText("");
-                                }
-                                else if(listName.equalsIgnoreCase(AppConstents.LOGIN_CUSTOMER)){
-                                    userType = AppConstents.USER_TYPE_CUSTOMER;
-                                    btnRegister.setVisibility(View.VISIBLE);
-                                    edtEmail.setText("");
-                                    edtPassword.setText("");
-                                }
-                                loginType = listName;
-                                tvLoginType.setText(listName);
-                                customDialog.dismiss();
-                            }
-                        });
-                customDialog.show();
+                showLoginTypeDialog();
             }
         });
     }
@@ -103,20 +74,24 @@ public class LoginActivity extends BaseActivity {
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!TextUtils.isEmpty(userType)&&!(userType.equals(AppConstents.USER_TYPE_ADMIN))){
-                    if(userType.equalsIgnoreCase(AppConstents.USER_TYPE_SERVICEMAN)){
-                        Intent intent = new Intent(LoginActivity.this,ExServiceManRegistrationActivity.class);
-                        intent.putExtra(AppConstents.EXTRA_USER_TYPE,userType);
-                        startActivity(intent);
-                    }
-                    else if(userType.equalsIgnoreCase(AppConstents.USER_TYPE_CUSTOMER)){
-                        Intent intent = new Intent(LoginActivity.this,UserRegistrationActivity.class);
-                        intent.putExtra(AppConstents.EXTRA_USER_TYPE,userType);
-                        startActivity(intent);
-                    }
+                if(TextUtils.isEmpty(userType)){
+                    showLoginTypeDialog();
                 }
                 else{
-                    showToast("Please select login type as either service man or customer");
+                    if(!TextUtils.isEmpty(userType)&&!(userType.equals(AppConstents.USER_TYPE_ADMIN))){
+                        if(userType.equalsIgnoreCase(AppConstents.USER_TYPE_SERVICEMAN)){
+                            Intent intent = new Intent(LoginActivity.this,ExServiceManRegistrationActivity.class);
+                            intent.putExtra(AppConstents.EXTRA_USER_TYPE,userType);
+                            startActivity(intent);
+                        }
+                        else if(userType.equalsIgnoreCase(AppConstents.USER_TYPE_CUSTOMER)){
+                            Intent intent = new Intent(LoginActivity.this,UserRegistrationActivity.class);
+                            intent.putExtra(AppConstents.EXTRA_USER_TYPE,userType);
+                            startActivity(intent);
+                        }
+                    } else{
+                        showToast("Please select login type as either service man or customer");
+                    }
                 }
             }
         });
@@ -126,10 +101,48 @@ public class LoginActivity extends BaseActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                 intent.putExtra(AppConstents.EXTRA_LOGIN_TYPE, AppConstents.LOGIN_TYPE_NONE);
-                SharedPreferenceUtils.putBooleanValue(SharedPreferenceUtils.IS_LOGGEDIN,false);
+                SharedPreferenceUtils.putBooleanValue(AppConstents.IS_LOGGEDIN,false);
                 startActivity(intent);
             }
         });
+    }
+
+    private void showLoginTypeDialog(){
+        try{
+            List<String> userLoginTypes = DataManager.getUserLoginTypes();
+            customDialog = new CustomDialog(LoginActivity.this, userLoginTypes,
+                    "Select User Type",false,false,
+                    new CustomDialog.NameSelectedListener() {
+                        @Override
+                        public void onNameSelected(String listName) {
+                            if(listName.equalsIgnoreCase(AppConstents.LOGIN_ADMIN)){
+                                btnRegister.setVisibility(View.GONE);
+                                userType = AppConstents.USER_TYPE_ADMIN;
+                                edtEmail.setText("");
+                                edtPassword.setText("");
+                            }
+                            else if(listName.equalsIgnoreCase(AppConstents.LOGIN_SERVICE_MAN)){
+                                userType = AppConstents.USER_TYPE_SERVICEMAN;
+                                btnRegister.setVisibility(View.VISIBLE);
+                                edtEmail.setText("");
+                                edtPassword.setText("");
+                            }
+                            else if(listName.equalsIgnoreCase(AppConstents.LOGIN_CUSTOMER)){
+                                userType = AppConstents.USER_TYPE_CUSTOMER;
+                                btnRegister.setVisibility(View.VISIBLE);
+                                edtEmail.setText("");
+                                edtPassword.setText("");
+                            }
+                            loginType = listName;
+                            tvLoginType.setText(listName);
+                            customDialog.dismiss();
+                        }
+                    });
+            customDialog.show();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
 
@@ -140,7 +153,9 @@ public class LoginActivity extends BaseActivity {
                     Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                     SharedPreferenceUtils.putStaringValue(AppConstents.EMAIL_ID,"admin@gmail.com");
                     SharedPreferenceUtils.putStaringValue(AppConstents.PASSWORD,"password");
-                    SharedPreferenceUtils.putBooleanValue(SharedPreferenceUtils.IS_LOGGEDIN,true);
+                    SharedPreferenceUtils.putStaringValue(AppConstents.USERTYPE,userType);
+                    SharedPreferenceUtils.putStaringValue(AppConstents.LOGIN_TYPE,loginType);
+                    SharedPreferenceUtils.putBooleanValue(AppConstents.IS_LOGGEDIN,true);
                     intent.putExtra(AppConstents.EXTRA_LOGIN_TYPE, loginType);
                     startActivity(intent);
                     finish();
@@ -152,6 +167,8 @@ public class LoginActivity extends BaseActivity {
                     args[2] = userType;
                     SharedPreferenceUtils.putStaringValue(AppConstents.EMAIL_ID,email);
                     SharedPreferenceUtils.putStaringValue(AppConstents.PASSWORD,password);
+                    SharedPreferenceUtils.putStaringValue(AppConstents.USERTYPE,userType);
+                    SharedPreferenceUtils.putStaringValue(AppConstents.LOGIN_TYPE,loginType);
                     new LoginAsyncTask().execute(args);
                 }
 //                checkLogin(email,password);
@@ -172,11 +189,11 @@ public class LoginActivity extends BaseActivity {
             int count = 0;
             if(userType.equalsIgnoreCase(AppConstents.USER_TYPE_SERVICEMAN)){
                 count = DatabaseHandler.getInstance(getApplicationContext()).exServiceManDao()
-                        .findExServiceManByEmailAndPassword(strings[0],strings[1]);
+                        .findExServiceManByEmailAndPassword(strings[0],strings[1],strings[2]);
             }
             else{
                 count = DatabaseHandler.getInstance(getApplicationContext()).userDao()
-                        .findUserByEmailAndPassword(strings[0],strings[1]);
+                        .findUserByEmailAndPassword(strings[0],strings[1],strings[2]);
             }
             if(count>0)
                 return true;
@@ -189,8 +206,8 @@ public class LoginActivity extends BaseActivity {
             super.onPostExecute(aBoolean);
             if(aBoolean){
                 Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-                intent.putExtra(AppConstents.EXTRA_LOGIN_TYPE, loginType);
-                SharedPreferenceUtils.putBooleanValue(SharedPreferenceUtils.IS_LOGGEDIN,true);
+                intent.putExtra(AppConstents.EXTRA_LOGIN_TYPE, SharedPreferenceUtils.getStringValue(AppConstents.LOGIN_TYPE));
+                SharedPreferenceUtils.putBooleanValue(AppConstents.IS_LOGGEDIN,true);
                 startActivity(intent);
                 finish();
             }
@@ -220,51 +237,6 @@ public class LoginActivity extends BaseActivity {
         }
         return isValid;
     }
-
-//    private void initiatePopupWindow(View v) {
-//        try {
-//            final PopupWindow popupWindow = new PopupWindow(this);
-//            popupWindow.setFocusable(true);
-//            View view = LayoutInflater.from(LoginActivity.this).inflate(R.layout.popup_window_logintype,null);
-//            final TextView tvAdminLogin = view.findViewById(R.id.tvAdminLogin);
-//            final TextView tvServiceManLogin = view.findViewById(R.id.tvServiceManLogin);
-//            final TextView tvCustomerLogin = view.findViewById(R.id.tvCustomerLogin);
-//            tvAdminLogin.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    loginType = tvAdminLogin.getText().toString();
-//                    btnRegister.setVisibility(View.GONE);
-//                    userType = AppConstents.USER_TYPE_ADMIN;
-//                    tvLoginType.setText(loginType+"");
-//                    popupWindow.dismiss();
-//                }
-//            });
-//            tvServiceManLogin.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    loginType = tvServiceManLogin.getText().toString();
-//                    userType = AppConstents.USER_TYPE_SERVICEMAN;
-//                    btnRegister.setVisibility(View.VISIBLE);
-//                    tvLoginType.setText(loginType+"");
-//                    popupWindow.dismiss();
-//                }
-//            });
-//            tvCustomerLogin.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    loginType = tvCustomerLogin.getText().toString();
-//                    userType = AppConstents.USER_TYPE_CUSTOMER;
-//                    btnRegister.setVisibility(View.VISIBLE);
-//                    tvLoginType.setText(loginType+"");
-//                    popupWindow.dismiss();
-//                }
-//            });
-//            popupWindow.setContentView(view);
-//            popupWindow.showAsDropDown(v, Gravity.CENTER,0, 0);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
 
     private void checkLogin(String email,String password){
         try{

@@ -9,12 +9,14 @@ public enum PayUConfigDetails  {
     SANDBOX {
         @Override
         public String merchant_Key() {
-            return "LLKwG0";
+//            return "LLKwG0";
+            return "BrUeZjBV";
         }
 
         @Override
         public String merchant_ID() {
-            return "393463";
+//            return "393463";
+            return "6195953";
         }
 
         @Override
@@ -29,7 +31,8 @@ public enum PayUConfigDetails  {
 
         @Override
         public String salt() {
-            return "qauKbEAJ";
+//            return "qauKbEAJ";
+            return "2C51spIU92";
         }
 
         @Override

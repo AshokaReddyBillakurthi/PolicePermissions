@@ -22,8 +22,9 @@ public interface ExServiceManDao {
     @Query("SELECT * FROM ExServiceMan WHERE email LIKE :email")
     ExServiceMan findByEmail(String email);
 
-    @Query("SELECT count(*) FROM ExServiceMan Where email LIKE :email AND password LIKE :password AND status = 1")
-    int findExServiceManByEmailAndPassword(String email,String password);
+    @Query("SELECT count(*) FROM ExServiceMan Where email LIKE :email AND password LIKE :password" +
+            " AND userType LIKE :userType AND status = 1")
+    int findExServiceManByEmailAndPassword(String email,String password,String userType);
 
     @Query("UPDATE ExServiceMan SET status = :status  WHERE email = :email")
     void updateStatusByEmailId(int status,String email);

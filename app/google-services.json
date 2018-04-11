@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "528264679287-idsvj4hqcdj39koh2jf418t0vdsn8aep.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.techouts.pcomplaints",
+            "certificate_hash": "b7b04abdd73e850366ee95585c8d8dea5dea11e3"
+          }
+        },
+        {
           "client_id": "528264679287-hav0gov487401ji2e1gnq1qquhpqb8q8.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,8 +37,13 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "528264679287-hav0gov487401ji2e1gnq1qquhpqb8q8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
           "status": 2

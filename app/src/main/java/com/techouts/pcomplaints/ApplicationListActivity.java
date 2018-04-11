@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.techouts.pcomplaints.adapters.ApplicationsListAdapter;
 import com.techouts.pcomplaints.custom.CustomDialog;
 import com.techouts.pcomplaints.datahandler.DatabaseHandler;
+import com.techouts.pcomplaints.entities.Application;
 import com.techouts.pcomplaints.entities.PermissionApplication;
 import com.techouts.pcomplaints.utils.AppConstents;
 import com.techouts.pcomplaints.utils.DataManager;
@@ -94,23 +95,23 @@ public class ApplicationListActivity extends BaseActivity  {
         /* need to do */
     }
 
-    class GetApplicationsAsyncTask extends AsyncTask<String,Void,List<PermissionApplication>>{
+    class GetApplicationsAsyncTask extends AsyncTask<String,Void,List<Application>>{
 
         @Override
-        protected List<PermissionApplication> doInBackground(String... strings) {
+        protected List<Application> doInBackground(String... strings) {
             if(searchBy.equalsIgnoreCase(AppConstents.SEARCH_BY_AREA))
                 return  DatabaseHandler.getInstance(getApplicationContext())
-                    .permissionApplicationDao().getAllApplicationsByArea(strings[0]);
+                    .applicationDao().getAllApplicationsByArea(strings[0]);
             else
                 return  DatabaseHandler.getInstance(getApplicationContext())
-                        .permissionApplicationDao().getAllApplicationsByApplicationType(strings[0]);
+                        .applicationDao().getAllApplicationsByApplicationType(strings[0]);
         }
 
         @Override
-        protected void onPostExecute(List<PermissionApplication> permissionApplications) {
-            super.onPostExecute(permissionApplications);
-            if(permissionApplications!=null&&!permissionApplications.isEmpty()){
-                applicationsListAdapter.refresh(permissionApplications);
+        protected void onPostExecute(List<Application> applications) {
+            super.onPostExecute(applications);
+            if(applications!=null&&!applications.isEmpty()){
+                applicationsListAdapter.refresh(applications);
                 tvNoApplications.setVisibility(View.GONE);
                 rvApplications.setVisibility(View.VISIBLE);
             }

@@ -50,7 +50,7 @@ public class ExServiceManListActivity extends BaseActivity {
         edtSearch.setHint("Search with area, city, first name, last name...");
 
         if (userListType.equalsIgnoreCase(AppConstents.SERVICE_MAN)) {
-            tvTitle.setText("ServiceMan List");
+            tvTitle.setText("XServiceMan List");
         }
         ivBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,6 +58,7 @@ public class ExServiceManListActivity extends BaseActivity {
                 finish();
             }
         });
+
     }
 
     @Override

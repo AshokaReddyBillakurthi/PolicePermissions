@@ -40,13 +40,18 @@ public class DialogUtils {
 
     private static void performAction(Context context,String actionType){
         switch (actionType){
-            case AppConstents.LOGOUT:
-                SharedPreferenceUtils.putBooleanValue(SharedPreferenceUtils.IS_LOGGEDIN,false);
-                Intent intent = new Intent(context,LoginActivity.class);
+            case AppConstents.LOGOUT: {
+                SharedPreferenceUtils.putBooleanValue(AppConstents.IS_LOGGEDIN, false);
+                SharedPreferenceUtils.putStaringValue(AppConstents.EMAIL_ID,"");
+                SharedPreferenceUtils.putStaringValue(AppConstents.PASSWORD,"");
+                SharedPreferenceUtils.putStaringValue(AppConstents.USERTYPE,"");
+                SharedPreferenceUtils.putStaringValue(AppConstents.LOGIN_TYPE,"");
+                Intent intent = new Intent(context, LoginActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 context.startActivity(intent);
-                ((Activity)context).finish();
+                ((Activity) context).finish();
                 break;
+            }
             case AppConstents.FINISH:
                 ((Activity)context).finish();
                 break;

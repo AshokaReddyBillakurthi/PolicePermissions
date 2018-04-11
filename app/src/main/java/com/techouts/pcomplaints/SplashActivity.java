@@ -11,6 +11,8 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 
 import com.techouts.pcomplaints.R;
+import com.techouts.pcomplaints.utils.AppConstents;
+import com.techouts.pcomplaints.utils.SharedPreferenceUtils;
 
 public class SplashActivity extends BaseActivity {
 
@@ -144,9 +146,18 @@ public class SplashActivity extends BaseActivity {
 
 
     private void proceedAfterPermission(){
-        Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
-        startActivity(intent);
-        finish();
+        if(SharedPreferenceUtils.getBoolValue(AppConstents.IS_LOGGEDIN)){
+            Intent intent = new Intent(SplashActivity.this, HomeActivity.class);
+            intent.putExtra(AppConstents.EXTRA_LOGIN_TYPE, SharedPreferenceUtils.getStringValue(AppConstents.LOGIN_TYPE));
+            startActivity(intent);
+            finish();
+        }
+        else{
+            Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
+            startActivity(intent);
+            finish();
+        }
+
     }
 
 }
