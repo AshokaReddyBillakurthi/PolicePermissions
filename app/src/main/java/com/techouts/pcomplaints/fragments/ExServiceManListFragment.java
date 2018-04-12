@@ -10,11 +10,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.techouts.pcomplaints.ApplicationListActivity;
 import com.techouts.pcomplaints.ExServiceManListActivity;
 import com.techouts.pcomplaints.R;
 import com.techouts.pcomplaints.adapters.ExServiceManListAdapter;
-import com.techouts.pcomplaints.datahandler.DatabaseHandler;
+import com.techouts.pcomplaints.database.XServiceManDataHelper;
 import com.techouts.pcomplaints.entities.ExServiceMan;
+import com.techouts.pcomplaints.utils.AppConstents;
 
 import java.util.List;
 
@@ -22,7 +24,6 @@ import java.util.List;
  * Created by AshokaReddy on 3/5/2018.
  */
 
-@SuppressLint("ValidFragment")
 public class ExServiceManListFragment  extends BaseFragment {
 
     private RecyclerView rvServiceManList;
@@ -30,9 +31,21 @@ public class ExServiceManListFragment  extends BaseFragment {
     private int status =0;
     private List<ExServiceMan> exServiceManList;
 
-    @SuppressLint("ValidFragment")
-    public ExServiceManListFragment(int status){
-        this.status = status;
+    public static ExServiceManListFragment getInstance(int status){
+        ExServiceManListFragment fragment = new ExServiceManListFragment();
+        Bundle bundle = new Bundle();
+        bundle.putInt(AppConstents.STATUS,status);
+        fragment.setArguments(bundle);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Bundle bundle = this.getArguments();
+        if (bundle != null) {
+           status = bundle.getInt(AppConstents.STATUS, 0);
+        }
     }
 
     @Nullable
@@ -56,11 +69,11 @@ public class ExServiceManListFragment  extends BaseFragment {
         new GetExserviceManListTask().execute(status);
     }
 
-    class GetExserviceManListTask extends AsyncTask<Integer, Void, List<ExServiceMan>> {
+    private class GetExserviceManListTask extends AsyncTask<Integer, Void, List<ExServiceMan>> {
 
         @Override
         protected List<ExServiceMan> doInBackground(Integer... integers) {
-            exServiceManList = DatabaseHandler.getInstance(getContext()).exServiceManDao().getAll(integers[0]);
+            exServiceManList = XServiceManDataHelper.getAllXServiceMans(getContext(),integers[0]+"");
             return exServiceManList;
         }
 

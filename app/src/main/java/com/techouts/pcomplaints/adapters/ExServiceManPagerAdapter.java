@@ -13,22 +13,20 @@ import com.techouts.pcomplaints.fragments.ExServiceManListFragment;
 
 public class ExServiceManPagerAdapter extends FragmentPagerAdapter {
 
-    private Context mContext;
 
     public ExServiceManPagerAdapter(Context context, FragmentManager fm) {
         super(fm);
-        mContext = context;
     }
 
     // This determines the fragment for each tab
     @Override
     public Fragment getItem(int position) {
         if (position == 0) {
-            return new ExServiceManListFragment(0);
+            return ExServiceManListFragment.getInstance(0);
         } else if (position == 1){
-            return new ExServiceManListFragment(1);
+            return ExServiceManListFragment.getInstance(1);
         } else
-            return new ExServiceManListFragment(-1);
+            return ExServiceManListFragment.getInstance(-1);
     }
 
     // This determines the number of tabs

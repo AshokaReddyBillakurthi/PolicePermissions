@@ -19,9 +19,8 @@ import com.payumoney.core.entity.TransactionResponse;
 import com.payumoney.sdkui.ui.utils.PayUmoneyFlowManager;
 import com.payumoney.sdkui.ui.utils.ResultModel;
 import com.techouts.pcomplaints.adapters.ComplaintInstructionAdapter;
-import com.techouts.pcomplaints.datahandler.DatabaseHandler;
+import com.techouts.pcomplaints.database.UserDataHelper;
 import com.techouts.pcomplaints.entities.Application;
-import com.techouts.pcomplaints.entities.PermissionApplication;
 import com.techouts.pcomplaints.entities.User;
 import com.techouts.pcomplaints.utils.AppConstents;
 import com.techouts.pcomplaints.utils.DataManager;
@@ -30,6 +29,7 @@ import com.techouts.pcomplaints.utils.SharedPreferenceUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class PermissionInstructionActivity extends BaseActivity {
 
@@ -107,8 +107,9 @@ public class PermissionInstructionActivity extends BaseActivity {
                         SharedPreferenceUtils.putLongValue(SharedPreferenceUtils.APPLICATION_NO, application_no);
                     }
                     listApplications = new ArrayList<>();
+                    String uniqueID = UUID.randomUUID().toString();
                     Application application = new Application();
-                    application.applicationNo = application_no+"";
+                    application.applicationNo = uniqueID;
                     application.firstName = user.firstName;
                     application.lastName = user.lastName;
                     application.applicationType = applicationType;
@@ -181,8 +182,10 @@ public class PermissionInstructionActivity extends BaseActivity {
 
         @Override
         protected User doInBackground(Void... voids) {
-            User user = DatabaseHandler.getInstance(PermissionInstructionActivity.this).userDao().
-                    getUserDetailsByEmailId(SharedPreferenceUtils.getStringValue(AppConstents.EMAIL_ID));
+//            User user = DatabaseHandler.getInstance(PermissionInstructionActivity.this).userDao().
+//                    getUserDetailsByEmailId(SharedPreferenceUtils.getStringValue(AppConstents.EMAIL_ID));
+            User user = UserDataHelper.getUserByEmailId(PermissionInstructionActivity.this,
+                    SharedPreferenceUtils.getStringValue(AppConstents.EMAIL_ID));
 
             return user;
         }
@@ -199,7 +202,7 @@ public class PermissionInstructionActivity extends BaseActivity {
 
         @Override
         protected Boolean doInBackground(ArrayList<Application>[] arrayLists) {
-            DatabaseHandler.getInstance(getApplicationContext()).applicationDao().insertAll(arrayLists[0]);
+//            DatabaseHandler.getInstance(getApplicationContext()).applicationDao().insertAll(arrayLists[0]);
             return true;
         }
 

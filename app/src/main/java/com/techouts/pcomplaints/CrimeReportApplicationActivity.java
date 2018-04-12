@@ -22,7 +22,6 @@ import com.payumoney.core.entity.TransactionResponse;
 import com.payumoney.sdkui.ui.utils.PayUmoneyFlowManager;
 import com.payumoney.sdkui.ui.utils.ResultModel;
 import com.techouts.pcomplaints.custom.CustomDialog;
-import com.techouts.pcomplaints.datahandler.DatabaseHandler;
 import com.techouts.pcomplaints.entities.Area;
 import com.techouts.pcomplaints.entities.PermissionApplication;
 import com.techouts.pcomplaints.utils.AppConstents;
@@ -177,7 +176,7 @@ public class CrimeReportApplicationActivity extends BaseActivity{
 
         @Override
         protected Boolean doInBackground(ArrayList<PermissionApplication>[] arrayLists) {
-            DatabaseHandler.getInstance(getApplicationContext()).permissionApplicationDao().insertAll(arrayLists[0]);
+//            DatabaseHandler.getInstance(getApplicationContext()).permissionApplicationDao().insertAll(arrayLists[0]);
             return true;
         }
 

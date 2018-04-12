@@ -7,15 +7,16 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.techouts.pcomplaints.datahandler.DatabaseHandler;
+import com.techouts.pcomplaints.database.DatabaseHelper;
+import com.techouts.pcomplaints.database.XServiceManDataHelper;
 import com.techouts.pcomplaints.entities.ExServiceMan;
 import com.techouts.pcomplaints.utils.AppConstents;
 
 public class ExServiceManDetailsActivity extends BaseActivity {
 
     private TextView tvTitle, tvFirstName, tvLastName, tvArea,
-            tvAccept, tvReject, tvDocList,
-            tvCity, tvState, tvEmail, tvMobileNo, tvServices;
+            tvAccept, tvReject, tvDocList, tvCity, tvState,
+            tvEmail, tvMobileNo, tvServices;
     private ImageView ivBack, ivUserImage;
     private ExServiceMan exServiceMan;
     private String loginType;
@@ -101,19 +102,19 @@ public class ExServiceManDetailsActivity extends BaseActivity {
         }
     }
 
-    class UpdateExserviceManStatus extends AsyncTask<ExServiceMan, Void, Void> {
+    private class UpdateExserviceManStatus extends AsyncTask<ExServiceMan, Void, Boolean> {
 
         @Override
-        protected Void doInBackground(ExServiceMan... exServiceMEN) {
-            DatabaseHandler.getInstance(getApplicationContext()).exServiceManDao()
-                    .updateStatusByEmailId(exServiceMEN[0].status, exServiceMEN[0].email);
-            return null;
+        protected Boolean doInBackground(ExServiceMan... exServiceMEN) {
+            boolean isUpdated = XServiceManDataHelper.updateStatus(ExServiceManDetailsActivity.this,
+                    exServiceMEN[0].status+"",exServiceMEN[0].email);
+            return isUpdated;
         }
 
         @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-            if (exServiceMan.status == 1) {
+        protected void onPostExecute(Boolean isUpdated) {
+            super.onPostExecute(isUpdated);
+            if (isUpdated) {
                 showToast(exServiceMan.firstName + " " + exServiceMan.lastName + " " +
                         "Application Accepted Successfully");
                 finish();

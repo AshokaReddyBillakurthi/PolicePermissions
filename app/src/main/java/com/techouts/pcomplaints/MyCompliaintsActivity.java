@@ -12,7 +12,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.techouts.pcomplaints.adapters.ApplicationsListAdapter;
-import com.techouts.pcomplaints.datahandler.DatabaseHandler;
 import com.techouts.pcomplaints.entities.Application;
 import com.techouts.pcomplaints.utils.AppConstents;
 import com.techouts.pcomplaints.utils.SharedPreferenceUtils;
@@ -124,8 +123,10 @@ public class MyCompliaintsActivity extends BaseActivity {
 
         @Override
         protected List<Application> doInBackground(String... strings) {
-                return  DatabaseHandler.getInstance(getApplicationContext())
-                        .applicationDao().getApplicationDetailsByEmailId(strings[0]);
+//                return  DatabaseHandler.getInstance(getApplicationContext())
+//                        .applicationDao().getApplicationDetailsByEmailId(strings[0]);
+
+            return new ArrayList<>();
 
         }
         @Override

@@ -11,6 +11,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 
 import com.techouts.pcomplaints.R;
+import com.techouts.pcomplaints.database.DatabaseHelper;
 import com.techouts.pcomplaints.utils.AppConstents;
 import com.techouts.pcomplaints.utils.SharedPreferenceUtils;
 
@@ -20,6 +21,7 @@ public class SplashActivity extends BaseActivity {
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE};
     private static final int PERMISSION_CALLBACK_CONSTANT = 100;
+    private DatabaseHelper databaseHelper;
 
     @Override
     public int getRootLayout() {
@@ -33,6 +35,7 @@ public class SplashActivity extends BaseActivity {
 
     @Override
     public void initData() {
+        databaseHelper = DatabaseHelper.getInstance(SplashActivity.this);
         checkPermissions();
     }
 

@@ -11,7 +11,6 @@ import android.util.Log;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -20,14 +19,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.gson.JsonArray;
 import com.techouts.pcomplaints.custom.CustomDialog;
-import com.techouts.pcomplaints.datahandler.DatabaseHandler;
+import com.techouts.pcomplaints.database.XServiceManDataHelper;
 import com.techouts.pcomplaints.entities.Area;
 import com.techouts.pcomplaints.entities.City;
 import com.techouts.pcomplaints.entities.ExServiceMan;
 import com.techouts.pcomplaints.entities.State;
-import com.techouts.pcomplaints.entities.User;
 import com.techouts.pcomplaints.utils.ApiServiceConstants;
 import com.techouts.pcomplaints.utils.AppConstents;
 import com.techouts.pcomplaints.utils.DataManager;
@@ -261,12 +258,15 @@ public class ExServiceManRegistrationActivity extends BaseActivity {
                 }
                 exServiceMan.reqDocs = strDoc.toString();
                 exServiceMan.services = strServices.toString();
-                if(postDataToServer(exServiceMan)){
-                    showToast("Successfully Inserted");
-                }
-                else{
-                    showToast("Insertion Failed");
-                }
+                exServiceMan.district = "";
+                exServiceMan.subDivision = "";
+                exServiceMan.circlePolicestation = "";
+//                if(postDataToServer(exServiceMan)){
+//                    showToast("Successfully Inserted");
+//                }
+//                else{
+//                    showToast("Insertion Failed");
+//                }
                 arrayList.add(exServiceMan);
                 new ExServiceManRegistrationAsyncTask().execute(arrayList);
             }
@@ -347,9 +347,6 @@ public class ExServiceManRegistrationActivity extends BaseActivity {
         return isValid;
     }
 
-
-
-
     class ExServiceManRegistrationAsyncTask extends AsyncTask<ArrayList<ExServiceMan>, Integer, Boolean> {
 
         @Override
@@ -364,7 +361,7 @@ public class ExServiceManRegistrationActivity extends BaseActivity {
 
         @Override
         protected Boolean doInBackground(ArrayList<ExServiceMan>[] arrayLists) {
-            DatabaseHandler.getInstance(getApplicationContext()).exServiceManDao().insertAll(arrayLists[0]);
+            XServiceManDataHelper.insertUserData(ExServiceManRegistrationActivity.this,arrayLists[0]);
             return true;
         }
 

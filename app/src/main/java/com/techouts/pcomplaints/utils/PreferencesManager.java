@@ -3,7 +3,7 @@ package com.techouts.pcomplaints.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.techouts.pcomplaints.PoliceServicesApplication;
+import com.techouts.pcomplaints.XPoliceServiceApplication;
 
 import java.util.Iterator;
 import java.util.Map;
@@ -20,7 +20,7 @@ public class PreferencesManager {
     private static volatile PreferencesManager sPreferencesManagerInstance;
 
     private PreferencesManager() {
-        mSharedPreferences = PoliceServicesApplication.getInstance().getContext().getSharedPreferences(PREF_FILE, Context.MODE_PRIVATE);
+        mSharedPreferences = XPoliceServiceApplication.getInstance().getContext().getSharedPreferences(PREF_FILE, Context.MODE_PRIVATE);
         if (sPreferencesManagerInstance != null) {
             throw new RuntimeException("Use getInstance() method to get the single instance of this class.");
         }

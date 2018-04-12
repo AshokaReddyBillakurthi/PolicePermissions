@@ -15,7 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.techouts.pcomplaints.custom.CustomDialog;
-import com.techouts.pcomplaints.datahandler.DatabaseHandler;
+import com.techouts.pcomplaints.database.UserDataHelper;
 import com.techouts.pcomplaints.entities.Area;
 import com.techouts.pcomplaints.entities.City;
 import com.techouts.pcomplaints.entities.State;
@@ -213,6 +213,9 @@ public class UserRegistrationActivity extends BaseActivity {
                 user.area = area;
                 user.userImg = userImg;
                 user.userType = userType;
+                user.district = "";
+                user.subDivision = "";
+                user.circlePolicestation = "";
 //                if(postDataToServer(user)){
 ////                    arrayList.add(user);
 ////                    new UserAsyncTask().execute(arrayList);
@@ -310,7 +313,8 @@ public class UserRegistrationActivity extends BaseActivity {
 
         @Override
         protected Boolean doInBackground(ArrayList<User>[] arrayLists) {
-            DatabaseHandler.getInstance(getApplicationContext()).userDao().insertAll(arrayLists[0]);
+            UserDataHelper.insertUserData(UserRegistrationActivity.this,arrayLists[0]);
+//            DatabaseHandler.getInstance(getApplicationContext()).userDao().insertAll(arrayLists[0]);
             return true;
         }
 

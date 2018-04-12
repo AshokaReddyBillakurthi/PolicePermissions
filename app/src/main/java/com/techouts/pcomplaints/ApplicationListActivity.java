@@ -9,9 +9,8 @@ import android.widget.TextView;
 
 import com.techouts.pcomplaints.adapters.ApplicationsListAdapter;
 import com.techouts.pcomplaints.custom.CustomDialog;
-import com.techouts.pcomplaints.datahandler.DatabaseHandler;
+import com.techouts.pcomplaints.database.ApplicationHelper;
 import com.techouts.pcomplaints.entities.Application;
-import com.techouts.pcomplaints.entities.PermissionApplication;
 import com.techouts.pcomplaints.utils.AppConstents;
 import com.techouts.pcomplaints.utils.DataManager;
 
@@ -100,11 +99,9 @@ public class ApplicationListActivity extends BaseActivity  {
         @Override
         protected List<Application> doInBackground(String... strings) {
             if(searchBy.equalsIgnoreCase(AppConstents.SEARCH_BY_AREA))
-                return  DatabaseHandler.getInstance(getApplicationContext())
-                    .applicationDao().getAllApplicationsByArea(strings[0]);
+                return ApplicationHelper.getAllApplicationsByArea(ApplicationListActivity.this,strings[0]);
             else
-                return  DatabaseHandler.getInstance(getApplicationContext())
-                        .applicationDao().getAllApplicationsByApplicationType(strings[0]);
+                return ApplicationHelper.getAllApplicationsByApplicationType(ApplicationListActivity.this,strings[0]);
         }
 
         @Override

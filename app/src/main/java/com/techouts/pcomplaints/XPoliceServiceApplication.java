@@ -3,18 +3,20 @@ package com.techouts.pcomplaints;
 import android.app.Application;
 import android.content.Context;
 
-import com.payumoney.core.PayUmoneyConfig;
+import com.techouts.pcomplaints.database.DatabaseHelper;
+import com.techouts.pcomplaints.database.UserDataHelper;
 import com.techouts.pcomplaints.utils.PayUConfigDetails;
 
 /**
  * Created by TO-OW109 on 02-02-2018.
  */
 
-public class PoliceServicesApplication extends Application {
+public class XPoliceServiceApplication extends Application {
 
-    private static PoliceServicesApplication mInstance;
+    private static XPoliceServiceApplication mInstance;
     private PayUConfigDetails payUConfigDetails;
     private Context mContext;
+
 
     @Override
     public void onCreate() {
@@ -23,10 +25,10 @@ public class PoliceServicesApplication extends Application {
         payUConfigDetails = PayUConfigDetails.SANDBOX;
     }
 
-    public synchronized static PoliceServicesApplication getInstance() {
+    public synchronized static XPoliceServiceApplication getInstance() {
         if (mInstance == null) { //if there is no instance available... create new one
-            synchronized (PoliceServicesApplication.class) {
-                if (mInstance == null) mInstance = new PoliceServicesApplication();
+            synchronized (XPoliceServiceApplication.class) {
+                if (mInstance == null) mInstance = new XPoliceServiceApplication();
             }
         }
         return mInstance;

@@ -38,6 +38,7 @@ public interface AppConstents {
     String USERTYPE = "UserType";
     String LOGIN_TYPE = "LoginType";
     String IS_LOGGEDIN = "IS_LOGGEDIN";
+    String STATUS = "STATUS";
 
     //Extras
     String EXTRA_USER_TYPE = "UserType";

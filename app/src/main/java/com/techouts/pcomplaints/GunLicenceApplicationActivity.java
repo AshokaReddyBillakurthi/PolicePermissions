@@ -19,7 +19,6 @@ import com.payumoney.core.entity.TransactionResponse;
 import com.payumoney.sdkui.ui.utils.PayUmoneyFlowManager;
 import com.payumoney.sdkui.ui.utils.ResultModel;
 import com.techouts.pcomplaints.custom.CustomDialog;
-import com.techouts.pcomplaints.datahandler.DatabaseHandler;
 import com.techouts.pcomplaints.entities.Area;
 import com.techouts.pcomplaints.entities.PermissionApplication;
 import com.techouts.pcomplaints.utils.AppConstents;
@@ -236,7 +235,7 @@ public class GunLicenceApplicationActivity extends BaseActivity{
 
         @Override
         protected Void doInBackground(List<PermissionApplication>... lists) {
-            DatabaseHandler.getInstance(getApplicationContext()).permissionApplicationDao().insertAll(lists[0]);
+//            DatabaseHandler.getInstance(getApplicationContext()).permissionApplicationDao().insertAll(lists[0]);
             return null;
         }
 

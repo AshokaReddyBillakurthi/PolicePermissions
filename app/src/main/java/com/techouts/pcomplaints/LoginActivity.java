@@ -11,7 +11,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.techouts.pcomplaints.custom.CustomDialog;
-import com.techouts.pcomplaints.datahandler.DatabaseHandler;
+import com.techouts.pcomplaints.database.UserDataHelper;
+import com.techouts.pcomplaints.database.XServiceManDataHelper;
 import com.techouts.pcomplaints.utils.ApiServiceConstants;
 import com.techouts.pcomplaints.utils.AppConstents;
 import com.techouts.pcomplaints.utils.DataManager;
@@ -186,19 +187,17 @@ public class LoginActivity extends BaseActivity {
 
         @Override
         protected Boolean doInBackground(String... strings) {
-            int count = 0;
+            boolean isValidUser = false;
             if(userType.equalsIgnoreCase(AppConstents.USER_TYPE_SERVICEMAN)){
-                count = DatabaseHandler.getInstance(getApplicationContext()).exServiceManDao()
-                        .findExServiceManByEmailAndPassword(strings[0],strings[1],strings[2]);
+                isValidUser = XServiceManDataHelper.isValidXServiceMan(LoginActivity.this,strings[0],strings[1]);
+//                count = DatabaseHandler.getInstance(getApplicationContext()).exServiceManDao()
+//                        .findExServiceManByEmailAndPassword(strings[0],strings[1],strings[2]);
             }
             else{
-                count = DatabaseHandler.getInstance(getApplicationContext()).userDao()
-                        .findUserByEmailAndPassword(strings[0],strings[1],strings[2]);
+                isValidUser = UserDataHelper.isValidUser(LoginActivity.this,strings[0],strings[1]);
+
             }
-            if(count>0)
-                return true;
-            else
-                return false;
+            return  isValidUser;
         }
 
         @Override

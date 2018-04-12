@@ -12,7 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.techouts.pcomplaints.adapters.UserListAdpter;
-import com.techouts.pcomplaints.datahandler.DatabaseHandler;
+import com.techouts.pcomplaints.database.UserDataHelper;
 import com.techouts.pcomplaints.entities.ExServiceMan;
 import com.techouts.pcomplaints.entities.User;
 import com.techouts.pcomplaints.utils.AppConstents;
@@ -141,7 +141,7 @@ public class UserListActivity extends BaseActivity {
 
         @Override
         protected List<User> doInBackground(Void... voids) {
-            userList = DatabaseHandler.getInstance(getApplicationContext()).userDao().getAll(userType);
+            userList = UserDataHelper.getAllUsers(UserListActivity.this);
             return userList;
         }
 

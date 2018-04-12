@@ -7,12 +7,9 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.techouts.pcomplaints.datahandler.DatabaseHandler;
+import com.techouts.pcomplaints.database.UserDataHelper;
 import com.techouts.pcomplaints.entities.User;
 import com.techouts.pcomplaints.utils.AppConstents;
-import com.techouts.pcomplaints.utils.PreferencesManager;
-
-import java.util.List;
 
 public class UserDetailsActivity extends BaseActivity {
     private TextView tvTitle, tvFirstName, tvLastName, tvArea,
@@ -68,7 +65,8 @@ public class UserDetailsActivity extends BaseActivity {
 
         @Override
         protected User doInBackground(String... strings) {
-            user = DatabaseHandler.getInstance(getApplicationContext()).userDao().getUserDetailsByEmailId(strings[0]);
+            user = UserDataHelper.getUserByEmailId(UserDetailsActivity.this,strings[0]);
+//            user = DatabaseHandler.getInstance(getApplicationContext()).userDao().getUserDetailsByEmailId(strings[0]);
             return user;
         }
 

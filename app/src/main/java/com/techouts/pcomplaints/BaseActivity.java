@@ -176,7 +176,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         String udf9 = "";
         String udf10 = "";
 
-        PayUConfigDetails appEnvironment = ((PoliceServicesApplication) getApplication()).getPayUConfigDetails();
+        PayUConfigDetails appEnvironment = ((XPoliceServiceApplication) getApplication()).getPayUConfigDetails();
         builder.setAmount(amount)
                 .setTxnId(txnId)
                 .setPhone(phone)
