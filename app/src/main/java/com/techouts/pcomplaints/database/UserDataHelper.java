@@ -18,8 +18,10 @@ public class UserDataHelper {
         try{
             sqLiteDatabase = DatabaseHelper.getInstance(context).openDataBase();
 
-            String insertQuery = "Insert into tblUsers(firstName,lastName,email,password,mobileNo,state," +
-                    "district,subDivision,circlePolicestation,userImg,userType) values(?,?,?,?,?,?,?,?,?,?,?)";
+            String insertQuery = "Insert into tblUsers(firstName,lastName," +
+                    "email,password,mobileNo,state,city,area," +
+                    "district,subDivision,circlePolicestation,userImg,userType)" +
+                    " values(?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
             SQLiteStatement insertStmt = sqLiteDatabase.compileStatement(insertQuery);
 
@@ -31,11 +33,13 @@ public class UserDataHelper {
                     insertStmt.bindString(4,user.password);
                     insertStmt.bindString(5,user.mobileNo);
                     insertStmt.bindString(6,user.state);
-                    insertStmt.bindString(7,user.district);
-                    insertStmt.bindString(8,user.subDivision);
-                    insertStmt.bindString(9,user.circlePolicestation);
-                    insertStmt.bindString(10,user.userImg);
-                    insertStmt.bindString(11,user.userType);
+                    insertStmt.bindString(7,user.city);
+                    insertStmt.bindString(8,user.area);
+                    insertStmt.bindString(9,user.district);
+                    insertStmt.bindString(10,user.subDivision);
+                    insertStmt.bindString(11,user.circlePolicestation);
+                    insertStmt.bindString(12,user.userImg);
+                    insertStmt.bindString(13,user.userType);
                     insertStmt.executeInsert();
                 }
             }
@@ -81,7 +85,7 @@ public class UserDataHelper {
         SQLiteDatabase sqLiteDatabase = null;
         try{
             sqLiteDatabase = DatabaseHelper.getInstance(context).openDataBase();
-            String selectQuery = "Select firstName,lastName,email,mobileNo,state," +
+            String selectQuery = "Select firstName,lastName,email,mobileNo,state,city,area," +
                     "district,subDivision,circlePolicestation,userImg,userType from tblUsers";
 
             Cursor cursor = sqLiteDatabase.rawQuery(selectQuery,null);
@@ -93,11 +97,13 @@ public class UserDataHelper {
                     user.email = cursor.getString(2);
                     user.mobileNo = cursor.getString(3);
                     user.state = cursor.getString(4);
-                    user.district = cursor.getString(5);
-                    user.subDivision = cursor.getString(6);
-                    user.circlePolicestation = cursor.getString(7);
-                    user.userImg = cursor.getString(8);
-                    user.userType = cursor.getString(9);
+                    user.city = cursor.getString(5);
+                    user.area = cursor.getString(6);
+                    user.district = cursor.getString(7);
+                    user.subDivision = cursor.getString(8);
+                    user.circlePolicestation = cursor.getString(9);
+                    user.userImg = cursor.getString(10);
+                    user.userType = cursor.getString(11);
                     userList.add(user);
 
                 }while (cursor.moveToNext());
@@ -117,7 +123,7 @@ public class UserDataHelper {
         User user = null;
         try{
             SQLiteDatabase sqLiteDatabase = DatabaseHelper.getInstance(context).openDataBase();
-            String selectQuery = "Select firstName,lastName,email,mobileNo,state," +
+            String selectQuery = "Select firstName,lastName,email,mobileNo,state,city,area," +
                     "district,subDivision,circlePolicestation,userImg,userType " +
                     " from tblUsers Where email = '"+email+"'";
 
@@ -130,11 +136,13 @@ public class UserDataHelper {
                     user.email = cursor.getString(2);
                     user.mobileNo = cursor.getString(3);
                     user.state = cursor.getString(4);
-                    user.district = cursor.getString(5);
-                    user.subDivision = cursor.getString(6);
-                    user.circlePolicestation = cursor.getString(7);
-                    user.userImg = cursor.getString(8);
-                    user.userType = cursor.getString(9);
+                    user.city = cursor.getString(5);
+                    user.area = cursor.getString(6);
+                    user.district = cursor.getString(7);
+                    user.subDivision = cursor.getString(8);
+                    user.circlePolicestation = cursor.getString(9);
+                    user.userImg = cursor.getString(10);
+                    user.userType = cursor.getString(11);
 
                 }while (cursor.moveToNext());
             }

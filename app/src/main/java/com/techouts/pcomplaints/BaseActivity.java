@@ -2,6 +2,7 @@ package com.techouts.pcomplaints;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -9,6 +10,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.payumoney.core.PayUmoneyConfig;
@@ -30,6 +32,8 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -46,23 +50,25 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(getRootLayout());
-        sharedPreferenceUtils  = new SharedPreferenceUtils(BaseActivity.this);
+        sharedPreferenceUtils = new SharedPreferenceUtils(BaseActivity.this);
         initGUI();
         initData();
     }
 
     public abstract int getRootLayout();
+
     public abstract void initGUI();
+
     public abstract void initData();
 
-    public void showToast(String message){
-        Toast.makeText(BaseActivity.this,message,Toast.LENGTH_LONG).show();
+    public void showToast(String message) {
+        Toast.makeText(BaseActivity.this, message, Toast.LENGTH_LONG).show();
     }
 
     public void storeImage(Bitmap image) {
         File pictureFile = getOutputMediaFile();
         if (pictureFile == null) {
-            Log.d(TAG,"Error creating media file, check storage permissions: ");
+            Log.d(TAG, "Error creating media file, check storage permissions: ");
             return;
         }
         try {
@@ -125,15 +131,15 @@ public abstract class BaseActivity extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return  myBitmap;
+        return myBitmap;
     }
 
     public void setScreenHeight(Dialog dialog) {
         DisplayMetrics displaymetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
-        int width = (int) ((int)displaymetrics.widthPixels * 0.9);
-        int height = (int) ((int)displaymetrics.heightPixels * 0.6);
-        dialog.getWindow().setLayout(width,height);
+        int width = (int) ((int) displaymetrics.widthPixels * 0.9);
+        int height = (int) ((int) displaymetrics.heightPixels * 0.6);
+        dialog.getWindow().setLayout(width, height);
     }
 
     //Payment Flow
@@ -143,87 +149,118 @@ public abstract class BaseActivity extends AppCompatActivity {
      */
     public void launchPayUMoneyFlow() {
 
-        PayUmoneyConfig payUmoneyConfig = PayUmoneyConfig.getInstance();
 
-        //Use this to set your custom text on result screen button
-        payUmoneyConfig.setDoneButtonText("Done");
 
-        //Use this to set your custom title for the activity
-        payUmoneyConfig.setPayUmoneyActivityTitle("Payment");
+//        PayUmoneyConfig payUmoneyConfig = PayUmoneyConfig.getInstance();
+//
+//        //Use this to set your custom text on result screen button
+//        payUmoneyConfig.setDoneButtonText("Done");
+//
+//        //Use this to set your custom title for the activity
+//        payUmoneyConfig.setPayUmoneyActivityTitle("Payment");
+//
+//        PayUmoneySdkInitializer.PaymentParam.Builder builder = new PayUmoneySdkInitializer.PaymentParam.Builder();
+//
+//        double amount = 0;
+//        try {
+//            amount = Double.parseDouble("1.0");
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        String txnId = System.currentTimeMillis() + "";
+//        String phone = "9881716157";
+//        String productName = "product_info";
+//        String firstName = "firstname";
+//        String email = "xyz@gmail.com";
+//        String udf1 = "";
+//        String udf2 = "";
+//        String udf3 = "";
+//        String udf4 = "";
+//        String udf5 = "";
+//        String udf6 = "";
+//        String udf7 = "";
+//        String udf8 = "";
+//        String udf9 = "";
+//        String udf10 = "";
+//
+//        builder.setAmount(amount)
+//                .setTxnId(txnId)
+//                .setPhone(phone)
+//                .setProductName(productName)
+//                .setFirstName(firstName)
+//                .setEmail(email)
+//                .setsUrl("https://www.payumoney.com/mobileapp/payumoney/success.php")
+//                .setfUrl("https://www.payumoney.com/mobileapp/payumoney/failure.php")
+//                .setUdf1(udf1)
+//                .setUdf2(udf2)
+//                .setUdf3(udf3)
+//                .setUdf4(udf4)
+//                .setUdf5(udf5)
+//                .setUdf6(udf6)
+//                .setUdf7(udf7)
+//                .setUdf8(udf8)
+//                .setUdf9(udf9)
+//                .setUdf10(udf10)
+//                .setIsDebug(true)
+//                .setKey("LLKwG0")
+//                .setMerchantId("393463");
+//
+//        try {
+//            mPaymentParams = builder.build();
+//
+//            /*
+//             * Hash should always be generated from your server side.
+//             * */
+////            generateHashFromServer(mPaymentParams);
+//
+//            /*            *//**
+//             * Do not use below code when going live
+//             * Below code is provided to generate hash from sdk.
+//             * It is recommended to generate hash from server side only.
+//             * */
+//
+//           mPaymentParams = calculateServerSideHashAndInitiatePayment1(mPaymentParams);
+//           PayUmoneyFlowManager.startPayUMoneyFlow(mPaymentParams,BaseActivity.this, R.style.AppTheme_default,false);
+//
+//           /* if (AppPreference.selectedTheme != -1) {
+//                PayUmoneyFlowManager.startPayUMoneyFlow(mPaymentParams,MainActivity.this, AppPreference.selectedTheme,mAppPreference.isOverrideResultScreen());
+//            } else {
+//                PayUmoneyFlowManager.startPayUMoneyFlow(mPaymentParams,MainActivity.this, R.style.AppTheme_default, mAppPreference.isOverrideResultScreen());
+//            }*/
+//
+//        } catch (Exception e) {
+//            // some exception occurred
+//            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+//        }
+    }
 
-        PayUmoneySdkInitializer.PaymentParam.Builder builder = new PayUmoneySdkInitializer.PaymentParam.Builder();
+    /**
+     * Thus function calculates the hash for transaction
+     *
+     * @param paymentParam payment params of transaction
+     * @return payment params along with calculated merchant hash
+     */
+    private PayUmoneySdkInitializer.PaymentParam calculateServerSideHashAndInitiatePayment1(final PayUmoneySdkInitializer.PaymentParam paymentParam) {
+        StringBuilder stringBuilder = new StringBuilder();
+        HashMap<String, String> params = paymentParam.getParams();
+        stringBuilder.append(params.get(PayUmoneyConstants.KEY) + "|");
+        stringBuilder.append(params.get(PayUmoneyConstants.TXNID) + "|");
+        stringBuilder.append(params.get(PayUmoneyConstants.AMOUNT) + "|");
+        stringBuilder.append(params.get(PayUmoneyConstants.PRODUCT_INFO) + "|");
+        stringBuilder.append(params.get(PayUmoneyConstants.FIRSTNAME) + "|");
+        stringBuilder.append(params.get(PayUmoneyConstants.EMAIL) + "|");
+        stringBuilder.append(params.get(PayUmoneyConstants.UDF1) + "|");
+        stringBuilder.append(params.get(PayUmoneyConstants.UDF2) + "|");
+        stringBuilder.append(params.get(PayUmoneyConstants.UDF3) + "|");
+        stringBuilder.append(params.get(PayUmoneyConstants.UDF4) + "|");
+        stringBuilder.append(params.get(PayUmoneyConstants.UDF5) + "||||||");
 
-        double amount = 0;
-        try {
-            amount = Double.parseDouble("1");
+        stringBuilder.append("qauKbEAJ");
+        String hash = hashCal("SHA-512", stringBuilder.toString());;
+        paymentParam.setMerchantHash(hash);
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        String txnId = System.currentTimeMillis() + "";
-        String phone = "9881716157";
-        String productName ="product_info";
-        String firstName ="firstname";
-        String email ="xyz@gmail.com";
-        String udf1 = "";
-        String udf2 = "";
-        String udf3 = "";
-        String udf4 = "";
-        String udf5 = "";
-        String udf6 = "";
-        String udf7 = "";
-        String udf8 = "";
-        String udf9 = "";
-        String udf10 = "";
-
-        PayUConfigDetails appEnvironment = ((XPoliceServiceApplication) getApplication()).getPayUConfigDetails();
-        builder.setAmount(amount)
-                .setTxnId(txnId)
-                .setPhone(phone)
-                .setProductName(productName)
-                .setFirstName(firstName)
-                .setEmail(email)
-                .setsUrl(appEnvironment.surl())
-                .setfUrl(appEnvironment.furl())
-                .setUdf1(udf1)
-                .setUdf2(udf2)
-                .setUdf3(udf3)
-                .setUdf4(udf4)
-                .setUdf5(udf5)
-                .setUdf6(udf6)
-                .setUdf7(udf7)
-                .setUdf8(udf8)
-                .setUdf9(udf9)
-                .setUdf10(udf10)
-                .setIsDebug(appEnvironment.debug())
-                .setKey(appEnvironment.merchant_Key())
-                .setMerchantId(appEnvironment.merchant_ID());
-
-        try {
-            mPaymentParams = builder.build();
-
-            /*
-            * Hash should always be generated from your server side.
-            * */
-            generateHashFromServer(mPaymentParams);
-
-/*            *//**
-             * Do not use below code when going live
-             * Below code is provided to generate hash from sdk.
-             * It is recommended to generate hash from server side only.
-             * */
-           /* mPaymentParams = calculateServerSideHashAndInitiatePayment1(mPaymentParams);
-
-           if (AppPreference.selectedTheme != -1) {
-                PayUmoneyFlowManager.startPayUMoneyFlow(mPaymentParams,MainActivity.this, AppPreference.selectedTheme,mAppPreference.isOverrideResultScreen());
-            } else {
-                PayUmoneyFlowManager.startPayUMoneyFlow(mPaymentParams,MainActivity.this, R.style.AppTheme_default, mAppPreference.isOverrideResultScreen());
-            }*/
-
-        } catch (Exception e) {
-            // some exception occurred
-            showToast(e.getMessage());
-        }
+        return paymentParam;
     }
 
     /**
@@ -255,6 +292,11 @@ public abstract class BaseActivity extends AppCompatActivity {
         // lets make an api call
         GetHashesFromServerTask getHashesFromServerTask = new GetHashesFromServerTask();
         getHashesFromServerTask.execute(postParams);
+    }
+
+
+    protected String concatParams(String key, String value) {
+        return key + "=" + value + "&";
     }
 
     /**
@@ -303,9 +345,6 @@ public abstract class BaseActivity extends AppCompatActivity {
                 while (payuHashIterator.hasNext()) {
                     String key = payuHashIterator.next();
                     switch (key) {
-                        /**
-                         * This hash is mandatory and needs to be generated from merchant's server side
-                         */
                         case "payment_hash":
                             merchantHash = response.getString(key);
                             break;
@@ -329,23 +368,29 @@ public abstract class BaseActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String merchantHash) {
             super.onPostExecute(merchantHash);
-
             progressDialog.dismiss();
             if (merchantHash.isEmpty() || merchantHash.equals("")) {
-                showToast("Could not generate hash");
+                Toast.makeText(BaseActivity.this, "Could not generate hash", Toast.LENGTH_SHORT).show();
             } else {
-                mPaymentParams.setMerchantHash(merchantHash);
                 PayUmoneyFlowManager.startPayUMoneyFlow(mPaymentParams, BaseActivity.this, R.style.AppTheme_default, true);
-//                if (AppPreference.selectedTheme != -1) {
-//                    PayUmoneyFlowManager.startPayUMoneyFlow(mPaymentParams, MainActivity.this, AppPreference.selectedTheme, mAppPreference.isOverrideResultScreen());
-//                } else {
-//                    PayUmoneyFlowManager.startPayUMoneyFlow(mPaymentParams, MainActivity.this, R.style.AppTheme_default, mAppPreference.isOverrideResultScreen());
-//                }
+                mPaymentParams.setMerchantHash(merchantHash);
             }
         }
     }
 
-    protected String concatParams(String key, String value) {
-        return key + "=" + value + "&";
+    public static String hashCal(String type, String hashString) {
+        StringBuilder hash = new StringBuilder();
+        MessageDigest messageDigest = null;
+        try {
+            messageDigest = MessageDigest.getInstance(type);
+            messageDigest.update(hashString.getBytes());
+            byte[] mdbytes = messageDigest.digest();
+            for (byte hashByte : mdbytes) {
+                hash.append(Integer.toString((hashByte & 0xff) + 0x100, 16).substring(1));
+            }
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return hash.toString();
     }
 }

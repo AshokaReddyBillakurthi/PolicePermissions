@@ -16,9 +16,9 @@ public class ApplicationHelper {
         try{
             SQLiteDatabase sqLiteDatabase = DatabaseHelper.getInstance(context).openDataBase();
 
-            String insertQuery = "Insert into tblApplications(firstName,lastName,email,mobileNo,state," +
+            String insertQuery = "Insert into tblApplications(firstName,lastName,email,mobileNo,state,city,area" +
                     "district,subDivision,circlePolicestation,userImg,applicationType," +
-                    "status,isAccepted,xServiceManEmail,payableAmount) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+                    "status,isAccepted,xServiceManEmail,payableAmount) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
             SQLiteStatement insertStmt = sqLiteDatabase.compileStatement(insertQuery);
 
@@ -29,15 +29,17 @@ public class ApplicationHelper {
                     insertStmt.bindString(3,application.email);
                     insertStmt.bindString(4,application.mobileNo);
                     insertStmt.bindString(5,application.state);
-                    insertStmt.bindString(6,application.district);
-                    insertStmt.bindString(7,application.subDivision);
-                    insertStmt.bindString(8,application.circlePolicestation);
-                    insertStmt.bindString(9,application.userImg);
-                    insertStmt.bindString(10,application.applicationType);
-                    insertStmt.bindString(11,application.status+"");
-                    insertStmt.bindString(12,application.isAccepted+"");
-                    insertStmt.bindString(13,application.xServiceManEmail);
-                    insertStmt.bindString(14,application.payableAmount+"");
+                    insertStmt.bindString(6,application.city);
+                    insertStmt.bindString(7,application.area);
+                    insertStmt.bindString(8,application.district);
+                    insertStmt.bindString(9,application.subDivision);
+                    insertStmt.bindString(10,application.circlePolicestation);
+                    insertStmt.bindString(11,application.userImg);
+                    insertStmt.bindString(12,application.applicationType);
+                    insertStmt.bindString(13,application.status+"");
+                    insertStmt.bindString(14,application.isAccepted+"");
+                    insertStmt.bindString(15,application.xServiceManEmail);
+                    insertStmt.bindString(16,application.payableAmount+"");
                     insertStmt.executeInsert();
                 }
             }
@@ -51,7 +53,7 @@ public class ApplicationHelper {
         List<Application> applicationList = new ArrayList<>();
         try{
             SQLiteDatabase sqLiteDatabase = DatabaseHelper.getInstance(context).openDataBase();
-            String selectQuery = "Select firstName,lastName,email,mobileNo,state," +
+            String selectQuery = "Select firstName,lastName,email,mobileNo,state,city,area," +
                     "district,subDivision,circlePolicestation,userImg,applicationType," +
                     " status,isAccepted,xServiceManEmail,payableAmount from tblApplications ";
 
@@ -64,15 +66,17 @@ public class ApplicationHelper {
                     application.email = cursor.getString(2);
                     application.mobileNo = cursor.getString(3);
                     application.state = cursor.getString(4);
-                    application.district = cursor.getString(5);
-                    application.subDivision = cursor.getString(6);
-                    application.circlePolicestation = cursor.getString(7);
-                    application.userImg = cursor.getString(8);
-                    application.applicationType = cursor.getString(9);
-                    application.status = Integer.parseInt(cursor.getString(10));
-                    application.isAccepted =Integer.parseInt(cursor.getString(11));
-                    application.xServiceManEmail = cursor.getString(12);
-                    application.payableAmount = Integer.parseInt(cursor.getString(13));
+                    application.city = cursor.getString(5);
+                    application.area = cursor.getString(6);
+                    application.district = cursor.getString(7);
+                    application.subDivision = cursor.getString(8);
+                    application.circlePolicestation = cursor.getString(9);
+                    application.userImg = cursor.getString(10);
+                    application.applicationType = cursor.getString(11);
+                    application.status = Integer.parseInt(cursor.getString(12));
+                    application.isAccepted =Integer.parseInt(cursor.getString(13));
+                    application.xServiceManEmail = cursor.getString(14);
+                    application.payableAmount = Integer.parseInt(cursor.getString(15));
                     applicationList.add(application);
 
                 }while (cursor.moveToNext());
@@ -88,7 +92,7 @@ public class ApplicationHelper {
         List<Application> applicationList = new ArrayList<>();
         try{
             SQLiteDatabase sqLiteDatabase = DatabaseHelper.getInstance(context).openDataBase();
-            String selectQuery = "Select firstName,lastName,email,mobileNo,state," +
+            String selectQuery = "Select firstName,lastName,email,mobileNo,state,city,area," +
                     "district,subDivision,circlePolicestation,userImg,applicationType," +
                     " status,isAccepted,xServiceManEmail,payableAmount from tblApplications " +
                     " Where circlePolicestation = '"+circlePolicestation+"' ";
@@ -102,15 +106,17 @@ public class ApplicationHelper {
                     application.email = cursor.getString(2);
                     application.mobileNo = cursor.getString(3);
                     application.state = cursor.getString(4);
-                    application.district = cursor.getString(5);
-                    application.subDivision = cursor.getString(6);
-                    application.circlePolicestation = cursor.getString(7);
-                    application.userImg = cursor.getString(8);
-                    application.applicationType = cursor.getString(9);
-                    application.status = Integer.parseInt(cursor.getString(10));
-                    application.isAccepted =Integer.parseInt(cursor.getString(11));
-                    application.xServiceManEmail = cursor.getString(12);
-                    application.payableAmount = Integer.parseInt(cursor.getString(13));
+                    application.city = cursor.getString(5);
+                    application.area = cursor.getString(6);
+                    application.district = cursor.getString(7);
+                    application.subDivision = cursor.getString(8);
+                    application.circlePolicestation = cursor.getString(9);
+                    application.userImg = cursor.getString(10);
+                    application.applicationType = cursor.getString(11);
+                    application.status = Integer.parseInt(cursor.getString(12));
+                    application.isAccepted =Integer.parseInt(cursor.getString(13));
+                    application.xServiceManEmail = cursor.getString(14);
+                    application.payableAmount = Integer.parseInt(cursor.getString(15));
                     applicationList.add(application);
 
                 }while (cursor.moveToNext());
@@ -126,7 +132,7 @@ public class ApplicationHelper {
         List<Application> applicationList = new ArrayList<>();
         try{
             SQLiteDatabase sqLiteDatabase = DatabaseHelper.getInstance(context).openDataBase();
-            String selectQuery = "Select firstName,lastName,email,mobileNo,state," +
+            String selectQuery = "Select firstName,lastName,email,mobileNo,state,city,area," +
                     "district,subDivision,circlePolicestation,userImg,applicationType," +
                     " status,isAccepted,xServiceManEmail,payableAmount from tblApplications " +
                     " Where applicationType = '"+applicationType+"' ";
@@ -140,15 +146,56 @@ public class ApplicationHelper {
                     application.email = cursor.getString(2);
                     application.mobileNo = cursor.getString(3);
                     application.state = cursor.getString(4);
-                    application.district = cursor.getString(5);
-                    application.subDivision = cursor.getString(6);
-                    application.circlePolicestation = cursor.getString(7);
-                    application.userImg = cursor.getString(8);
-                    application.applicationType = cursor.getString(9);
-                    application.status = Integer.parseInt(cursor.getString(10));
-                    application.isAccepted =Integer.parseInt(cursor.getString(11));
-                    application.xServiceManEmail = cursor.getString(12);
-                    application.payableAmount = Integer.parseInt(cursor.getString(13));
+                    application.city = cursor.getString(5);
+                    application.area = cursor.getString(6);
+                    application.district = cursor.getString(7);
+                    application.subDivision = cursor.getString(8);
+                    application.circlePolicestation = cursor.getString(9);
+                    application.userImg = cursor.getString(10);
+                    application.applicationType = cursor.getString(11);
+                    application.status = Integer.parseInt(cursor.getString(12));
+                    application.isAccepted =Integer.parseInt(cursor.getString(13));
+                    application.xServiceManEmail = cursor.getString(14);
+                    application.payableAmount = Integer.parseInt(cursor.getString(15));
+                    applicationList.add(application);
+
+                }while (cursor.moveToNext());
+            }
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        return applicationList;
+    }
+    public static List<Application> getAllApplicationsByEmailId(Context context,String email){
+        List<Application> applicationList = new ArrayList<>();
+        try{
+            SQLiteDatabase sqLiteDatabase = DatabaseHelper.getInstance(context).openDataBase();
+            String selectQuery = "Select firstName,lastName,email,mobileNo,state,city,area," +
+                    "district,subDivision,circlePolicestation,userImg,applicationType," +
+                    " status,isAccepted,xServiceManEmail,payableAmount from tblApplications " +
+                    " Where email = '"+email+"' ";
+
+            Cursor cursor = sqLiteDatabase.rawQuery(selectQuery,null);
+            if(null!=cursor&&cursor.moveToFirst()){
+                do{
+                    Application application = new Application();
+                    application.firstName = cursor.getString(0);
+                    application.lastName = cursor.getString(1);
+                    application.email = cursor.getString(2);
+                    application.mobileNo = cursor.getString(3);
+                    application.state = cursor.getString(4);
+                    application.city = cursor.getString(5);
+                    application.area = cursor.getString(6);
+                    application.district = cursor.getString(7);
+                    application.subDivision = cursor.getString(8);
+                    application.circlePolicestation = cursor.getString(9);
+                    application.userImg = cursor.getString(10);
+                    application.applicationType = cursor.getString(11);
+                    application.status = Integer.parseInt(cursor.getString(12));
+                    application.isAccepted =Integer.parseInt(cursor.getString(13));
+                    application.xServiceManEmail = cursor.getString(14);
+                    application.payableAmount = Integer.parseInt(cursor.getString(15));
                     applicationList.add(application);
 
                 }while (cursor.moveToNext());

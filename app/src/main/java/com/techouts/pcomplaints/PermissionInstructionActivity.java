@@ -19,6 +19,7 @@ import com.payumoney.core.entity.TransactionResponse;
 import com.payumoney.sdkui.ui.utils.PayUmoneyFlowManager;
 import com.payumoney.sdkui.ui.utils.ResultModel;
 import com.techouts.pcomplaints.adapters.ComplaintInstructionAdapter;
+import com.techouts.pcomplaints.database.ApplicationHelper;
 import com.techouts.pcomplaints.database.UserDataHelper;
 import com.techouts.pcomplaints.entities.Application;
 import com.techouts.pcomplaints.entities.User;
@@ -44,6 +45,7 @@ public class PermissionInstructionActivity extends BaseActivity {
     private String TAG = PermissionInstructionActivity.class.getSimpleName();
     private User user = null;
     private  ArrayList<Application> listApplications;
+    private static final int PAYMENT_CODE = 105;
 
     @Override
     public int getRootLayout() {
@@ -69,15 +71,17 @@ public class PermissionInstructionActivity extends BaseActivity {
         rvComplaintInstructions.setLayoutManager(new LinearLayoutManager(PermissionInstructionActivity.this));
         complaintInstructionAdapter = new ComplaintInstructionAdapter();
         rvComplaintInstructions.setAdapter(complaintInstructionAdapter);
-        switch (applicationType) {
-            case AppConstents.INTERNET_CAFES:
-                tvTitle.setText(AppConstents.INTERNET_CAFES);
-                break;
-            case AppConstents.GUN_LICENCES:
-                tvTitle.setText(AppConstents.GUN_LICENCES);
-                break;
-            default:
-                break;
+        if(null!= applicationType){
+            switch (applicationType) {
+                case AppConstents.INTERNET_CAFES:
+                    tvTitle.setText(AppConstents.INTERNET_CAFES);
+                    break;
+                case AppConstents.GUN_LICENCES:
+                    tvTitle.setText(AppConstents.GUN_LICENCES);
+                    break;
+                default:
+                    break;
+            }
         }
 
         ivCamera.setOnClickListener(new View.OnClickListener() {
@@ -123,7 +127,11 @@ public class PermissionInstructionActivity extends BaseActivity {
                         application.isAccepted = 1;
                     application.userImg = userImg;
                     listApplications.add(application);
-                    launchPayUMoneyFlow();
+
+                    Intent intent = new Intent(PermissionInstructionActivity.this,PaymentActivity.class);
+                    intent.putExtra(AppConstents.EXTRA_APPLICATION_TYPE,applicationType);
+                    startActivityForResult(intent,PAYMENT_CODE);
+//                    launchPayUMoneyFlow();
                 }
             }
         });
@@ -182,8 +190,7 @@ public class PermissionInstructionActivity extends BaseActivity {
 
         @Override
         protected User doInBackground(Void... voids) {
-//            User user = DatabaseHandler.getInstance(PermissionInstructionActivity.this).userDao().
-//                    getUserDetailsByEmailId(SharedPreferenceUtils.getStringValue(AppConstents.EMAIL_ID));
+
             User user = UserDataHelper.getUserByEmailId(PermissionInstructionActivity.this,
                     SharedPreferenceUtils.getStringValue(AppConstents.EMAIL_ID));
 
@@ -202,7 +209,7 @@ public class PermissionInstructionActivity extends BaseActivity {
 
         @Override
         protected Boolean doInBackground(ArrayList<Application>[] arrayLists) {
-//            DatabaseHandler.getInstance(getApplicationContext()).applicationDao().insertAll(arrayLists[0]);
+            ApplicationHelper.insertApplicationData(PermissionInstructionActivity.this,arrayLists[0]);
             return true;
         }
 
@@ -220,46 +227,50 @@ public class PermissionInstructionActivity extends BaseActivity {
                 Bitmap bitmap = (Bitmap) data.getExtras().get("data");
                 storeImage(bitmap);
                 ivUserImg.setImageBitmap(bitmap);
-            } else if (requestCode == PayUmoneyFlowManager.REQUEST_CODE_PAYMENT && null != data) {
-                TransactionResponse transactionResponse = data.getParcelableExtra(PayUmoneyFlowManager
-                        .INTENT_EXTRA_TRANSACTION_RESPONSE);
-
-                ResultModel resultModel = data.getParcelableExtra(PayUmoneyFlowManager.ARG_RESULT);
-
-                // Check which object is non-null
-                if (transactionResponse != null && transactionResponse.getPayuResponse() != null) {
-                    if (transactionResponse.getTransactionStatus().equals(TransactionResponse.TransactionStatus.SUCCESSFUL)) {
-                        new SendApplicationAsyncTask().execute(listApplications);
-                        //Success Transaction
-                        DialogUtils.showDialog(PermissionInstructionActivity.this,"Payment Successful", AppConstents.FINISH,false);
-                    } else {
-                        //Failure Transaction
-                        DialogUtils.showDialog(PermissionInstructionActivity.this, "Payment Failed, Please try again after sometime.", AppConstents.FINISH, false);
-                    }
-
-//                    // Response from Payumoney
-//                    String payuResponse = transactionResponse.getPayuResponse();
-//
-//                    // Response from SURl and FURL
-//                    String merchantResponse = transactionResponse.getTransactionDetails();
-
-//                    new AlertDialog.Builder(this)
-//                            .setCancelable(false)
-//                            .setMessage("Payment Successful")
-//                            .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-//                                public void onClick(DialogInterface dialog, int whichButton) {
-//                                    dialog.dismiss();
-//                                    finish();
-//                                }
-//                            }).show();
-
-                } else if (resultModel != null && resultModel.getError() != null) {
-                    Log.d(TAG, "Error response : " + resultModel.getError().getTransactionResponse());
-                } else {
-                    Log.d(TAG, "Both objects are null!");
-                }
+            }
+            else if(requestCode == PAYMENT_CODE){
 
             }
+//            else if (requestCode == PayUmoneyFlowManager.REQUEST_CODE_PAYMENT && null != data) {
+//                TransactionResponse transactionResponse = data.getParcelableExtra(PayUmoneyFlowManager
+//                        .INTENT_EXTRA_TRANSACTION_RESPONSE);
+//
+//                ResultModel resultModel = data.getParcelableExtra(PayUmoneyFlowManager.ARG_RESULT);
+//
+//                // Check which object is non-null
+//                if (transactionResponse != null && transactionResponse.getPayuResponse() != null) {
+//                    if (transactionResponse.getTransactionStatus().equals(TransactionResponse.TransactionStatus.SUCCESSFUL)) {
+//                        new SendApplicationAsyncTask().execute(listApplications);
+//                        //Success Transaction
+//                        DialogUtils.showDialog(PermissionInstructionActivity.this,"Payment Successful", AppConstents.FINISH,false);
+//                    } else {
+//                        //Failure Transaction
+//                        DialogUtils.showDialog(PermissionInstructionActivity.this, "Payment Failed, Please try again after sometime.", AppConstents.FINISH, false);
+//                    }
+//
+////                    // Response from Payumoney
+////                    String payuResponse = transactionResponse.getPayuResponse();
+////
+////                    // Response from SURl and FURL
+////                    String merchantResponse = transactionResponse.getTransactionDetails();
+//
+////                    new AlertDialog.Builder(this)
+////                            .setCancelable(false)
+////                            .setMessage("Payment Successful")
+////                            .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+////                                public void onClick(DialogInterface dialog, int whichButton) {
+////                                    dialog.dismiss();
+////                                    finish();
+////                                }
+////                            }).show();
+//
+//                } else if (resultModel != null && resultModel.getError() != null) {
+//                    Log.d(TAG, "Error response : " + resultModel.getError().getTransactionResponse());
+//                } else {
+//                    Log.d(TAG, "Both objects are null!");
+//                }
+//
+//            }
         }
     }
 }

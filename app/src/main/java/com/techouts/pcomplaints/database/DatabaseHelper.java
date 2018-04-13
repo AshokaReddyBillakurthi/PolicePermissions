@@ -13,19 +13,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // Database creation sql statement
     private static final String CREATE_TABLE_USER = "Create table if not exists tblUsers" +
             "(firstName text not null,lastName text not null,email text primary key,password text not null," +
-            "mobileNo text not null, state text not null, district text not null, subDivision text not null," +
+            "mobileNo text not null, state text not null, city text not null," +
+            "area text not null,district text not null, subDivision text not null," +
             "circlePolicestation text not null, userImg text not null,userType text not null)";
 
     private static final String CREATE_TABLE_XSERVICEMAN = "Create table if not exists tblXServiceMans " +
             "(firstName text not null,lastName text not null,email text primary key,password text not null," +
-            "mobileNo text not null, state text not null, district text not null, subDivision text not null," +
+            "mobileNo text not null, state text not null, city text not null," +
+            "area text not null, district text not null, subDivision text not null," +
             "circlePolicestation text not null, userImg text not null,userType text not null,services text not null," +
             "reqDocs text not null, status text not null)";
 
     private static final String CREATE_TABLE_APPLICATION = "Create table if not exists tblApplications " +
             "(applicationNo text primary key,firstName text not null, lastName text not null," +
-            "email text not null,mobileNo text not null, state text not null, " +
-            "district text not null, subDivision text not null," +
+            "email text not null,mobileNo text not null, state text not null, city text not null, " +
+            "area text not null, district text not null, subDivision text not null," +
             "circlePolicestation text not null, userImg text not null,applicationType text not null," +
             "status text not null,isAccepted text not null, xServiceManEmail text, payableAmount text)";
 

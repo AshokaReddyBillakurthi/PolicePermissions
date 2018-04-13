@@ -38,7 +38,6 @@ dependencies {
     //PayU
     compile 'com.payumoney.sdkui:plug-n-play:1.2.0'
 
-
     // Google
     compile 'com.google.android.gms:play-services-auth:10.0.0'
 

@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.techouts.pcomplaints.adapters.ApplicationsListAdapter;
+import com.techouts.pcomplaints.database.ApplicationHelper;
 import com.techouts.pcomplaints.entities.Application;
 import com.techouts.pcomplaints.utils.AppConstents;
 import com.techouts.pcomplaints.utils.SharedPreferenceUtils;
@@ -123,11 +124,7 @@ public class MyCompliaintsActivity extends BaseActivity {
 
         @Override
         protected List<Application> doInBackground(String... strings) {
-//                return  DatabaseHandler.getInstance(getApplicationContext())
-//                        .applicationDao().getApplicationDetailsByEmailId(strings[0]);
-
-            return new ArrayList<>();
-
+            return ApplicationHelper.getAllApplicationsByEmailId(MyCompliaintsActivity.this,strings[0]);
         }
         @Override
         protected void onPostExecute(List<Application> applications) {

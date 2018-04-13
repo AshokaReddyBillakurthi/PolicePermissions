@@ -36,4 +36,14 @@
         <item name="windowFixedWidthMinor">60%</item>
     </style>
 
+
+    <style name="AppThemePayment" parent="PayumoneyAppTheme">
+        <item name="colorPrimary">@color/app_color</item>
+        <item name="colorPrimaryDark">@color/app_color_lite</item>
+        <item name="colorAccent">@color/app_color</item>
+        <item name="colorButtonNormal">@color/app_color</item>
+        <item name="alertDialogTheme">@style/MyAlertDialogTheme</item>
+        <item name="actionMenuTextColor">@color/white</item>
+    </style>
+
 </resources>
