@@ -13,8 +13,8 @@ import android.widget.TextView;
 
 import com.techouts.pcomplaints.adapters.UserListAdpter;
 import com.techouts.pcomplaints.database.UserDataHelper;
-import com.techouts.pcomplaints.entities.ExServiceMan;
-import com.techouts.pcomplaints.entities.User;
+import com.techouts.pcomplaints.model.ExServiceMan;
+import com.techouts.pcomplaints.model.User;
 import com.techouts.pcomplaints.utils.AppConstents;
 
 import java.util.ArrayList;

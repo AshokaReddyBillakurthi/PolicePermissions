@@ -1,7 +1,7 @@
-package com.techouts.pcomplaints.entities;
+package com.techouts.pcomplaints.model;
 
 
-import com.techouts.pcomplaints.data.Tools;
+import com.techouts.pcomplaints.utils.FirebaseTools;
 
 /**
  * Created by TO-OW109 on 26-03-2018.
@@ -41,7 +41,7 @@ public class ChatMessage {
     public String getReadableTime()
     {
         try {
-            return Tools.formatTime(Long.valueOf(timestamp));
+            return FirebaseTools.formatTime(Long.valueOf(timestamp));
         }
         catch (NumberFormatException ignored) {
             return null;

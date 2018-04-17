@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 import android.text.TextUtils;
 
-import com.techouts.pcomplaints.entities.User;
+import com.techouts.pcomplaints.model.User;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -8,7 +8,7 @@ import android.widget.TextView;
 
 import com.techouts.pcomplaints.R;
 import com.techouts.pcomplaints.custom.CustomDialog;
-import com.techouts.pcomplaints.entities.City;
+import com.techouts.pcomplaints.model.City;
 
 import java.util.List;
 

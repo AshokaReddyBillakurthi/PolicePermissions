@@ -13,8 +13,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.techouts.pcomplaints.R;
-import com.techouts.pcomplaints.data.SettingsAPI;
-import com.techouts.pcomplaints.entities.ChatMessage;
+import com.techouts.pcomplaints.model.ChatMessage;
+import com.techouts.pcomplaints.utils.FirebaseSettingsAPI;
 
 import java.util.List;
 
@@ -26,13 +26,13 @@ public class ChatDetailsListAdapter extends BaseAdapter {
 	
 	private List<ChatMessage> mMessages;
 	private Context mContext;
-	SettingsAPI set;
+	FirebaseSettingsAPI set;
 	
 	public ChatDetailsListAdapter(Context context, List<ChatMessage> messages) {
         super();
         this.mContext = context;
         this.mMessages = messages;
-        set=new SettingsAPI(mContext);
+        set=new FirebaseSettingsAPI(mContext);
 	}
 	
 	@Override

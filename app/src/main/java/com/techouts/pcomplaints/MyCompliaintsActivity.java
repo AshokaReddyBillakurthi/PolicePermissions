@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import com.techouts.pcomplaints.adapters.ApplicationsListAdapter;
 import com.techouts.pcomplaints.database.ApplicationHelper;
-import com.techouts.pcomplaints.entities.Application;
+import com.techouts.pcomplaints.model.Application;
 import com.techouts.pcomplaints.utils.AppConstents;
 import com.techouts.pcomplaints.utils.SharedPreferenceUtils;
 

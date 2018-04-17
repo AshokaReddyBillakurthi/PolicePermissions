@@ -7,9 +7,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.view.ViewCompat;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -27,22 +25,22 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.techouts.pcomplaints.adapters.ChatDetailsListAdapter;
-import com.techouts.pcomplaints.data.ParseFirebaseData;
-import com.techouts.pcomplaints.data.SettingsAPI;
-import com.techouts.pcomplaints.data.Tools;
-import com.techouts.pcomplaints.entities.ChatMessage;
-import com.techouts.pcomplaints.entities.Friend;
+import com.techouts.pcomplaints.model.ChatMessage;
+import com.techouts.pcomplaints.model.Friend;
+import com.techouts.pcomplaints.utils.FirebaseDataParse;
+import com.techouts.pcomplaints.utils.FirebaseSettingsAPI;
+import com.techouts.pcomplaints.utils.FirebaseTools;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class ActivityChatDetails extends BaseActivity {
+public class ChatDetailsActivity extends BaseActivity {
     public static String KEY_FRIEND = "FRIEND";
 
     // give preparation animation activity transition
     public static void navigate(AppCompatActivity activity, View transitionImage, Friend obj) {
-        Intent intent = new Intent(activity, ActivityChatDetails.class);
+        Intent intent = new Intent(activity, ChatDetailsActivity.class);
         intent.putExtra(KEY_FRIEND, obj);
         ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity, transitionImage, KEY_FRIEND);
         ActivityCompat.startActivity(activity, intent, options.toBundle());
@@ -58,8 +56,8 @@ public class ActivityChatDetails extends BaseActivity {
     private Friend friend;
     private List<ChatMessage> items = new ArrayList<>();
     private View parent_view;
-    private ParseFirebaseData pfbd;
-    private SettingsAPI set;
+    private FirebaseDataParse pfbd;
+    private FirebaseSettingsAPI set;
     private String chatNode, chatNode_1, chatNode_2;
     public static final String MESSAGE_CHILD = "messages";
     private DatabaseReference ref;
@@ -73,8 +71,8 @@ public class ActivityChatDetails extends BaseActivity {
     @Override
     public void initGUI() {
         parent_view = findViewById(android.R.id.content);
-        pfbd = new ParseFirebaseData(this);
-        set = new SettingsAPI(this);
+        pfbd = new FirebaseDataParse(this);
+        set = new FirebaseSettingsAPI(this);
 
         ivBack = findViewById(R.id.ivBack);
         tvTitle = findViewById(R.id.tvTitle);
@@ -105,7 +103,7 @@ public class ActivityChatDetails extends BaseActivity {
                 String totalData = dataSnapshot.child(chatNode).toString();
                 items.clear();
                 items.addAll(pfbd.getMessageListForUser(totalData));
-                mAdapter = new ChatDetailsListAdapter(ActivityChatDetails.this, items);
+                mAdapter = new ChatDetailsListAdapter(ChatDetailsActivity.this, items);
                 listview.setAdapter(mAdapter);
                 listview.setSelectionFromTop(mAdapter.getCount(), 0);
                 listview.requestFocus();
@@ -121,7 +119,7 @@ public class ActivityChatDetails extends BaseActivity {
 
         // for system bar in lollipop
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Tools.systemBarLolipop(this);
+            FirebaseTools.systemBarLolipop(this);
         }
 
         ivBack.setOnClickListener(new OnClickListener() {

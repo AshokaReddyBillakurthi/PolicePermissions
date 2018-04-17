@@ -1,9 +1,9 @@
-package com.techouts.pcomplaints.data;
+package com.techouts.pcomplaints.utils;
 
 import android.content.Context;
 
-import com.techouts.pcomplaints.entities.ChatMessage;
-import com.techouts.pcomplaints.entities.Friend;
+import com.techouts.pcomplaints.model.ChatMessage;
+import com.techouts.pcomplaints.model.Friend;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -14,11 +14,11 @@ import java.util.List;
  * Created by TO-OW109 on 26-03-2018.
  */
 
-public class ParseFirebaseData {
-    private SettingsAPI set;
+public class FirebaseDataParse {
+    private FirebaseSettingsAPI set;
 
-    public ParseFirebaseData(Context context) {
-        set = new SettingsAPI(context);
+    public FirebaseDataParse(Context context) {
+        set = new FirebaseSettingsAPI(context);
     }
 
     public List<Friend> getUserList(String userData) {

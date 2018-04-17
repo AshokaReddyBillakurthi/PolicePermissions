@@ -17,13 +17,13 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.techouts.pcomplaints.ActivityChatDetails;
-import com.techouts.pcomplaints.ActivityMain;
+import com.techouts.pcomplaints.ChatDetailsActivity;
+import com.techouts.pcomplaints.ChatHomeActivity;
 import com.techouts.pcomplaints.R;
 import com.techouts.pcomplaints.adapters.ChatsListAdapter;
-import com.techouts.pcomplaints.data.ParseFirebaseData;
-import com.techouts.pcomplaints.data.SettingsAPI;
-import com.techouts.pcomplaints.entities.ChatMessage;
+import com.techouts.pcomplaints.model.ChatMessage;
+import com.techouts.pcomplaints.utils.FirebaseDataParse;
+import com.techouts.pcomplaints.utils.FirebaseSettingsAPI;
 import com.techouts.pcomplaints.widget.DividerItemDecoration;
 
 public class ChatsFragment extends Fragment {
@@ -38,16 +38,16 @@ public class ChatsFragment extends Fragment {
 
     View view;
 
-    ParseFirebaseData pfbd;
-    SettingsAPI set;
+    FirebaseDataParse pfbd;
+    FirebaseSettingsAPI set;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         view = inflater.inflate(R.layout.fragment_chat, container, false);
-        pfbd = new ParseFirebaseData(getContext());
-        set = new SettingsAPI(getContext());
+        pfbd = new FirebaseDataParse(getContext());
+        set = new FirebaseSettingsAPI(getContext());
 
         // activate fragment menu
         setHasOptionsMenu(true);
@@ -76,9 +76,9 @@ public class ChatsFragment extends Fragment {
                     @Override
                     public void onItemClick(View v, ChatMessage obj, int position) {
                         if (obj.getReceiver().getId().equals(set.readSetting("myid")))
-                            ActivityChatDetails.navigate((ActivityMain) getActivity(), v.findViewById(R.id.lyt_parent), obj.getSender());
+                            ChatDetailsActivity.navigate((ChatHomeActivity) getActivity(), v.findViewById(R.id.lyt_parent), obj.getSender());
                         else if (obj.getSender().getId().equals(set.readSetting("myid")))
-                            ActivityChatDetails.navigate((ActivityMain) getActivity(), v.findViewById(R.id.lyt_parent), obj.getReceiver());
+                            ChatDetailsActivity.navigate((ChatHomeActivity) getActivity(), v.findViewById(R.id.lyt_parent), obj.getReceiver());
                     }
                 });
 

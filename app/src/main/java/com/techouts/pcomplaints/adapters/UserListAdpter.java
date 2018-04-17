@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import com.techouts.pcomplaints.R;
 import com.techouts.pcomplaints.UserDetailsActivity;
-import com.techouts.pcomplaints.entities.User;
+import com.techouts.pcomplaints.model.User;
 import com.techouts.pcomplaints.utils.AppConstents;
 
 import java.io.File;

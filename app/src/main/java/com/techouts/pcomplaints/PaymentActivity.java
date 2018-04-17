@@ -203,7 +203,7 @@ public class PaymentActivity extends AppCompatActivity {
 //                        startActivity(intent);
                         setResult(RESULT_OK);
                     } else if (url.equals(mFailedUrl)) {
-//                        Toast.makeText(PaymentActivity.this,"Payment Failed",Toast.LENGTH_LONG).show();
+                        Toast.makeText(PaymentActivity.this,"Payment Failed",Toast.LENGTH_LONG).show();
 //                        Intent intent = new Intent(PaymentActivity.this, PaymentStatusActivity.class);
 //                        intent.putExtra("status", false);
 //                        intent.putExtra("transaction_id", mTXNId);

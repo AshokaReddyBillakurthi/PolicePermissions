@@ -143,7 +143,7 @@
             android:name=".TermsAndConditionsActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ActivityMain"
+            android:name=".ChatHomeActivity"
             android:theme="@style/NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -158,12 +158,12 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ActivityChatDetails"
+            android:name=".ChatDetailsActivity"
             android:label="List"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar" />
         <activity
-            android:name=".ActivitySelectFriend"
+            android:name=".ChatSelectFriendActivity"
             android:label="Select Friend"
             android:screenOrientation="portrait"
             android:theme="@style/NoActionBar" />

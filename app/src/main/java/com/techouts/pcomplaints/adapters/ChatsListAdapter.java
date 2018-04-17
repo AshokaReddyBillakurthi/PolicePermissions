@@ -16,8 +16,8 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 import com.techouts.pcomplaints.R;
-import com.techouts.pcomplaints.data.SettingsAPI;
-import com.techouts.pcomplaints.entities.ChatMessage;
+import com.techouts.pcomplaints.model.ChatMessage;
+import com.techouts.pcomplaints.utils.FirebaseSettingsAPI;
 import com.techouts.pcomplaints.widget.CircleTransform;
 
 import java.util.ArrayList;
@@ -36,7 +36,7 @@ public class ChatsListAdapter extends RecyclerView.Adapter<ChatsListAdapter.View
     private ItemFilter mFilter = new ItemFilter();
 
     private Context mContext;
-    SettingsAPI set;
+    FirebaseSettingsAPI set;
 
     // for item click listener
     private OnItemClickListener mOnItemClickListener;
@@ -97,7 +97,7 @@ public class ChatsListAdapter extends RecyclerView.Adapter<ChatsListAdapter.View
     // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
-        set=new SettingsAPI(mContext);
+        set=new FirebaseSettingsAPI(mContext);
         final ChatMessage c = filtered_items.get(position);
         holder.content.setText(c.getText());
         if (c.getSender().getId().equals(set.readSetting("myid"))) {

@@ -1,4 +1,4 @@
-package com.techouts.pcomplaints.entities;
+package com.techouts.pcomplaints.model;
 
 
 import java.io.Serializable;

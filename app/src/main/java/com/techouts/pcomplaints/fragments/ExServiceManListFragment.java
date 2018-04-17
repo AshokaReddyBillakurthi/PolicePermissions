@@ -1,6 +1,5 @@
 package com.techouts.pcomplaints.fragments;
 
-import android.annotation.SuppressLint;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,12 +9,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.techouts.pcomplaints.ApplicationListActivity;
-import com.techouts.pcomplaints.ExServiceManListActivity;
 import com.techouts.pcomplaints.R;
 import com.techouts.pcomplaints.adapters.ExServiceManListAdapter;
 import com.techouts.pcomplaints.database.XServiceManDataHelper;
-import com.techouts.pcomplaints.entities.ExServiceMan;
+import com.techouts.pcomplaints.model.ExServiceMan;
 import com.techouts.pcomplaints.utils.AppConstents;
 
 import java.util.List;

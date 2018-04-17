@@ -16,10 +16,10 @@ import android.widget.Toast;
 
 import com.techouts.pcomplaints.custom.CustomDialog;
 import com.techouts.pcomplaints.database.UserDataHelper;
-import com.techouts.pcomplaints.entities.Area;
-import com.techouts.pcomplaints.entities.City;
-import com.techouts.pcomplaints.entities.State;
-import com.techouts.pcomplaints.entities.User;
+import com.techouts.pcomplaints.model.Area;
+import com.techouts.pcomplaints.model.City;
+import com.techouts.pcomplaints.model.State;
+import com.techouts.pcomplaints.model.User;
 import com.techouts.pcomplaints.utils.ApiServiceConstants;
 import com.techouts.pcomplaints.utils.AppConstents;
 import com.techouts.pcomplaints.utils.DataManager;

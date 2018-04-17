@@ -8,7 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.techouts.pcomplaints.database.UserDataHelper;
-import com.techouts.pcomplaints.entities.User;
+import com.techouts.pcomplaints.model.User;
 import com.techouts.pcomplaints.utils.AppConstents;
 
 public class UserDetailsActivity extends BaseActivity {

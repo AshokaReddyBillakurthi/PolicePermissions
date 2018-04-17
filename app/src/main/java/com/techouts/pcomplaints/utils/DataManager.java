@@ -2,9 +2,9 @@ package com.techouts.pcomplaints.utils;
 
 import android.util.Log;
 
-import com.techouts.pcomplaints.entities.Area;
-import com.techouts.pcomplaints.entities.City;
-import com.techouts.pcomplaints.entities.State;
+import com.techouts.pcomplaints.model.Area;
+import com.techouts.pcomplaints.model.City;
+import com.techouts.pcomplaints.model.State;
 
 import java.util.ArrayList;
 import java.util.List;

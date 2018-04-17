@@ -14,7 +14,7 @@ import android.widget.TextView;
 import com.techouts.pcomplaints.ExServiceManDetailsActivity;
 import com.techouts.pcomplaints.ExServiceManListActivity;
 import com.techouts.pcomplaints.R;
-import com.techouts.pcomplaints.entities.ExServiceMan;
+import com.techouts.pcomplaints.model.ExServiceMan;
 import com.techouts.pcomplaints.utils.AppConstents;
 
 import java.io.File;

@@ -1,8 +1,7 @@
-package com.techouts.pcomplaints.data;
+package com.techouts.pcomplaints.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-
 
 import com.techouts.pcomplaints.R;
 
@@ -14,11 +13,11 @@ import java.util.Map;
  * Created by TO-OW109 on 26-03-2018.
  */
 
-public class SettingsAPI {
+public class FirebaseSettingsAPI {
     Context mContext;
     private SharedPreferences sharedSettings;
 
-    public SettingsAPI(Context context) {
+    public FirebaseSettingsAPI(Context context) {
         mContext = context;
         sharedSettings = mContext.getSharedPreferences(mContext.getString(R.string.settings_file_name), Context.MODE_PRIVATE);
     }

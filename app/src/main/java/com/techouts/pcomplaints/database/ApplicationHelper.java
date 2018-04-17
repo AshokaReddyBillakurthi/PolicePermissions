@@ -5,7 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 
-import com.techouts.pcomplaints.entities.Application;
+import com.techouts.pcomplaints.model.Application;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -128,7 +128,7 @@ public class ApplicationHelper {
         return applicationList;
     }
 
-    public static List<Application> getAllApplicationsByApplicationType(Context context,String applicationType){
+    public static List<Application> getAllApplicationsByApplicationType(Context context, String applicationType){
         List<Application> applicationList = new ArrayList<>();
         try{
             SQLiteDatabase sqLiteDatabase = DatabaseHelper.getInstance(context).openDataBase();

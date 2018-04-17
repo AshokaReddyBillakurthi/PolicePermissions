@@ -5,7 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 
-import com.techouts.pcomplaints.entities.ExServiceMan;
+import com.techouts.pcomplaints.model.ExServiceMan;
 
 import java.util.ArrayList;
 

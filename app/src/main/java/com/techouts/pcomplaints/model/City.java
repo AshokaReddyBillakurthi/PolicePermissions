@@ -1,4 +1,4 @@
-package com.techouts.pcomplaints.entities;
+package com.techouts.pcomplaints.model;
 
 /**
  * Created by TO-OW109 on 26-03-2018.

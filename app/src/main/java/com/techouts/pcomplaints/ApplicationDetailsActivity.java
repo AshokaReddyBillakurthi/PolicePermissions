@@ -6,8 +6,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.techouts.pcomplaints.entities.Application;
-import com.techouts.pcomplaints.entities.PermissionApplication;
+import com.techouts.pcomplaints.model.Application;
 import com.techouts.pcomplaints.utils.AppConstents;
 
 public class ApplicationDetailsActivity extends BaseActivity {

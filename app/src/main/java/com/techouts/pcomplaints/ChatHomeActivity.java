@@ -14,10 +14,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.techouts.pcomplaints.data.Tools;
 import com.techouts.pcomplaints.fragments.ChatsFragment;
+import com.techouts.pcomplaints.utils.FirebaseTools;
 
-public class ActivityMain extends BaseActivity {
+public class ChatHomeActivity extends BaseActivity {
     public FloatingActionButton fab;
     private TextView tvTitle;
     private ImageView ivBack;
@@ -37,14 +37,14 @@ public class ActivityMain extends BaseActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i =new Intent(ActivityMain.this,ActivitySelectFriend.class);
+                Intent i =new Intent(ChatHomeActivity.this,ChatSelectFriendActivity.class);
                 startActivity(i);
             }
         });
 
         // for system bar in lollipop
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Tools.systemBarLolipop(this);
+            FirebaseTools.systemBarLolipop(this);
         }
 
         ivBack.setOnClickListener(new View.OnClickListener() {

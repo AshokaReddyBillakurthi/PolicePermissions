@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 import com.techouts.pcomplaints.R;
-import com.techouts.pcomplaints.entities.Friend;
+import com.techouts.pcomplaints.model.Friend;
 import com.techouts.pcomplaints.widget.CircleTransform;
 
 import java.util.ArrayList;

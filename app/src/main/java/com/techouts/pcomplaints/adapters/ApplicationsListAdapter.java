@@ -14,7 +14,7 @@ import android.widget.TextView;
 import com.techouts.pcomplaints.ApplicationDetailsActivity;
 import com.techouts.pcomplaints.ChatActivity;
 import com.techouts.pcomplaints.R;
-import com.techouts.pcomplaints.entities.Application;
+import com.techouts.pcomplaints.model.Application;
 import com.techouts.pcomplaints.utils.AppConstents;
 
 import java.io.File;

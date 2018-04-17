@@ -1,4 +1,4 @@
-package com.techouts.pcomplaints.data;
+package com.techouts.pcomplaints.utils;
 
 import android.app.Activity;
 import android.os.Build;
@@ -17,13 +17,13 @@ import java.util.Locale;
  * Created by TO-OW109 on 26-03-2018.
  */
 
-public class Tools {
+public class FirebaseTools {
     private static float getAPIVerison() {
 
         Float f = null;
         try {
             StringBuilder strBuild = new StringBuilder();
-            strBuild.append(android.os.Build.VERSION.RELEASE.substring(0, 2));
+            strBuild.append(Build.VERSION.RELEASE.substring(0, 2));
             f = new Float(strBuild.toString());
         } catch (NumberFormatException e) {
             Log.e("", "erro ao recuperar a versão da API" + e.getMessage());

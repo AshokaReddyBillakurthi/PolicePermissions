@@ -16,9 +16,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.techouts.pcomplaints.adapters.FriendsListAdapter;
-import com.techouts.pcomplaints.data.ParseFirebaseData;
-import com.techouts.pcomplaints.data.Tools;
-import com.techouts.pcomplaints.entities.Friend;
+import com.techouts.pcomplaints.model.Friend;
+import com.techouts.pcomplaints.utils.FirebaseDataParse;
+import com.techouts.pcomplaints.utils.FirebaseTools;
 import com.techouts.pcomplaints.widget.DividerItemDecoration;
 
 import java.util.ArrayList;
@@ -26,7 +26,7 @@ import java.util.List;
 
 import static com.techouts.pcomplaints.adapters.FriendsListAdapter.OnItemClickListener;
 
-public class ActivitySelectFriend extends BaseActivity {
+public class ChatSelectFriendActivity extends BaseActivity {
 
     private ActionBar actionBar;
     private RecyclerView recyclerView;
@@ -34,7 +34,7 @@ public class ActivitySelectFriend extends BaseActivity {
     private List<Friend> friendList;
 
     public static final String USERS_CHILD = "users";
-    private ParseFirebaseData pfbd;
+    private FirebaseDataParse pfbd;
 
     private ImageView ivBack;
     private TextView tvTitle;
@@ -49,7 +49,7 @@ public class ActivitySelectFriend extends BaseActivity {
 //        initToolbar();
         initComponent();
         friendList=new ArrayList<>();
-        pfbd = new ParseFirebaseData(this);
+        pfbd = new FirebaseDataParse(this);
 
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference(USERS_CHILD);
         ref.addValueEventListener(new ValueEventListener() {
@@ -57,13 +57,13 @@ public class ActivitySelectFriend extends BaseActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String totalData = dataSnapshot.getValue().toString();
                 // TODO: 09-04-2018 if number of items is 0 then show something else
-                mAdapter = new FriendsListAdapter(ActivitySelectFriend.this, pfbd.getUserList(totalData));
+                mAdapter = new FriendsListAdapter(ChatSelectFriendActivity.this, pfbd.getUserList(totalData));
                 recyclerView.setAdapter(mAdapter);
 
                 mAdapter.setOnItemClickListener(new OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, Friend obj, int position) {
-                        ActivityChatDetails.navigate((ActivitySelectFriend) ActivitySelectFriend.this,
+                        ChatDetailsActivity.navigate((ChatSelectFriendActivity) ChatSelectFriendActivity.this,
                                 findViewById(R.id.lyt_parent), obj);
                     }
                 });
@@ -79,7 +79,7 @@ public class ActivitySelectFriend extends BaseActivity {
 
         // for system bar in lollipop
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Tools.systemBarLolipop(this);
+            FirebaseTools.systemBarLolipop(this);
         }
 
         ivBack.setOnClickListener(new View.OnClickListener() {

@@ -33,8 +33,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.techouts.pcomplaints.data.SettingsAPI;
-import com.techouts.pcomplaints.data.Tools;
+import com.techouts.pcomplaints.utils.FirebaseSettingsAPI;
+import com.techouts.pcomplaints.utils.FirebaseTools;
 
 public class ChatActivity extends BaseActivity implements GoogleApiClient.OnConnectionFailedListener,
         View.OnClickListener {
@@ -45,7 +45,7 @@ public class ChatActivity extends BaseActivity implements GoogleApiClient.OnConn
     private GoogleApiClient mGoogleApiClient;
     private FirebaseAuth mFirebaseAuth;
     private DatabaseReference ref;
-    private SettingsAPI set;
+    private FirebaseSettingsAPI set;
     public static final String USERS_CHILD = "users";
 
     @Override
@@ -79,7 +79,7 @@ public class ChatActivity extends BaseActivity implements GoogleApiClient.OnConn
 
         // Initialize FirebaseAuth
         mFirebaseAuth = FirebaseAuth.getInstance();
-        set = new SettingsAPI(this);
+        set = new FirebaseSettingsAPI(this);
 
         if (getIntent().getStringExtra("mode") != null) {
             if (getIntent().getStringExtra("mode").equals("logout")) {
@@ -106,7 +106,7 @@ public class ChatActivity extends BaseActivity implements GoogleApiClient.OnConn
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        startActivity(new Intent(ChatActivity.this, ActivityMain.class));
+                        startActivity(new Intent(ChatActivity.this, ChatHomeActivity.class));
                         finish();
                     }
                 }, 3000);
@@ -114,7 +114,7 @@ public class ChatActivity extends BaseActivity implements GoogleApiClient.OnConn
         }
         // for system bar in lollipop
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Tools.systemBarLolipop(this);
+            FirebaseTools.systemBarLolipop(this);
         }
     }
 
@@ -242,7 +242,7 @@ public class ChatActivity extends BaseActivity implements GoogleApiClient.OnConn
                                 }
                             });
 
-                            startActivity(new Intent(ChatActivity.this, ActivityMain.class));
+                            startActivity(new Intent(ChatActivity.this, ChatHomeActivity.class));
                             finish();
                         }
                     }

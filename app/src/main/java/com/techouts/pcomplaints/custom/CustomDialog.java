@@ -24,9 +24,9 @@ import com.techouts.pcomplaints.R;
 import com.techouts.pcomplaints.adapters.AreaAdapter;
 import com.techouts.pcomplaints.adapters.CityAdapter;
 import com.techouts.pcomplaints.adapters.StateAdapter;
-import com.techouts.pcomplaints.entities.Area;
-import com.techouts.pcomplaints.entities.City;
-import com.techouts.pcomplaints.entities.State;
+import com.techouts.pcomplaints.model.Area;
+import com.techouts.pcomplaints.model.City;
+import com.techouts.pcomplaints.model.State;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -7,9 +7,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.techouts.pcomplaints.database.DatabaseHelper;
 import com.techouts.pcomplaints.database.XServiceManDataHelper;
-import com.techouts.pcomplaints.entities.ExServiceMan;
+import com.techouts.pcomplaints.model.ExServiceMan;
 import com.techouts.pcomplaints.utils.AppConstents;
 
 public class ExServiceManDetailsActivity extends BaseActivity {

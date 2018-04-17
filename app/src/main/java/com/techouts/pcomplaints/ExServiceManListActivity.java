@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.techouts.pcomplaints.adapters.ExServiceManPagerAdapter;
-import com.techouts.pcomplaints.entities.ExServiceMan;
+import com.techouts.pcomplaints.model.ExServiceMan;
 import com.techouts.pcomplaints.utils.AppConstents;
 
 import java.util.List;
