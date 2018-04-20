@@ -50,8 +50,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String CREATE_TABLE_SUBSERVICES = "Create table if not exists tblSubServices " +
             "(subServiceCode text primary key, subServiceName text not null, serviceCode text not null)";
 
-
-
     private DatabaseHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
     }
@@ -65,7 +63,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public SQLiteDatabase openDataBase(){
         SQLiteDatabase sqLiteDatabase = null;
         try{
-            sqLiteDatabase = this.getWritableDatabase();
+            if(sqLiteDatabase == null)
+                sqLiteDatabase = this.getWritableDatabase();
         }
         catch (Exception e){
             e.printStackTrace();

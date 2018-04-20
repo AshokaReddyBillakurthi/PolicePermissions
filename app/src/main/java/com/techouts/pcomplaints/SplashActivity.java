@@ -10,8 +10,8 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 
-import com.techouts.pcomplaints.R;
 import com.techouts.pcomplaints.database.DatabaseHelper;
+import com.techouts.pcomplaints.services.SyncDataService;
 import com.techouts.pcomplaints.utils.AppConstents;
 import com.techouts.pcomplaints.utils.SharedPreferenceUtils;
 
@@ -36,9 +36,10 @@ public class SplashActivity extends BaseActivity {
     @Override
     public void initData() {
         databaseHelper = DatabaseHelper.getInstance(SplashActivity.this);
+        Intent intent = new Intent(SplashActivity.this,SyncDataService.class);
+        startService(intent);
         checkPermissions();
     }
-
 
     private void checkPermissions(){
         if(ActivityCompat.checkSelfPermission(SplashActivity.this, permissionsRequired[0]) != PackageManager.PERMISSION_GRANTED
@@ -149,18 +150,21 @@ public class SplashActivity extends BaseActivity {
 
 
     private void proceedAfterPermission(){
-        if(SharedPreferenceUtils.getBoolValue(AppConstents.IS_LOGGEDIN)){
-            Intent intent = new Intent(SplashActivity.this, HomeActivity.class);
-            intent.putExtra(AppConstents.EXTRA_LOGIN_TYPE, SharedPreferenceUtils.getStringValue(AppConstents.LOGIN_TYPE));
-            startActivity(intent);
-            finish();
+        try{
+            if(SharedPreferenceUtils.getBoolValue(AppConstents.IS_LOGGEDIN)){
+                Intent intent = new Intent(SplashActivity.this, HomeActivity.class);
+                intent.putExtra(AppConstents.EXTRA_LOGIN_TYPE, SharedPreferenceUtils.getStringValue(AppConstents.LOGIN_TYPE));
+                startActivity(intent);
+                finish();
+            }
+            else{
+                Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
+                startActivity(intent);
+                finish();
+            }
         }
-        else{
-            Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
-            startActivity(intent);
-            finish();
+        catch (Exception e) {
+            e.printStackTrace();
         }
-
     }
-
 }

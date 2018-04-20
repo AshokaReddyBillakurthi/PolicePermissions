@@ -97,14 +97,6 @@ public class PermissionInstructionActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 if(isValidData()&&null!=user) {
-                    long application_no = SharedPreferenceUtils.getLongValue(SharedPreferenceUtils.APPLICATION_NO);
-                    if (application_no == 0) {
-                        application_no = 101;
-                        SharedPreferenceUtils.putLongValue(SharedPreferenceUtils.APPLICATION_NO, application_no);
-                    } else {
-                        application_no = application_no + 1;
-                        SharedPreferenceUtils.putLongValue(SharedPreferenceUtils.APPLICATION_NO, application_no);
-                    }
                     listApplications = new ArrayList<>();
                     String uniqueID = UUID.randomUUID().toString();
                     Application application = new Application();
@@ -134,7 +126,8 @@ public class PermissionInstructionActivity extends BaseActivity {
         tvTermsandConditions.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(PermissionInstructionActivity.this,TermsAndConditionsActivity.class);
+                Intent intent = new Intent(PermissionInstructionActivity.this,
+                        TermsAndConditionsActivity.class);
                 startActivity(intent);
             }
         });
@@ -195,7 +188,7 @@ public class PermissionInstructionActivity extends BaseActivity {
         @Override
         protected void onPostExecute(User userdata) {
             super.onPostExecute(userdata);
-            if(null!= userdata)
+            if(null != userdata)
                 user = userdata;
         }
     }

@@ -102,22 +102,22 @@ public class CyberCafeApplicationActivity extends BaseActivity {
             }
         });
 
-        tvArea.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                List<Area> areaList = DataManager.getAreaList();
-                customDialog = new CustomDialog(CyberCafeApplicationActivity.this, areaList,
-                        "Select Area",true,true,false,
-                        new CustomDialog.NameSelectedListener() {
-                            @Override
-                            public void onNameSelected(String listName) {
-                                tvArea.setText(listName);
-                                customDialog.dismiss();
-                            }
-                        });
-                customDialog.show();
-            }
-        });
+//        tvArea.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                List<Area> areaList = DataManager.getAreaList();
+//                customDialog = new CustomDialog(CyberCafeApplicationActivity.this, areaList,
+//                        "Select Area",true,true,false,
+//                        new CustomDialog.NameSelectedListener() {
+//                            @Override
+//                            public void onNameSelected(String listName) {
+//                                tvArea.setText(listName);
+//                                customDialog.dismiss();
+//                            }
+//                        });
+//                customDialog.show();
+//            }
+//        });
     }
 
 

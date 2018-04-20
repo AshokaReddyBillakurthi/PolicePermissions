@@ -23,10 +23,16 @@ import android.widget.TextView;
 import com.techouts.pcomplaints.R;
 import com.techouts.pcomplaints.adapters.AreaAdapter;
 import com.techouts.pcomplaints.adapters.CityAdapter;
+import com.techouts.pcomplaints.adapters.DistrictAdapter;
+import com.techouts.pcomplaints.adapters.DivisionPoliceStationAdapter;
 import com.techouts.pcomplaints.adapters.StateAdapter;
+import com.techouts.pcomplaints.adapters.SubDivisionAdapter;
 import com.techouts.pcomplaints.model.Area;
 import com.techouts.pcomplaints.model.City;
+import com.techouts.pcomplaints.model.District;
+import com.techouts.pcomplaints.model.DivisionPoliceStation;
 import com.techouts.pcomplaints.model.State;
+import com.techouts.pcomplaints.model.SubDivision;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,19 +41,26 @@ import java.util.List;
  * Created by TO-OW109 on 05-03-2018.
  */
 
-public class CustomDialog extends Dialog{
+public class CustomDialog extends Dialog {
 
     private EditText edtSearch;
     private ImageView ivCross;
     private Context mContext;
     private LinearLayout llSearch;
     private LinearLayout llBtns;
-    private ListNamesAdapter listNamesAdapter;
+
     private List<String> listNames;
     private List<Area> areaList;
     private List<City> cityList;
     private List<State> stateList;
+    private List<District> districtList;
+    private List<SubDivision> subDivisionList;
+    private List<DivisionPoliceStation> divisionPoliceStationsList;
     private NameSelectedListener nameSelectedListener;
+    private OnStateSelected onStateSelected;
+    private OnDistrictSelected onDistrictSelected;
+    private OnSubDivisionSelected onSubDivisionSelected;
+    private OnDivisionPoliceStation onDivisionPoliceStation;
     private boolean isSearchReq;
     private boolean isCheckboxNeed = false;
     private TextView tvTitle;
@@ -56,13 +69,20 @@ public class CustomDialog extends Dialog{
     private boolean isArea = false;
     private boolean isCity = false;
     private boolean isState = false;
+    private boolean isDistrict = false;
+    private boolean isSubDivision = false;
+    private boolean isDivisionPoliceStation = false;
+    private ListNamesAdapter listNamesAdapter;
     private AreaAdapter areaAdapter;
     private CityAdapter cityAdapter;
+    private DistrictAdapter districtAdapter;
     private StateAdapter stateAdapter;
+    private SubDivisionAdapter subDivisionAdapter;
+    private DivisionPoliceStationAdapter divisionPoliceStationAdapter;
 
 
-    public CustomDialog(@NonNull Context context,List<String> listNames,String title,
-                        boolean isSearchReq,boolean isCheckboxNeed,NameSelectedListener nameSelectedListener) {
+    public CustomDialog(@NonNull Context context, List<String> listNames, String title,
+                        boolean isSearchReq, boolean isCheckboxNeed, NameSelectedListener nameSelectedListener) {
         super(context);
         this.mContext = context;
         this.listNames = listNames;
@@ -72,29 +92,29 @@ public class CustomDialog extends Dialog{
         this.nameSelectedListener = nameSelectedListener;
     }
 
-    public CustomDialog(@NonNull Context context, List<Area> areaList, String title,boolean isArea,
-                        boolean isSearchReq, boolean isCheckboxNeed, NameSelectedListener nameSelectedListener) {
-        super(context);
-        this.mContext = context;
-        this.areaList = areaList;
-        this.isSearchReq = isSearchReq;
-        this.isCheckboxNeed = isCheckboxNeed;
-        this.title = title;
-        this.nameSelectedListener = nameSelectedListener;
-        this.isArea = isArea;
-    }
-
-    public CustomDialog(@NonNull Context context, List<City> cityList, boolean isCity, String title,
-                        boolean isSearchReq, boolean isCheckboxNeed, NameSelectedListener nameSelectedListener) {
-        super(context);
-        this.mContext = context;
-        this.cityList = cityList;
-        this.isSearchReq = isSearchReq;
-        this.isCheckboxNeed = isCheckboxNeed;
-        this.title = title;
-        this.nameSelectedListener = nameSelectedListener;
-        this.isCity = isCity;
-    }
+//    public CustomDialog(@NonNull Context context, List<Area> areaList, String title,boolean isArea,
+//                        boolean isSearchReq, boolean isCheckboxNeed, NameSelectedListener nameSelectedListener) {
+//        super(context);
+//        this.mContext = context;
+//        this.areaList = areaList;
+//        this.isSearchReq = isSearchReq;
+//        this.isCheckboxNeed = isCheckboxNeed;
+//        this.title = title;
+//        this.nameSelectedListener = nameSelectedListener;
+//        this.isArea = isArea;
+//    }
+//
+//    public CustomDialog(@NonNull Context context, List<City> cityList, boolean isCity, String title,
+//                        boolean isSearchReq, boolean isCheckboxNeed, NameSelectedListener nameSelectedListener) {
+//        super(context);
+//        this.mContext = context;
+//        this.cityList = cityList;
+//        this.isSearchReq = isSearchReq;
+//        this.isCheckboxNeed = isCheckboxNeed;
+//        this.title = title;
+//        this.nameSelectedListener = nameSelectedListener;
+//        this.isCity = isCity;
+//    }
 
     public CustomDialog(@NonNull Context context, boolean isState, List<State> stateList, String title,
                         boolean isSearchReq, boolean isCheckboxNeed, NameSelectedListener nameSelectedListener) {
@@ -108,6 +128,56 @@ public class CustomDialog extends Dialog{
         this.isState = isState;
     }
 
+    public CustomDialog(@NonNull Context context, boolean isState, List<State> stateList, String title,
+                        boolean isSearchReq, boolean isCheckboxNeed, OnStateSelected onStateSelected) {
+        super(context);
+        this.mContext = context;
+        this.stateList = stateList;
+        this.isSearchReq = isSearchReq;
+        this.isCheckboxNeed = isCheckboxNeed;
+        this.title = title;
+        this.onStateSelected = onStateSelected;
+        this.isState = isState;
+    }
+
+    public CustomDialog(@NonNull Context context, List<District> districtList, String title,
+                        boolean isSearchReq, boolean isCheckboxNeed,
+                        boolean isDistrict, OnDistrictSelected onDistrictSelected) {
+        super(context);
+        this.mContext = context;
+        this.districtList = districtList;
+        this.isSearchReq = isSearchReq;
+        this.isCheckboxNeed = isCheckboxNeed;
+        this.title = title;
+        this.onDistrictSelected = onDistrictSelected;
+        this.isDistrict = isDistrict;
+    }
+
+    public CustomDialog(@NonNull Context context, List<SubDivision> subDivisionList,
+                        boolean isSubDivision, String title, boolean isSearchReq, boolean isCheckboxNeed,
+                        OnSubDivisionSelected onSubDivisionSelected) {
+        super(context);
+        this.mContext = context;
+        this.subDivisionList = subDivisionList;
+        this.isSearchReq = isSearchReq;
+        this.isCheckboxNeed = isCheckboxNeed;
+        this.title = title;
+        this.onSubDivisionSelected = onSubDivisionSelected;
+        this.isSubDivision = isSubDivision;
+    }
+
+    public CustomDialog(@NonNull Context context, List<DivisionPoliceStation> divisionPoliceStationsList,
+                        String title, boolean isSearchReq, boolean isCheckboxNeed,
+                        boolean isDivisionPoliceStation, OnDivisionPoliceStation onDivisionPoliceStation) {
+        super(context);
+        this.mContext = context;
+        this.divisionPoliceStationsList = divisionPoliceStationsList;
+        this.isSearchReq = isSearchReq;
+        this.isCheckboxNeed = isCheckboxNeed;
+        this.title = title;
+        this.onDivisionPoliceStation = onDivisionPoliceStation;
+        this.isDivisionPoliceStation = isDivisionPoliceStation;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,18 +194,25 @@ public class CustomDialog extends Dialog{
         rvList.setLayoutManager(new LinearLayoutManager(mContext));
         rvList.setHasFixedSize(true);
 
-        if(isArea){
-            areaAdapter = new AreaAdapter(areaList,isCheckboxNeed,nameSelectedListener);
+        if (isArea) {
+            areaAdapter = new AreaAdapter(areaList, isCheckboxNeed, nameSelectedListener);
             rvList.setAdapter(areaAdapter);
-        }
-        else if(isCity){
-            cityAdapter = new CityAdapter(cityList,nameSelectedListener);
+        } else if (isCity) {
+            cityAdapter = new CityAdapter(cityList, nameSelectedListener);
             rvList.setAdapter(cityAdapter);
-        }
-        else if(isState){
-            stateAdapter = new StateAdapter(stateList,nameSelectedListener);
+        } else if (isState) {
+            stateAdapter = new StateAdapter(stateList, onStateSelected);
             rvList.setAdapter(stateAdapter);
-        }else{
+        } else if (isDistrict) {
+            districtAdapter = new DistrictAdapter(districtList, onDistrictSelected);
+            rvList.setAdapter(districtAdapter);
+        } else if (isSubDivision) {
+            subDivisionAdapter = new SubDivisionAdapter(subDivisionList, onSubDivisionSelected);
+            rvList.setAdapter(subDivisionAdapter);
+        } else if (isDivisionPoliceStation) {
+            divisionPoliceStationAdapter = new DivisionPoliceStationAdapter(divisionPoliceStationsList, onDivisionPoliceStation);
+            rvList.setAdapter(divisionPoliceStationAdapter);
+        } else {
             listNamesAdapter = new ListNamesAdapter();
             rvList.setAdapter(listNamesAdapter);
             listNamesAdapter.refresh(listNames);
@@ -146,13 +223,13 @@ public class CustomDialog extends Dialog{
             public void onClick(View v) {
                 StringBuilder stringBuilder = new StringBuilder();
                 List<Area> areas = areaAdapter.getSelectedAreas();
-                for(Area area: areas){
+                for (Area area : areas) {
                     stringBuilder.append(area.areaName).append(",");
                 }
                 int index = -1;
-                String areaStr="";
+                String areaStr = "";
                 index = stringBuilder.toString().lastIndexOf(",");
-                if(index>=0) {
+                if (index >= 0) {
                     areaStr = stringBuilder.toString().substring(0, index);
                     nameSelectedListener.onNameSelected(areaStr);
                 }
@@ -163,12 +240,12 @@ public class CustomDialog extends Dialog{
 
         tvTitle.setText(title);
 
-        if(isCheckboxNeed)
+        if (isCheckboxNeed)
             llBtns.setVisibility(View.VISIBLE);
         else
             llBtns.setVisibility(View.GONE);
 
-        if(isSearchReq)
+        if (isSearchReq)
             llSearch.setVisibility(View.VISIBLE);
         else
             llSearch.setVisibility(View.GONE);
@@ -189,9 +266,9 @@ public class CustomDialog extends Dialog{
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (null!=s && s.length() >= 3) {
+                if (null != s && s.length() >= 3) {
                     searchText(s.toString());
-                } else if (s==null||s.length()==0) {
+                } else if (s == null || s.length() == 0) {
                     ivCross.setVisibility(View.GONE);
                     searchText("");
                 }
@@ -211,9 +288,9 @@ public class CustomDialog extends Dialog{
     }
 
 
-    private void searchText(String searchText){
+    private void searchText(String searchText) {
         try {
-            if(isState){
+            if (isState) {
                 List<State> tempList = new ArrayList<>();
                 if (!TextUtils.isEmpty(searchText)) {
                     for (State state : stateList) {
@@ -225,8 +302,7 @@ public class CustomDialog extends Dialog{
                 } else {
                     stateAdapter.refresh(stateList);
                 }
-            }
-            else if(isCity){
+            } else if (isCity) {
                 List<City> tempList = new ArrayList<>();
                 if (!TextUtils.isEmpty(searchText)) {
                     for (City city : cityList) {
@@ -238,8 +314,7 @@ public class CustomDialog extends Dialog{
                 } else {
                     cityAdapter.refresh(cityList);
                 }
-            }
-            else if(isArea){
+            } else if (isArea) {
                 List<Area> tempList = new ArrayList<>();
                 if (!TextUtils.isEmpty(searchText)) {
                     for (Area area : areaList) {
@@ -251,8 +326,7 @@ public class CustomDialog extends Dialog{
                 } else {
                     areaAdapter.refresh(areaList);
                 }
-            }
-            else{
+            } else {
                 List<String> tempList = new ArrayList<>();
                 if (!TextUtils.isEmpty(searchText)) {
                     for (String string : listNames) {
@@ -271,30 +345,30 @@ public class CustomDialog extends Dialog{
         }
     }
 
-    class ListNamesAdapter extends RecyclerView.Adapter<ListNamesAdapter.NamesHolder>{
+    class ListNamesAdapter extends RecyclerView.Adapter<ListNamesAdapter.NamesHolder> {
 
         private List<String> listNames;
         private List<String> selectedList;
 
-        public ListNamesAdapter(){
+        public ListNamesAdapter() {
             this.listNames = new ArrayList<>();
             this.selectedList = new ArrayList<>();
         }
 
         @Override
         public NamesHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_cell,parent,false);
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_cell, parent, false);
             return new NamesHolder(view);
         }
 
-        public void refresh(List<String> listNames){
+        public void refresh(List<String> listNames) {
             this.listNames = listNames;
             notifyDataSetChanged();
         }
 
         @Override
         public void onBindViewHolder(NamesHolder holder, int position) {
-            holder.tvListName.setText(listNames.get(position).toString()+"");
+            holder.tvListName.setText(listNames.get(position).toString() + "");
         }
 
         @Override
@@ -305,13 +379,15 @@ public class CustomDialog extends Dialog{
         class NamesHolder extends RecyclerView.ViewHolder {
             private TextView tvListName;
             private CheckBox cbxChecked;
+
             public NamesHolder(View itemView) {
                 super(itemView);
                 tvListName = itemView.findViewById(R.id.tvListName);
                 cbxChecked = itemView.findViewById(R.id.cbxChecked);
 
-                if(isCheckboxNeed)
+                if (isCheckboxNeed)
                     cbxChecked.setVisibility(View.VISIBLE);
+
                 itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -323,7 +399,25 @@ public class CustomDialog extends Dialog{
         }
     }
 
-    public interface NameSelectedListener{
+    public interface NameSelectedListener {
         void onNameSelected(String listName);
     }
+
+    public interface OnStateSelected {
+        void onStateSelected(State state);
+    }
+
+    public interface OnDistrictSelected {
+        void onDistrictSelected(District district);
+    }
+
+    public interface OnSubDivisionSelected {
+        void OnSubDivisionSelected(SubDivision subDivision);
+    }
+
+    public interface OnDivisionPoliceStation {
+        void onDivisionPoliceStation(DivisionPoliceStation divisionPoliceStation);
+    }
+
+
 }

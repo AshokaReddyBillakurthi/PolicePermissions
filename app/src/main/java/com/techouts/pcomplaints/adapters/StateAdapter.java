@@ -19,11 +19,11 @@ import java.util.List;
 public class StateAdapter extends RecyclerView.Adapter<StateAdapter.StateViewHolder>  {
 
     private List<State> stateList;
-    private CustomDialog.NameSelectedListener nameSelectedListener;
+    private CustomDialog.OnStateSelected onStateSelected;
 
-    public StateAdapter(List<State> stateList,CustomDialog.NameSelectedListener nameSelectedListener){
+    public StateAdapter(List<State> stateList,CustomDialog.OnStateSelected onStateSelected){
         this.stateList = stateList;
-        this.nameSelectedListener = nameSelectedListener;
+        this.onStateSelected = onStateSelected;
     }
 
     @Override
@@ -56,8 +56,7 @@ public class StateAdapter extends RecyclerView.Adapter<StateAdapter.StateViewHol
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    String area = tvArea.getText().toString();
-                    nameSelectedListener.onNameSelected(area);
+                    onStateSelected.onStateSelected(stateList.get(getAdapterPosition()));
                 }
             });
         }

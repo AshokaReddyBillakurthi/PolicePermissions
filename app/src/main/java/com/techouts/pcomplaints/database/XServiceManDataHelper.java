@@ -42,7 +42,7 @@ public class XServiceManDataHelper {
                     insertStmt.bindString(16,exServiceMan.status+"");
                     insertStmt.executeInsert();
                 }
-                if(null!=insertStmt)
+                if(null != insertStmt)
                     insertStmt.close();
             }
         }
@@ -66,7 +66,7 @@ public class XServiceManDataHelper {
             if(count>0)
                 isUpdated = true;
 
-            if(null!=updateStmt)
+            if(null != updateStmt)
                 updateStmt.close();
         }
         catch (Exception e){
@@ -117,6 +117,7 @@ public class XServiceManDataHelper {
                     " Where status = '"+status+"'";
 
             Cursor cursor = sqLiteDatabase.rawQuery(selectQuery,null);
+
             if(null!=cursor&&cursor.moveToFirst()){
                 do{
                     ExServiceMan xServiceMan = new ExServiceMan();
@@ -138,6 +139,9 @@ public class XServiceManDataHelper {
                     XServiceManList.add(xServiceMan);
 
                 }while (cursor.moveToNext());
+
+                if(null!=cursor&&!cursor.isClosed())
+                    cursor.close();
             }
         }
         catch (Exception e){

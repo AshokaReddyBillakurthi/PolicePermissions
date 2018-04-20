@@ -92,7 +92,7 @@ public class UserDataHelper {
             if(null!=cursor&&cursor.moveToFirst()){
                 do{
                     User user = new User();
-                    user.firstName = cursor.getString(0);
+                    user.firstName  = cursor.getString(0);
                     user.lastName = cursor.getString(1);
                     user.email = cursor.getString(2);
                     user.mobileNo = cursor.getString(3);

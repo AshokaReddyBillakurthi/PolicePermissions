@@ -66,6 +66,9 @@
             </intent-filter>
         </service>
 
+        <service android:name=".services.SyncDataService"
+            android:exported="false"/>
+
         <activity
             android:name=".LoginActivity"
             android:screenOrientation="portrait"

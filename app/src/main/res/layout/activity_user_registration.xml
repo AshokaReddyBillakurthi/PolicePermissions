@@ -101,7 +101,7 @@
                 android:textSize="16sp" />
 
             <TextView
-                android:id="@+id/tvCity"
+                android:id="@+id/tvDistrict"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -115,13 +115,27 @@
                 android:textSize="16sp" />
 
             <TextView
-                android:id="@+id/tvArea"
+                android:id="@+id/tvSubDivisions"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/rect_bg"
                 android:drawableRight="@drawable/ic_arrow_down_black"
-                android:hint="Select Area"
+                android:hint="Select Sub Division"
+                android:inputType="text"
+                android:padding="10dp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/gray"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tvDivisionPoliceStation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/rect_bg"
+                android:drawableRight="@drawable/ic_arrow_down_black"
+                android:hint="Select Division with Police Station"
                 android:inputType="text"
                 android:padding="10dp"
                 android:textColor="@color/black"

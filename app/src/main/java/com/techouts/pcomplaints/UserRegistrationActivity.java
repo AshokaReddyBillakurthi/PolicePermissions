@@ -15,10 +15,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.techouts.pcomplaints.custom.CustomDialog;
+import com.techouts.pcomplaints.database.AppDataHelper;
 import com.techouts.pcomplaints.database.UserDataHelper;
 import com.techouts.pcomplaints.model.Area;
 import com.techouts.pcomplaints.model.City;
+import com.techouts.pcomplaints.model.District;
+import com.techouts.pcomplaints.model.DivisionPoliceStation;
 import com.techouts.pcomplaints.model.State;
+import com.techouts.pcomplaints.model.SubDivision;
 import com.techouts.pcomplaints.model.User;
 import com.techouts.pcomplaints.utils.ApiServiceConstants;
 import com.techouts.pcomplaints.utils.AppConstents;
@@ -42,7 +46,8 @@ import okhttp3.Response;
 
 public class UserRegistrationActivity extends BaseActivity {
 
-    private TextView tvTitle, tvState, tvCity, tvArea,tvTermsandConditions;
+    private TextView tvTitle, tvState,tvTermsandConditions,
+            tvDistrict,tvSubDivisions,tvDivisionPoliceStation;
     private ImageView ivBack;
     private EditText edtFirstName, edtLastName, edtMobileNumber,
             edtEmail, edtPassword;
@@ -54,6 +59,14 @@ public class UserRegistrationActivity extends BaseActivity {
     private String userType = "";
     private boolean isPosted = false;
     private CustomDialog customDialog;
+    private List<DivisionPoliceStation> divisionPoliceStationList;
+    private List<SubDivision> subDivisionList;
+    private List<District> districtList;
+    private List<State> stateList;
+    private String stateCode = "";
+    private String districtCode = "";
+    private String subDivisionCode = "";
+    private String divisionPoliceStationCode = "";
 
     @Override
     public int getRootLayout() {
@@ -76,8 +89,9 @@ public class UserRegistrationActivity extends BaseActivity {
         edtEmail = findViewById(R.id.edtEmail);
         edtPassword = findViewById(R.id.edtPassword);
         tvState = findViewById(R.id.tvState);
-        tvCity = findViewById(R.id.tvCity);
-        tvArea = findViewById(R.id.tvArea);
+        tvDistrict = findViewById(R.id.tvDistrict);
+        tvSubDivisions = findViewById(R.id.tvSubDivisions);
+        tvDivisionPoliceStation = findViewById(R.id.tvDivisionPoliceStation);
         ivCamera = findViewById(R.id.ivCamera);
         ivUserImg = findViewById(R.id.ivUserImg);
         cbxTermsAndConditions = findViewById(R.id.cbxTermsAndConditions);
@@ -112,30 +126,86 @@ public class UserRegistrationActivity extends BaseActivity {
             }
         });
 
-        tvArea.setOnClickListener(new View.OnClickListener() {
+        tvDivisionPoliceStation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String city = tvCity.getText().toString();
+                String city = tvSubDivisions.getText().toString();
                 if(TextUtils.isEmpty(city)){
-                    showToast("Please select city first");
+                    showToast("Please select sub division first");
                 }
                 else{
-                    List<Area> areaList = DataManager.getAreaList();
-                    customDialog = new CustomDialog(UserRegistrationActivity.this, areaList,
-                            "Select Area",true,true,false,
-                            new CustomDialog.NameSelectedListener() {
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            divisionPoliceStationList =  AppDataHelper.
+                                    getAllDivisionPoliceStationByDistrictCode(UserRegistrationActivity.this,
+                                            subDivisionCode);
+                            runOnUiThread(new Runnable() {
                                 @Override
-                                public void onNameSelected(String listName) {
-                                    tvArea.setText(listName);
-                                    customDialog.dismiss();
+                                public void run() {
+                                    customDialog = new CustomDialog(UserRegistrationActivity.this,
+                                            divisionPoliceStationList,"Select Sub Division",
+                                            true, false, true,
+                                            new CustomDialog.OnDivisionPoliceStation() {
+                                                @Override
+                                                public void onDivisionPoliceStation(DivisionPoliceStation divisionPoliceStation) {
+                                                    if(null!=divisionPoliceStation){
+                                                        tvDivisionPoliceStation.setText(divisionPoliceStation.divisionPoliceStationName+"");
+                                                        divisionPoliceStationCode = divisionPoliceStation.divisionPoliceStationCode;
+                                                    }
+                                                    customDialog.dismiss();
+                                                }
+                                            });
+                                    customDialog.show();
                                 }
                             });
-                    customDialog.show();
+                        }
+                    }).start();
                 }
             }
         });
 
-        tvCity.setOnClickListener(new View.OnClickListener() {
+        tvSubDivisions.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String city = tvDistrict.getText().toString();
+                if(TextUtils.isEmpty(city)){
+                    showToast("Please select city first");
+                }
+                else{
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            subDivisionList = AppDataHelper.
+                                    getAllSubDivisionsByDistrictCode(UserRegistrationActivity.this,districtCode);
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    if(null!=subDivisionList&&!subDivisionList.isEmpty()){
+                                        customDialog = new CustomDialog(UserRegistrationActivity.this,
+                                                subDivisionList, true,"Select Sub Division",
+                                                false, false,
+                                                new CustomDialog.OnSubDivisionSelected() {
+                                                    @Override
+                                                    public void OnSubDivisionSelected(SubDivision subDivision) {
+                                                        if(null!=subDivision){
+                                                            tvSubDivisions.setText(subDivision.subDivisionName+"");
+                                                            subDivisionCode = subDivision.subDivisionCode;
+                                                        }
+                                                        customDialog.dismiss();
+                                                    }
+                                                });
+                                        customDialog.show();
+                                    }
+                                }
+                            });
+                        }
+                    }).start();
+                }
+            }
+        });
+
+        tvDistrict.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String state = tvState.getText().toString();
@@ -143,17 +213,34 @@ public class UserRegistrationActivity extends BaseActivity {
                     showToast("Please select state first");
                 }
                 else {
-                    List<City> cityList = DataManager.getCityList();
-                    customDialog = new CustomDialog(UserRegistrationActivity.this,
-                            cityList,true,"Select City",true,false,
-                            new CustomDialog.NameSelectedListener() {
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            districtList = AppDataHelper.getAllDistrictByStateCode(UserRegistrationActivity.this,
+                                    stateCode);
+                            runOnUiThread(new Runnable() {
                                 @Override
-                                public void onNameSelected(String listName) {
-                                    tvCity.setText(listName);
-                                    customDialog.dismiss();
+                                public void run() {
+                                    if(null!=subDivisionList&&!subDivisionList.isEmpty()){
+                                        customDialog = new CustomDialog(UserRegistrationActivity.this,
+                                                districtList, "Select District", true,
+                                                false, false,
+                                                new CustomDialog.OnDistrictSelected() {
+                                                    @Override
+                                                    public void onDistrictSelected(District district) {
+                                                        if(null!=district){
+                                                            tvDistrict.setText(district.districtName+"");
+                                                            districtCode = district.districtCode;
+                                                        }
+                                                        customDialog.dismiss();
+                                                    }
+                                                });
+                                        customDialog.show();
+                                    }
                                 }
                             });
-                    customDialog.show();
+                        }
+                    }).start();
                 }
 
             }
@@ -162,19 +249,37 @@ public class UserRegistrationActivity extends BaseActivity {
         tvState.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                List<State> stateList = DataManager.getStateList();
-                customDialog = new CustomDialog(UserRegistrationActivity.this,true, stateList ,
-                        "Select State",true,false,
-                        new CustomDialog.NameSelectedListener() {
+
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        stateList = AppDataHelper.getAllStates(UserRegistrationActivity.this);
+                        runOnUiThread(new Runnable() {
                             @Override
-                            public void onNameSelected(String listName) {
-                                tvState.setText(listName);
-                                customDialog.dismiss();
+                            public void run() {
+                                if(null!=stateList&&!stateList.isEmpty()){
+                                    customDialog = new CustomDialog(UserRegistrationActivity.this,
+                                            true, stateList ,"Select State",
+                                            true,false,
+                                            new CustomDialog.OnStateSelected() {
+                                                @Override
+                                                public void onStateSelected(State state) {
+                                                    if(null!=state){
+                                                        stateCode = state.stateCode;
+                                                        tvState.setText(state.stateName+"");
+                                                    }
+                                                    customDialog.dismiss();
+                                                }
+                                            });
+                                    customDialog.show();
+                                }
                             }
                         });
-                customDialog.show();
+                    }
+                }).start();
             }
         });
+
         ivCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -197,10 +302,11 @@ public class UserRegistrationActivity extends BaseActivity {
             String password = edtPassword.getText().toString().trim();
             String mobileNo = edtMobileNumber.getText().toString().trim();
             String state = tvState.getText().toString().trim();
-            String city = tvCity.getText().toString().trim();
-            String area = tvArea.getText().toString().trim();
+            String district = tvDistrict.getText().toString().trim();
+            String subDivision = tvSubDivisions.getText().toString().trim();
+            String divisionPoliceStation = tvDivisionPoliceStation.getText().toString().trim();
             if (validateData(firstName, lastName, email, password,
-                    mobileNo, state, city, area)) {
+                    mobileNo, state, district, subDivision,divisionPoliceStation)) {
                 ArrayList<User> arrayList = new ArrayList<>();
                 User user = new User();
                 user.firstName = firstName;
@@ -209,13 +315,13 @@ public class UserRegistrationActivity extends BaseActivity {
                 user.password = password;
                 user.mobileNo = mobileNo;
                 user.state = state;
-                user.city = city;
-                user.area = area;
+                user.city = "";
+                user.area = "";
                 user.userImg = userImg;
                 user.userType = userType;
-                user.district = "";
-                user.subDivision = "";
-                user.circlePolicestation = "";
+                user.district = district;
+                user.subDivision = subDivision;
+                user.circlePolicestation = divisionPoliceStation;
 //                if(postDataToServer(user)){
 ////                    arrayList.add(user);
 ////                    new UserAsyncTask().execute(arrayList);
@@ -327,7 +433,8 @@ public class UserRegistrationActivity extends BaseActivity {
 
     private boolean validateData(String firstName, String lastName,
                                  String email, String password, String mobileNo,
-                                 String state, String city, String area) {
+                                 String state,String district, String subDivision,
+                                 String divisionPoliceStation) {
         boolean isValid = true;
         if (TextUtils.isEmpty(firstName)) {
             isValid = false;
@@ -352,13 +459,16 @@ public class UserRegistrationActivity extends BaseActivity {
             showToast("Please enter password");
         } else if (TextUtils.isEmpty(state)) {
             isValid = false;
-            showToast("Please enter state name");
-        } else if (TextUtils.isEmpty(city)) {
+            showToast("Please select state");
+        } else if (TextUtils.isEmpty(district)) {
             isValid = false;
-            showToast("Please enter city");
-        } else if (TextUtils.isEmpty(area)) {
+            showToast("Please select district");
+        } else if (TextUtils.isEmpty(subDivision)) {
             isValid = false;
-            showToast("Please enter area");
+            showToast("Please select sub division");
+        } else if (TextUtils.isEmpty(divisionPoliceStation)) {
+            isValid = false;
+            showToast("Please select division with police station");
         } else if (TextUtils.isEmpty(userImg)) {
             isValid = false;
             showToast("Please capture Image");

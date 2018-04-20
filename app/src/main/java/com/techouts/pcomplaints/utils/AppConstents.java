@@ -39,6 +39,11 @@ public interface AppConstents {
     String LOGIN_TYPE = "LoginType";
     String IS_LOGGEDIN = "IS_LOGGEDIN";
     String STATUS = "STATUS";
+    String TYPE_DISTRICT = "District";
+    String TYPE_SUBDIVISION  = "SubDivision";
+    String TYPE_DIVISION_POLICESTATION = "DivisionPoliceStation";
+    String LISTENER = "LISTENER";
+
 
     //Extras
     String EXTRA_USER_TYPE = "UserType";
@@ -50,6 +55,7 @@ public interface AppConstents {
     String EXTRA_PERMISSION_APPLICATION = "PermissionApplication";
     String EXTRA_SEARCH_BY = "Search By";
     String EXTRA_EMAIL_ID = "Email_Id";
+    String EXTRA_SERVICE_TYPE = "SERVICE_TYPE";
 
     String TYPE_STATE = "State";
     String TYPE_CITY = "City";

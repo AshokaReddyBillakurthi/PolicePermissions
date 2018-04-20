@@ -81,22 +81,22 @@ public class GunLicenceApplicationActivity extends BaseActivity{
     @Override
     public void initData() {
 
-        tvArea.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                List<Area> areaList = DataManager.getAreaList();
-                customDialog = new CustomDialog(GunLicenceApplicationActivity.this, areaList,
-                        "Select Area",true,true,false,
-                        new CustomDialog.NameSelectedListener() {
-                            @Override
-                            public void onNameSelected(String listName) {
-                                tvArea.setText(listName);
-                                customDialog.dismiss();
-                            }
-                        });
-                customDialog.show();
-            }
-        });
+//        tvArea.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                List<Area> areaList = DataManager.getAreaList();
+//                customDialog = new CustomDialog(GunLicenceApplicationActivity.this, areaList,
+//                        "Select Area",true,true,false,
+//                        new CustomDialog.NameSelectedListener() {
+//                            @Override
+//                            public void onNameSelected(String listName) {
+//                                tvArea.setText(listName);
+//                                customDialog.dismiss();
+//                            }
+//                        });
+//                customDialog.show();
+//            }
+//        });
 
         ivCamera.setOnClickListener(new View.OnClickListener() {
             @Override
