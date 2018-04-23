@@ -302,6 +302,42 @@ public class CustomDialog extends Dialog {
                 } else {
                     stateAdapter.refresh(stateList);
                 }
+            } else if (isDistrict) {
+                List<District> tempList = new ArrayList<>();
+                if (!TextUtils.isEmpty(searchText)) {
+                    for (District district : districtList) {
+                        if ((district.districtName.toLowerCase().contains(searchText.toLowerCase()))) {
+                            tempList.add(district);
+                        }
+                    }
+                    districtAdapter.refresh(tempList);
+                } else {
+                    districtAdapter.refresh(districtList);
+                }
+            } else if (isSubDivision) {
+                List<SubDivision> tempList = new ArrayList<>();
+                if (!TextUtils.isEmpty(searchText)) {
+                    for (SubDivision subDivision : subDivisionList) {
+                        if ((subDivision.subDivisionName.toLowerCase().contains(searchText.toLowerCase()))) {
+                            tempList.add(subDivision);
+                        }
+                    }
+                    subDivisionAdapter.refresh(tempList);
+                } else {
+                    subDivisionAdapter.refresh(subDivisionList);
+                }
+            } else if (isDivisionPoliceStation) {
+                List<DivisionPoliceStation> tempList = new ArrayList<>();
+                if (!TextUtils.isEmpty(searchText)) {
+                    for (DivisionPoliceStation divisionPoliceStation : divisionPoliceStationsList) {
+                        if ((divisionPoliceStation.divisionPoliceStationName.toLowerCase().contains(searchText.toLowerCase()))) {
+                            tempList.add(divisionPoliceStation);
+                        }
+                    }
+                    divisionPoliceStationAdapter.refresh(tempList);
+                } else {
+                    divisionPoliceStationAdapter.refresh(divisionPoliceStationsList);
+                }
             } else if (isCity) {
                 List<City> tempList = new ArrayList<>();
                 if (!TextUtils.isEmpty(searchText)) {

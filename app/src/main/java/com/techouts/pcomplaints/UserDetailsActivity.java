@@ -84,11 +84,11 @@ public class UserDetailsActivity extends BaseActivity {
             tvLastName.setText(user.lastName + "");
             tvEmail.setText(user.email+"");
             tvMobileNo.setText(user.mobileNo+"");
-            tvArea.setText(user.area + "");
-            tvCity.setText(user.city + "");
+            tvArea.setText(user.circlePolicestation + "");
+            tvCity.setText(user.subDivision + "");
             tvState.setText(user.state + "");
             Bitmap bitmap = getUserImageBitMap(user.userImg);
-            if(bitmap!=null)
+            if(null!=bitmap)
                 ivUserImage.setImageBitmap(bitmap);
         }
     }

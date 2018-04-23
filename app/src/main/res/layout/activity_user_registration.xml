@@ -107,7 +107,7 @@
                 android:layout_marginTop="10dp"
                 android:background="@drawable/rect_bg"
                 android:drawableRight="@drawable/ic_arrow_down_black"
-                android:hint="Select City"
+                android:hint="Select District"
                 android:inputType="text"
                 android:padding="10dp"
                 android:textColor="@color/black"

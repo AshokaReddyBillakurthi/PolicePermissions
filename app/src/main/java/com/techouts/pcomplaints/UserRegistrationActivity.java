@@ -46,8 +46,8 @@ import okhttp3.Response;
 
 public class UserRegistrationActivity extends BaseActivity {
 
-    private TextView tvTitle, tvState,tvTermsandConditions,
-            tvDistrict,tvSubDivisions,tvDivisionPoliceStation;
+    private TextView tvTitle, tvState, tvTermsandConditions,
+             tvDistrict, tvSubDivisions, tvDivisionPoliceStation;
     private ImageView ivBack;
     private EditText edtFirstName, edtLastName, edtMobileNumber,
             edtEmail, edtPassword;
@@ -110,7 +110,8 @@ public class UserRegistrationActivity extends BaseActivity {
         tvTermsandConditions.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(UserRegistrationActivity.this,TermsAndConditionsActivity.class);
+                Intent intent = new Intent(UserRegistrationActivity.this,
+                        TermsAndConditionsActivity.class);
                 startActivity(intent);
             }
         });
@@ -170,7 +171,7 @@ public class UserRegistrationActivity extends BaseActivity {
             public void onClick(View v) {
                 String city = tvDistrict.getText().toString();
                 if(TextUtils.isEmpty(city)){
-                    showToast("Please select city first");
+                    showToast("Please select District first");
                 }
                 else{
                     new Thread(new Runnable() {
@@ -221,10 +222,10 @@ public class UserRegistrationActivity extends BaseActivity {
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    if(null!=subDivisionList&&!subDivisionList.isEmpty()){
+                                    if(null!=districtList&&!districtList.isEmpty()){
                                         customDialog = new CustomDialog(UserRegistrationActivity.this,
                                                 districtList, "Select District", true,
-                                                false, false,
+                                                false, true,
                                                 new CustomDialog.OnDistrictSelected() {
                                                     @Override
                                                     public void onDistrictSelected(District district) {

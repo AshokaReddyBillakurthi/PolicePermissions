@@ -45,8 +45,8 @@ public class UserListAdpter extends RecyclerView.Adapter<UserListAdpter.ServiceM
         holder.tvFullName.setText(userList.get(position).firstName + " "+userList.get(position).lastName + "");
         holder.tvEmail.setText(userList.get(position).email + "");
         holder.tvMobileNumber.setText(userList.get(position).mobileNo + "");
-        holder.tvArea.setText(userList.get(position).area+"");
-        holder.tvCity.setText(userList.get(position).city+"");
+        holder.tvArea.setText(userList.get(position).circlePolicestation+"");
+        holder.tvCity.setText(userList.get(position).subDivision+"");
         getImageOfServiceMan(userList.get(position).userImg,holder.ivServiceManImg);
     }
 

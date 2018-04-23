@@ -115,7 +115,7 @@
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:text="Area:"
+                android:text="Division:"
                 android:textSize="16sp"
                 android:textColor="@color/black"/>
             <TextView
@@ -136,7 +136,7 @@
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:text="City:"
+                android:text="Sub Division:"
                 android:textSize="16sp"
                 android:textColor="@color/black"/>
             <TextView

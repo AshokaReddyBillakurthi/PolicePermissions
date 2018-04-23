@@ -218,10 +218,10 @@ public class ExServiceManRegistrationActivity extends BaseActivity {
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    if(null!=subDivisionList&&!subDivisionList.isEmpty()){
+                                    if(null!=districtList&&!districtList.isEmpty()){
                                         customDialog = new CustomDialog(ExServiceManRegistrationActivity.this,
                                                 districtList, "Select District", true,
-                                                false, false,
+                                                false, true,
                                                 new CustomDialog.OnDistrictSelected() {
                                                     @Override
                                                     public void onDistrictSelected(District district) {
