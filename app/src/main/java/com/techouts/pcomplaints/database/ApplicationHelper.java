@@ -16,7 +16,7 @@ public class ApplicationHelper {
         try{
             SQLiteDatabase sqLiteDatabase = DatabaseHelper.getInstance(context).openDataBase();
 
-            String insertQuery = "Insert into tblApplications(firstName,lastName,email,mobileNo,state,city,area" +
+            String insertQuery = "Insert into tblApplications(firstName,lastName,email,mobileNo,state,city,area," +
                     "district,subDivision,circlePolicestation,userImg,applicationType," +
                     "status,isAccepted,xServiceManEmail,payableAmount) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
@@ -195,7 +195,7 @@ public class ApplicationHelper {
                     application.status = Integer.parseInt(cursor.getString(12));
                     application.isAccepted =Integer.parseInt(cursor.getString(13));
                     application.xServiceManEmail = cursor.getString(14);
-                    application.payableAmount = Integer.parseInt(cursor.getString(15));
+//                    application.payableAmount = Integer.parseInt(cursor.getString(15));
                     applicationList.add(application);
 
                 }while (cursor.moveToNext());
