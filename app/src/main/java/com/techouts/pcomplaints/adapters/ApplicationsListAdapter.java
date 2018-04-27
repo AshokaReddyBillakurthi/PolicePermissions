@@ -47,7 +47,7 @@ public class ApplicationsListAdapter extends RecyclerView.Adapter<ApplicationsLi
         holder.tvEmail.setText(applicationList.get(position).email+"");
         holder.tvMobileNo.setText(applicationList.get(position).mobileNo+"");
         holder.tvApplicationType.setText(applicationList.get(position).applicationType+"");
-        holder.tvArea.setText(applicationList.get(position).area+"");
+        holder.tvArea.setText(applicationList.get(position).circlePolicestation+"");
 
         if(applicationList.get(position).status == 0) {
             holder.tvStatus.setText(AppConstents.PENDING);

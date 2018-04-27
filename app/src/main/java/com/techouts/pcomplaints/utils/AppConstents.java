@@ -13,7 +13,8 @@ public interface AppConstents {
     String CREATE_SERVICE = "Create Service";
     String CHAT = "Chat";
     String SERVICES = "Services";
-    String MY_ACCOUNT = "My Profile";
+    String MY_PROFILE = "My Profile";
+    String MY_ACCOUNT = "My Account";
     String MY_COMPLAINTS = "My Complaints";
     String ADMIN = "Admin";
     String SERVICE_MAN = "XService Man";
@@ -56,6 +57,7 @@ public interface AppConstents {
     String EXTRA_SEARCH_BY = "Search By";
     String EXTRA_EMAIL_ID = "Email_Id";
     String EXTRA_SERVICE_TYPE = "SERVICE_TYPE";
+    String EXTRA_ISFROM_MYPROFILE = "ISFROM_MYPROFILE";
 
     String TYPE_STATE = "State";
     String TYPE_CITY = "City";

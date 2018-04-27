@@ -4,11 +4,16 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.techouts.pcomplaints.model.AddressModel;
+
+import java.util.List;
+
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static DatabaseHelper database;
     private static final String DATABASE_NAME = "XPoliceServicesDB.sqlite";
     private static final int DATABASE_VERSION = 1;
+    private SQLiteDatabase sqLiteDatabase = null;
 
     // Database creation sql statement
     private static final String CREATE_TABLE_USER = "Create table if not exists tblUsers" +
@@ -18,11 +23,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             "circlePolicestation text not null, userImg text not null,userType text not null)";
 
     private static final String CREATE_TABLE_XSERVICEMAN = "Create table if not exists tblXServiceMans " +
-            "(firstName text not null,lastName text not null,email text primary key,password text not null," +
-            "mobileNo text not null, state text not null, city text not null," +
-            "area text not null, district text not null, subDivision text not null," +
-            "circlePolicestation text not null, userImg text not null,userType text not null,services text not null," +
-            "reqDocs text not null, status text not null)";
+            "(firstName text not null,lastName text not null,email text primary key," +
+            "password text not null,mobileNo text not null, state text not null," +
+            " city text not null,area text not null, district text not null, " +
+            "subDivision text not null,circlePolicestation text not null," +
+            " userImg text not null,userType text not null,services text not null," +
+            "reqDocs text not null, status text not null,isActive text not null)";
 
     private static final String CREATE_TABLE_APPLICATION = "Create table if not exists tblApplications " +
             "(applicationNo text primary key,firstName text not null, lastName text not null," +
@@ -61,7 +67,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public SQLiteDatabase openDataBase(){
-        SQLiteDatabase sqLiteDatabase = null;
         try{
             if(sqLiteDatabase == null)
                 sqLiteDatabase = this.getWritableDatabase();
@@ -98,6 +103,46 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             db.execSQL("DROP TABLE IF EXISTS tblServices");
             db.execSQL("DROP TABLE IF EXISTS tblSubServices");
             onCreate(db);
+        }
+    }
+
+    public static void insertUpdateStates(Context context,List<AddressModel.State> stateList){
+        try{
+            SQLiteDatabase sqLiteDatabase = getInstance(context).getWritableDatabase();
+            AppDataHelper.insertUpdateStates(sqLiteDatabase,stateList);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+    public static void insertUpdateDistricts(Context context,List<AddressModel.District> districtList){
+        try{
+            SQLiteDatabase sqLiteDatabase = getInstance(context).getWritableDatabase();
+            AppDataHelper.insertUpdateDistricts(sqLiteDatabase,districtList);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+    public static void insertUpdateSubDivisions(Context context, List<AddressModel.SubDivision> subDivisionList){
+        try{
+            SQLiteDatabase sqLiteDatabase = getInstance(context).getWritableDatabase();
+            AppDataHelper.insertUpdateSubDivisions(sqLiteDatabase,subDivisionList);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public static void insertUpdateDivisionPoliceStations(Context context,
+                                                          List<AddressModel.DivisionPoliceStation>
+            divisionPoliceStationList){
+        try{
+            SQLiteDatabase sqLiteDatabase = getInstance(context).getWritableDatabase();
+            AppDataHelper.insertUpdateDivisionPoliceStations(sqLiteDatabase,divisionPoliceStationList);
+        }
+        catch (Exception e){
+            e.printStackTrace();
         }
     }
 }

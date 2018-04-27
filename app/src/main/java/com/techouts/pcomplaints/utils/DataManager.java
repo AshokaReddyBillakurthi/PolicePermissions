@@ -2,9 +2,9 @@ package com.techouts.pcomplaints.utils;
 
 import android.util.Log;
 
+import com.techouts.pcomplaints.model.AddressModel;
 import com.techouts.pcomplaints.model.Area;
 import com.techouts.pcomplaints.model.City;
-import com.techouts.pcomplaints.model.State;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,12 +60,12 @@ public class DataManager {
         return listNames;
     }
 
-    public static List<State> getStateList(){
-        List<State> listStates = new ArrayList<>();
-        State state = null;
+    public static List<AddressModel.State> getStateList(){
+        List<AddressModel.State> listStates = new ArrayList<>();
+        AddressModel.State state = null;
         try{
-            state = new State();
-            state.stateName = AppConstents.TELANGANA;
+            state = new AddressModel.State();
+            state.setStateName(AppConstents.TELANGANA);
             listStates.add(state);
         }
         catch (Exception e){
@@ -175,6 +175,7 @@ public class DataManager {
                     break;
                 case AppConstents.LOGIN_SERVICE_MAN:
                     menuList.add(AppConstents.APPLICATION_LIST);
+                    menuList.add(AppConstents.MY_PROFILE);
                     menuList.add(AppConstents.CHAT);
                     menuList.add(AppConstents.LOGOUT);
                     break;

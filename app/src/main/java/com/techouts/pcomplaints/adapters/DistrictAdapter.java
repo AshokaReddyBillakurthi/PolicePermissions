@@ -8,7 +8,7 @@ import android.widget.TextView;
 
 import com.techouts.pcomplaints.R;
 import com.techouts.pcomplaints.custom.CustomDialog;
-import com.techouts.pcomplaints.model.District;
+import com.techouts.pcomplaints.model.AddressModel;
 
 import java.util.List;
 
@@ -18,10 +18,10 @@ import java.util.List;
 
 public class DistrictAdapter extends RecyclerView.Adapter<DistrictAdapter.DistrictViewHolder>  {
 
-    private List<District> districtList;
+    private List<AddressModel.District> districtList;
     private CustomDialog.OnDistrictSelected onDistrictSelected;
 
-    public DistrictAdapter(List<District> districtList,CustomDialog.OnDistrictSelected onDistrictSelected){
+    public DistrictAdapter(List<AddressModel.District> districtList,CustomDialog.OnDistrictSelected onDistrictSelected){
         this.districtList = districtList;
         this.onDistrictSelected = onDistrictSelected;
     }
@@ -34,10 +34,10 @@ public class DistrictAdapter extends RecyclerView.Adapter<DistrictAdapter.Distri
 
     @Override
     public void onBindViewHolder(DistrictViewHolder holder, int position) {
-        holder.tvArea.setText(districtList.get(position).districtName.toString());
+        holder.tvArea.setText(districtList.get(position).getDistrictName().toString());
     }
 
-    public void refresh(List<District> districtList){
+    public void refresh(List<AddressModel.District> districtList){
         this.districtList = districtList;
         notifyDataSetChanged();
     }

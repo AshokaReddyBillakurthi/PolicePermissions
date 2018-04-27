@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.techouts.pcomplaints.ApplicationListActivity;
 import com.techouts.pcomplaints.ChatActivity;
 import com.techouts.pcomplaints.CreateServiceActivity;
+import com.techouts.pcomplaints.ExServiceManDetailsActivity;
 import com.techouts.pcomplaints.ExServiceManListActivity;
 import com.techouts.pcomplaints.HomeActivity;
 import com.techouts.pcomplaints.MyCompliaintsActivity;
@@ -147,6 +148,13 @@ public class MenuListAdaper extends RecyclerView.Adapter<MenuListAdaper.MenuView
                                     }
                                 });
                             }
+                            break;
+                        }
+                        case AppConstents.MY_PROFILE:{
+                            ((HomeActivity)itemView.getContext()).closeDrawer();
+                            Intent intent = new Intent(itemView.getContext(), ExServiceManDetailsActivity.class);
+                            intent.putExtra(AppConstents.EXTRA_ISFROM_MYPROFILE,true);
+                            itemView.getContext().startActivity(intent);
                             break;
                         }
                         case AppConstents.LOGIN :{

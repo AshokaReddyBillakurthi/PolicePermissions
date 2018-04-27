@@ -195,7 +195,7 @@ public class ApplicationHelper {
                     application.status = Integer.parseInt(cursor.getString(12));
                     application.isAccepted =Integer.parseInt(cursor.getString(13));
                     application.xServiceManEmail = cursor.getString(14);
-//                    application.payableAmount = Integer.parseInt(cursor.getString(15));
+                    application.payableAmount = Double.parseDouble(cursor.getString(15));
                     applicationList.add(application);
 
                 }while (cursor.moveToNext());

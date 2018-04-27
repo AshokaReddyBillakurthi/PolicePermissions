@@ -11,10 +11,13 @@ import com.techouts.pcomplaints.database.UserDataHelper;
 import com.techouts.pcomplaints.model.User;
 import com.techouts.pcomplaints.utils.AppConstents;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class UserDetailsActivity extends BaseActivity {
     private TextView tvTitle, tvFirstName, tvLastName, tvArea,
             tvCity, tvState,tvEmail,tvMobileNo;
-    private ImageView ivBack, ivUserImage;
+    private ImageView ivBack;
+    private CircleImageView ivUserImage;
     private User user;
     private String email;
 
@@ -66,7 +69,6 @@ public class UserDetailsActivity extends BaseActivity {
         @Override
         protected User doInBackground(String... strings) {
             user = UserDataHelper.getUserByEmailId(UserDetailsActivity.this,strings[0]);
-//            user = DatabaseHandler.getInstance(getApplicationContext()).userDao().getUserDetailsByEmailId(strings[0]);
             return user;
         }
 

@@ -109,6 +109,9 @@ public class PermissionInstructionActivity extends BaseActivity {
                     application.area = user.area;
                     application.city = user.city;
                     application.state = user.state;
+                    application.district = user.district;
+                    application.subDivision = user.subDivision;
+                    application.circlePolicestation = user.circlePolicestation;
                     application.status = 0;
                     if(cbxTermsAndConditions.isChecked())
                         application.isAccepted = 1;

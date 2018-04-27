@@ -5,20 +5,15 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 
-import com.techouts.pcomplaints.model.District;
-import com.techouts.pcomplaints.model.DivisionPoliceStation;
-import com.techouts.pcomplaints.model.State;
-import com.techouts.pcomplaints.model.SubDivision;
+import com.techouts.pcomplaints.model.AddressModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class AppDataHelper {
 
-    public static void insertUpdateStates(Context context, List<State> stateList){
-        SQLiteDatabase sqLiteDatabase = null;
+    public static void insertUpdateStates(SQLiteDatabase sqLiteDatabase, List<AddressModel.State> stateList){
         try{
-            sqLiteDatabase = DatabaseHelper.getInstance(context).openDataBase();
             String insertQuery = "Insert into tblStates(stateCode,stateName)" +
                     " values(?,?)";
             String updateQuery = "Update tblStates set stateName = ?" +
@@ -27,12 +22,12 @@ public class AppDataHelper {
             SQLiteStatement updateStmt = sqLiteDatabase.compileStatement(updateQuery);
 
             if(null!= stateList&&!stateList.isEmpty()){
-                for(State state: stateList){
-                    updateStmt.bindString(1,state.stateName);
-                    updateStmt.bindString(2,state.stateCode);
+                for(AddressModel.State state: stateList){
+                    updateStmt.bindString(1,state.getStateName());
+                    updateStmt.bindString(2,state.getStateCode());
                     if(updateStmt.executeUpdateDelete()<= 0){
-                        insertStmt.bindString(1,state.stateCode);
-                        insertStmt.bindString(2,state.stateName);
+                        insertStmt.bindString(1,state.getStateCode());
+                        insertStmt.bindString(2,state.getStateName());
                         insertStmt.executeInsert();
                     }
                 }
@@ -51,10 +46,8 @@ public class AppDataHelper {
         }
     }
 
-    public static void insertUpdateDistricts(Context context, List<District> districtList){
-        SQLiteDatabase sqLiteDatabase = null;
+    public static void insertUpdateDistricts(SQLiteDatabase sqLiteDatabase, List<AddressModel.District> districtList){
         try{
-            sqLiteDatabase = DatabaseHelper.getInstance(context).openDataBase();
             String insertQuery = "Insert into tblDistrict(districtCode,districtName,stateCode) " +
                     " values(?,?,?)";
             String updateQuery = "Update tblDistrict set districtName = ?,stateCode = ?" +
@@ -63,15 +56,15 @@ public class AppDataHelper {
             SQLiteStatement updateStmt = sqLiteDatabase.compileStatement(updateQuery);
 
             if(null!= districtList&&!districtList.isEmpty()){
-                for(District district: districtList){
-                    updateStmt.bindString(1,district.districtName);
-                    updateStmt.bindString(2,district.stateCode);
-                    updateStmt.bindString(3,district.districtCode);
+                for(AddressModel.District district: districtList){
+                    updateStmt.bindString(1,district.getDistrictName());
+                    updateStmt.bindString(2,district.getStateCode());
+                    updateStmt.bindString(3,district.getDistrictCode());
 
                     if(updateStmt.executeUpdateDelete()<= 0){
-                        insertStmt.bindString(1,district.districtCode);
-                        insertStmt.bindString(2,district.districtName);
-                        insertStmt.bindString(3,district.stateCode);
+                        insertStmt.bindString(1,district.getDistrictCode());
+                        insertStmt.bindString(2,district.getDistrictName());
+                        insertStmt.bindString(3,district.getStateCode());
                         insertStmt.executeInsert();
                     }
                 }
@@ -90,12 +83,8 @@ public class AppDataHelper {
         }
     }
 
-
-    public static void insertUpdateSubDivisions(Context context, List<SubDivision> subDivisionList){
-        SQLiteDatabase sqLiteDatabase = null;
+    public static void insertUpdateSubDivisions(SQLiteDatabase sqLiteDatabase, List<AddressModel.SubDivision> subDivisionList){
         try{
-            sqLiteDatabase = DatabaseHelper.getInstance(context).openDataBase();
-
             String insertQuery = "Insert into tblSubDivision " +
                     "(subDivisionCode,subDivisionName,districtCode) values(?,?,?)";
             String updateQuery = "Update tblSubDivision set subDivisionName = ?," +
@@ -105,15 +94,15 @@ public class AppDataHelper {
             SQLiteStatement updateStmt = sqLiteDatabase.compileStatement(updateQuery);
 
             if(null!= subDivisionList&&!subDivisionList.isEmpty()){
-                for(SubDivision subDivision: subDivisionList){
-                    updateStmt.bindString(1,subDivision.subDivisionName);
-                    updateStmt.bindString(2,subDivision.districtCode);
-                    updateStmt.bindString(3,subDivision.subDivisionCode);
+                for(AddressModel.SubDivision subDivision: subDivisionList){
+                    updateStmt.bindString(1,subDivision.getSubDivisionName());
+                    updateStmt.bindString(2,subDivision.getDistrictCode());
+                    updateStmt.bindString(3,subDivision.getSubDivisionCode());
 
                     if(updateStmt.executeUpdateDelete()<= 0){
-                        insertStmt.bindString(1,subDivision.subDivisionCode);
-                        insertStmt.bindString(2,subDivision.subDivisionName);
-                        insertStmt.bindString(3,subDivision.districtCode);
+                        insertStmt.bindString(1,subDivision.getSubDivisionCode());
+                        insertStmt.bindString(2,subDivision.getSubDivisionName());
+                        insertStmt.bindString(3,subDivision.getDistrictCode());
                         insertStmt.executeInsert();
                     }
                 }
@@ -131,12 +120,10 @@ public class AppDataHelper {
                 sqLiteDatabase.close();
         }
     }
-    public static void insertUpdateDivisionPoliceStations(Context context,
-                                                          List<DivisionPoliceStation> divisionPoliceStationList) {
-        SQLiteDatabase sqLiteDatabase = null;
+    public static void insertUpdateDivisionPoliceStations( SQLiteDatabase sqLiteDatabase,
+                                                          List<AddressModel.DivisionPoliceStation>
+                                                                  divisionPoliceStationList) {
         try {
-            sqLiteDatabase = DatabaseHelper.getInstance(context).openDataBase();
-
             String insertQuery = "Insert into tblDivisionPoliceStation " +
                     "(divisionPoliceStationCode,divisionPoliceStationName,subDivisionCode) values(?,?,?)";
             String updateQuery = "Update tblDivisionPoliceStation set divisionPoliceStationName = ?," +
@@ -146,15 +133,15 @@ public class AppDataHelper {
             SQLiteStatement updateStmt = sqLiteDatabase.compileStatement(updateQuery);
 
             if (null != divisionPoliceStationList && !divisionPoliceStationList.isEmpty()) {
-                for (DivisionPoliceStation divisionPoliceStation : divisionPoliceStationList) {
-                    updateStmt.bindString(1, divisionPoliceStation.divisionPoliceStationName);
-                    updateStmt.bindString(2, divisionPoliceStation.subDivisionCode);
-                    updateStmt.bindString(3, divisionPoliceStation.divisionPoliceStationCode);
+                for (AddressModel.DivisionPoliceStation divisionPoliceStation : divisionPoliceStationList) {
+                    updateStmt.bindString(1, divisionPoliceStation.getDivisionName());
+                    updateStmt.bindString(2, divisionPoliceStation.getSubDivisionCode());
+                    updateStmt.bindString(3, divisionPoliceStation.getDivisionCode());
 
                     if (updateStmt.executeUpdateDelete() <= 0) {
-                        insertStmt.bindString(1, divisionPoliceStation.divisionPoliceStationCode);
-                        insertStmt.bindString(2, divisionPoliceStation.divisionPoliceStationName);
-                        insertStmt.bindString(3, divisionPoliceStation.subDivisionCode);
+                        insertStmt.bindString(1, divisionPoliceStation.getDivisionCode());
+                        insertStmt.bindString(2, divisionPoliceStation.getDivisionName());
+                        insertStmt.bindString(3, divisionPoliceStation.getSubDivisionCode());
                         insertStmt.executeInsert();
                     }
                 }
@@ -172,19 +159,19 @@ public class AppDataHelper {
     }
 
 
-    public static List<State> getAllStates(Context context){
-        List<State> statesList = new ArrayList<>();
+    public static List<AddressModel.State> getAllStates(Context context){
+        List<AddressModel.State> statesList = new ArrayList<>();
         SQLiteDatabase sqLiteDatabase = null;
         try{
             sqLiteDatabase = DatabaseHelper.getInstance(context).openDataBase();
             String selectQuery = " Select stateCode,stateName from tblStates ";
             Cursor cursor = sqLiteDatabase.rawQuery(selectQuery,null);
             if(null!=cursor&&cursor.moveToFirst()){
-                State state = null;
+                AddressModel.State state = null;
                 do{
-                    state = new State();
-                    state.stateCode = cursor.getString(0);
-                    state.stateName = cursor.getString(1);
+                    state = new AddressModel.State();
+                    state.setStateCode(cursor.getString(0));
+                    state.setStateName(cursor.getString(1));
                     statesList.add(state);
                 }while (cursor.moveToNext());
             }
@@ -194,19 +181,19 @@ public class AppDataHelper {
         }
         return statesList;
     }
-    public static List<District> getAllDistrictByStateCode(Context context,String stateCode){
-        List<District> districtList = new ArrayList<>();
+    public static List<AddressModel.District> getAllDistrictByStateCode(Context context,String stateCode){
+        List<AddressModel.District> districtList = new ArrayList<>();
         SQLiteDatabase sqLiteDatabase = null;
         try{
             sqLiteDatabase = DatabaseHelper.getInstance(context).openDataBase();
             String selectQuery = " Select districtCode,districtName from tblDistrict Where stateCode='"+stateCode+"'";
             Cursor cursor = sqLiteDatabase.rawQuery(selectQuery,null);
             if(null!=cursor&&cursor.moveToFirst()){
-                District district = null;
+                AddressModel.District district = null;
                 do{
-                    district = new District();
-                    district.districtCode = cursor.getString(0);
-                    district.districtName = cursor.getString(1);
+                    district = new AddressModel.District();
+                    district.setDistrictCode(cursor.getString(0));
+                    district.setDistrictName(cursor.getString(1));
                     districtList.add(district);
                 }while (cursor.moveToNext());
             }
@@ -217,8 +204,8 @@ public class AppDataHelper {
         return districtList;
     }
 
-    public static List<SubDivision> getAllSubDivisionsByDistrictCode(Context context,String districtCode){
-        List<SubDivision> subDivisionList = new ArrayList<>();
+    public static List<AddressModel.SubDivision> getAllSubDivisionsByDistrictCode(Context context,String districtCode){
+        List<AddressModel.SubDivision> subDivisionList = new ArrayList<>();
         SQLiteDatabase sqLiteDatabase = null;
         try{
             sqLiteDatabase = DatabaseHelper.getInstance(context).openDataBase();
@@ -226,11 +213,11 @@ public class AppDataHelper {
                     "Where districtCode='"+districtCode+"'";
             Cursor cursor = sqLiteDatabase.rawQuery(selectQuery,null);
             if(null!=cursor&&cursor.moveToFirst()){
-                SubDivision subDivision = null;
+                AddressModel.SubDivision subDivision = null;
                 do{
-                    subDivision = new SubDivision();
-                    subDivision.subDivisionCode = cursor.getString(0);
-                    subDivision.subDivisionName = cursor.getString(1);
+                    subDivision = new AddressModel.SubDivision();
+                    subDivision.setSubDivisionCode(cursor.getString(0));
+                    subDivision.setSubDivisionName(cursor.getString(1));
                     subDivisionList.add(subDivision);
                 }while (cursor.moveToNext());
             }
@@ -240,8 +227,8 @@ public class AppDataHelper {
         }
         return subDivisionList;
     }
-    public static List<DivisionPoliceStation> getAllDivisionPoliceStationByDistrictCode(Context context,String subDivisionCode){
-        List<DivisionPoliceStation> divisionPoliceStationList = new ArrayList<>();
+    public static List<AddressModel.DivisionPoliceStation> getAllDivisionPoliceStationByDistrictCode(Context context,String subDivisionCode){
+        List<AddressModel.DivisionPoliceStation> divisionPoliceStationList = new ArrayList<>();
         SQLiteDatabase sqLiteDatabase = null;
         try{
             sqLiteDatabase = DatabaseHelper.getInstance(context).openDataBase();
@@ -249,11 +236,11 @@ public class AppDataHelper {
                     "from tblDivisionPoliceStation Where subDivisionCode = '"+subDivisionCode+"'";
             Cursor cursor = sqLiteDatabase.rawQuery(selectQuery,null);
             if(null!=cursor&&cursor.moveToFirst()){
-                DivisionPoliceStation divisionPoliceStation = null;
+                AddressModel.DivisionPoliceStation divisionPoliceStation = null;
                 do{
-                    divisionPoliceStation = new DivisionPoliceStation();
-                    divisionPoliceStation.divisionPoliceStationCode = cursor.getString(0);
-                    divisionPoliceStation.divisionPoliceStationName = cursor.getString(1);
+                    divisionPoliceStation = new AddressModel.DivisionPoliceStation();
+                    divisionPoliceStation.setDivisionCode(cursor.getString(0));
+                    divisionPoliceStation.setDivisionName(cursor.getString(1));
                     divisionPoliceStationList.add(divisionPoliceStation);
                 }while (cursor.moveToNext());
             }

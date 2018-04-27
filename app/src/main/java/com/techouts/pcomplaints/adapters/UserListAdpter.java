@@ -47,6 +47,7 @@ public class UserListAdpter extends RecyclerView.Adapter<UserListAdpter.ServiceM
         holder.tvMobileNumber.setText(userList.get(position).mobileNo + "");
         holder.tvArea.setText(userList.get(position).circlePolicestation+"");
         holder.tvCity.setText(userList.get(position).subDivision+"");
+        holder.tvState.setText(userList.get(position).state+"");
         getImageOfServiceMan(userList.get(position).userImg,holder.ivServiceManImg);
     }
 
@@ -61,7 +62,7 @@ public class UserListAdpter extends RecyclerView.Adapter<UserListAdpter.ServiceM
     }
 
     class ServiceManViewHolder extends RecyclerView.ViewHolder {
-        TextView tvFullName, tvEmail, tvMobileNumber,tvArea,tvCity;
+        TextView tvFullName, tvEmail, tvMobileNumber,tvArea,tvCity,tvState;
         ImageView ivServiceManImg;
 
         public ServiceManViewHolder(final View itemView) {
@@ -70,6 +71,7 @@ public class UserListAdpter extends RecyclerView.Adapter<UserListAdpter.ServiceM
             tvEmail = itemView.findViewById(R.id.tvEmail);
             tvArea = itemView.findViewById(R.id.tvArea);
             tvCity = itemView.findViewById(R.id.tvCity);
+            tvState = itemView.findViewById(R.id.tvState);
             tvMobileNumber = itemView.findViewById(R.id.tvMobileNumber);
             ivServiceManImg = itemView.findViewById(R.id.ivServiceManImg);
 

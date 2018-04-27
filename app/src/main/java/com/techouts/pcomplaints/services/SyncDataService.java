@@ -2,24 +2,15 @@ package com.techouts.pcomplaints.services;
 
 import android.app.IntentService;
 import android.content.Intent;
-import android.os.ResultReceiver;
 import android.support.annotation.Nullable;
 
-import com.techouts.pcomplaints.database.AppDataHelper;
-import com.techouts.pcomplaints.model.District;
-import com.techouts.pcomplaints.model.DivisionPoliceStation;
-import com.techouts.pcomplaints.model.State;
-import com.techouts.pcomplaints.model.SubDivision;
+import com.google.gson.Gson;
+import com.techouts.pcomplaints.database.DatabaseHelper;
+import com.techouts.pcomplaints.model.AddressModel;
 import com.techouts.pcomplaints.utils.ApiServiceConstants;
 import com.techouts.pcomplaints.utils.OkHttpUtils;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -29,7 +20,8 @@ import okhttp3.Response;
 
 public class SyncDataService extends IntentService {
 
-    ResultReceiver resultReceiver;
+    public final static String MY_ACTION = "MY_ACTION";
+
     /**
      * Creates an IntentService. Invoked by your subclass's constructor.
      */
@@ -39,18 +31,21 @@ public class SyncDataService extends IntentService {
 
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
-        resultReceiver = intent.getParcelableExtra("receiver");
-        getAllStates();
-        getAllDistricts();
-        getAllSubDivisions();
-        getAllDivisionPoliceStations();
+        try {
+            getAllData(ApiServiceConstants.GEO_DATA);
+//            getAllData(ApiServiceConstants.DISTRICTS);
+//            getAllData(ApiServiceConstants.SUB_DIVISIONS);
+//            getAllData(ApiServiceConstants.DIVISION);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    private void getAllStates(){
-        try{
+    private void getAllData(final String name) {
+        try {
             OkHttpClient client = OkHttpUtils.getOkHttpClient();
             Request.Builder builder = new Request.Builder();
-            builder.url(ApiServiceConstants.MAIN_URL+ApiServiceConstants.STATES);
+            builder.url(ApiServiceConstants.MAIN_URL + name);
             builder.get();
             Request request = builder.build();
             client.newCall(request).enqueue(new Callback() {
@@ -63,174 +58,102 @@ public class SyncDataService extends IntentService {
                 @Override
                 public void onResponse(Call call, final Response response) throws IOException {
                     String body = response.body().string().toString();
-                    try {
-                        List<State> stateList = new ArrayList<>();
-                        JSONObject jsonObject = new JSONObject(body);
-                        JSONArray jsonArray = jsonObject.getJSONArray("states");
-                        if(null!=jsonArray){
-                            State state = null;
-                            for(int i=0;i<jsonArray.length();i++){
-                                state = new State();
-                                JSONObject jsonObject1 = jsonArray.getJSONObject(i);
-                                state.stateCode = jsonObject1.getString("stateCode");
-                                state.stateName = jsonObject1.getString("stateName");
-                                stateList.add(state);
-                            }
-                            if(null!=stateList&&!stateList.isEmpty()){
-                                AppDataHelper.insertUpdateStates(getApplicationContext(),stateList);
-                            }
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
+                    parseAddressData(body);
+//                    if (name.equalsIgnoreCase(ApiServiceConstants.STATES)) {
+//                        parseStatesData(body);
+//                    } else if (name.equalsIgnoreCase(ApiServiceConstants.DISTRICTS)) {
+//                        parseDistrictData(body);
+//                    } else if (name.equalsIgnoreCase(ApiServiceConstants.SUB_DIVISIONS)) {
+//                        parseSubDivisionData(body);
+//                    } else if (name.equalsIgnoreCase(ApiServiceConstants.DIVISION)) {
+//                        parseDivisionPoliceStationData(body);
+//                    }
                 }
             });
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private void getAllDistricts(){
+    private void parseAddressData(String body){
         try{
-            OkHttpClient client = OkHttpUtils.getOkHttpClient();
-            Request.Builder builder = new Request.Builder();
-            builder.url(ApiServiceConstants.MAIN_URL+ApiServiceConstants.DISTRICTS);
-            builder.get();
-            Request request = builder.build();
-            client.newCall(request).enqueue(new Callback() {
-
-                @Override
-                public void onFailure(Call call, IOException e) {
-
+            AddressModel addressModel = new Gson().fromJson(body,AddressModel.class);
+            if(null!=addressModel){
+                if(null!=addressModel.getStates()&&!addressModel.getStates().isEmpty()){
+                    DatabaseHelper.insertUpdateStates(getApplicationContext(),addressModel.getStates());
                 }
-
-                @Override
-                public void onResponse(Call call, final Response response) throws IOException {
-                    final String body = response.body().string().toString();
-                    try {
-                        List<District> districtsList = new ArrayList<>();
-                        JSONObject jsonObject = new JSONObject(body);
-                        JSONArray jsonArray = jsonObject.getJSONArray("districts");
-                        if(null!=jsonArray){
-                            District district = null;
-                            for(int i=0;i<jsonArray.length();i++){
-                                district = new District();
-                                JSONObject jsonObject1 =  jsonArray.getJSONObject(i);
-                                district.districtCode = jsonObject1.getString("districtCode");
-                                district.districtName = jsonObject1.getString("districtName");
-                                district.stateCode = jsonObject1.getString("stateCode");
-                                districtsList.add(district);
-                            }
-                            if(null!=districtsList&&!districtsList.isEmpty()){
-                                AppDataHelper.insertUpdateDistricts(getApplicationContext(),districtsList);
-                            }
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
+                if(null!=addressModel.getDistricts()&&!addressModel.getDistricts().isEmpty()){
+                    DatabaseHelper.insertUpdateDistricts(getApplicationContext(),addressModel.getDistricts());
                 }
-            });
+                if(null!=addressModel.getSubDivisions()&&!addressModel.getSubDivisions().isEmpty()){
+                    DatabaseHelper.insertUpdateSubDivisions(getApplicationContext(),addressModel.getSubDivisions());
+                }
+                if(null!=addressModel.getDivisionPoliceStations()&&!addressModel.getDivisionPoliceStations().isEmpty()){
+                    DatabaseHelper.insertUpdateDivisionPoliceStations(getApplicationContext(),
+                            addressModel.getDivisionPoliceStations());
+
+                    Intent data = new Intent();
+                    data.setAction(MY_ACTION);
+                    data.putExtra("DATAPASSED", "Done");
+                    sendBroadcast(data);
+                }
+            }
         }
         catch (Exception e){
             e.printStackTrace();
         }
     }
 
-    private void getAllSubDivisions(){
-        try{
-            OkHttpClient client = OkHttpUtils.getOkHttpClient();
-            Request.Builder builder = new Request.Builder();
-            builder.url(ApiServiceConstants.MAIN_URL+ApiServiceConstants.SUB_DIVISIONS);
-            builder.get();
-            Request request = builder.build();
-            client.newCall(request).enqueue(new Callback() {
-                @Override
-                public void onFailure(Call call, IOException e) {
-
-                }
-
-                @Override
-                public void onResponse(Call call, final Response response) throws IOException {
-                    final String body = response.body().string().toString();
-                    try {
-                        List<SubDivision> subDivisionList = new ArrayList<>();
-                        JSONObject jsonObject = new JSONObject(body);
-                        JSONArray jsonArray = jsonObject.getJSONArray("subDivisions");
-                        if(null!=jsonArray){
-                            SubDivision subDivision = null;
-                            for(int i=0;i<jsonArray.length();i++){
-                                subDivision = new SubDivision();
-                                JSONObject jsonObject1 =  jsonArray.getJSONObject(i);
-                                subDivision.subDivisionCode = jsonObject1.getString("subDivisionCode");
-                                subDivision.subDivisionName = jsonObject1.getString("subDivisionName");
-                                subDivision.districtCode = jsonObject1.getString("districtCode");
-                                subDivisionList.add(subDivision);
-                            }
-                            if(null!=subDivisionList&&!subDivisionList.isEmpty()){
-                                AppDataHelper.insertUpdateSubDivisions(getApplicationContext(),subDivisionList);
-                            }
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
-        }
-        catch (Exception e){
-            e.printStackTrace();
-        }
-    }
-
-    private void getAllDivisionPoliceStations(){
-        try{
-            OkHttpClient client = OkHttpUtils.getOkHttpClient();
-            Request.Builder builder = new Request.Builder();
-            builder.url(ApiServiceConstants.MAIN_URL+ApiServiceConstants.DIVISION);
-            builder.get();
-            Request request = builder.build();
-            client.newCall(request).enqueue(new Callback() {
-                @Override
-                public void onFailure(Call call, IOException e) {
-
-                }
-
-                @Override
-                public void onResponse(Call call, final Response response) throws IOException {
-                    final String body = response.body().string().toString();
-                    try {
-                        List<DivisionPoliceStation> divisionPoliceStationList = new ArrayList<>();
-                        JSONObject jsonObject = new JSONObject(body);
-                        JSONArray jsonArray = jsonObject.getJSONArray("divisionPoliceStations");
-                        if(null!=jsonArray){
-                            DivisionPoliceStation divisionPoliceStation = null;
-                            for(int i=0;i<jsonArray.length();i++){
-                                divisionPoliceStation = new DivisionPoliceStation();
-                                JSONObject jsonObject1 = jsonArray.getJSONObject(i);
-                                divisionPoliceStation.divisionPoliceStationCode = jsonObject1.getString("divisionCode");
-                                divisionPoliceStation.divisionPoliceStationName = jsonObject1.getString("divisionName");
-                                divisionPoliceStation.subDivisionCode = jsonObject1.getString("subDivisionCode");
-                                divisionPoliceStationList.add(divisionPoliceStation);
-                            }
-                            if(null!=divisionPoliceStationList&&!divisionPoliceStationList.isEmpty()){
-                                AppDataHelper.insertUpdateDivisionPoliceStations(getApplicationContext(),divisionPoliceStationList);
-                            }
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
-        }
-        catch (Exception e){
-            e.printStackTrace();
-        }
-    }
-
-
-    @Override
-    public boolean stopService(Intent name) {
-        return super.stopService(name);
-    }
-
+//    private void parseStatesData(String body) {
+//        try {
+//            StatesModel statesModel = new Gson().fromJson(body, StatesModel.class);
+//            if (null != statesModel.getStates() && !statesModel.getStates().isEmpty()) {
+////                AppDataHelper.insertUpdateStates(getApplicationContext(), statesModel.getStates());
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
+//
+//
+//    private void parseDistrictData(String body) {
+//        try {
+//            DistrictModel districtModel = new Gson().fromJson(body, DistrictModel.class);
+//            if (null != districtModel.getDistricts() && !districtModel.getDistricts().isEmpty()) {
+////                AppDataHelper.insertUpdateDistricts(getApplicationContext(), districtModel.getDistricts());
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
+//
+//    private void parseSubDivisionData(String body) {
+//        try {
+//            SubDivisionModel subDivisionModel = new Gson().fromJson(body, SubDivisionModel.class);
+//            if (null != subDivisionModel.getSubDivisions() && !subDivisionModel.getSubDivisions().isEmpty()) {
+////                AppDataHelper.insertUpdateSubDivisions(getApplicationContext(), subDivisionModel.getSubDivisions());
+//            }
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
+//
+//    private void parseDivisionPoliceStationData(String body){
+//        try{
+//            DivisionPoliceStationModel divisionPoliceStationModel = new Gson().fromJson(body, DivisionPoliceStationModel.class);
+//            if (null != divisionPoliceStationModel.getDivisionPoliceStations()
+//                    && !divisionPoliceStationModel.getDivisionPoliceStations().isEmpty()) {
+////                AppDataHelper.insertUpdateDivisionPoliceStations(getApplicationContext(),
+////                        divisionPoliceStationModel.getDivisionPoliceStations());
+//                Intent data = new Intent();
+//                data.setAction(MY_ACTION);
+//                data.putExtra("DATAPASSED", "Done");
+//                sendBroadcast(data);
+//            }
+//        }
+//        catch(Exception e){
+//            e.printStackTrace();
+//        }
+//    }
 }

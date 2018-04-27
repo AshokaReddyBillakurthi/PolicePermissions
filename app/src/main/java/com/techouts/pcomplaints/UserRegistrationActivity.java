@@ -17,16 +17,10 @@ import android.widget.Toast;
 import com.techouts.pcomplaints.custom.CustomDialog;
 import com.techouts.pcomplaints.database.AppDataHelper;
 import com.techouts.pcomplaints.database.UserDataHelper;
-import com.techouts.pcomplaints.model.Area;
-import com.techouts.pcomplaints.model.City;
-import com.techouts.pcomplaints.model.District;
-import com.techouts.pcomplaints.model.DivisionPoliceStation;
-import com.techouts.pcomplaints.model.State;
-import com.techouts.pcomplaints.model.SubDivision;
+import com.techouts.pcomplaints.model.AddressModel;
 import com.techouts.pcomplaints.model.User;
 import com.techouts.pcomplaints.utils.ApiServiceConstants;
 import com.techouts.pcomplaints.utils.AppConstents;
-import com.techouts.pcomplaints.utils.DataManager;
 import com.techouts.pcomplaints.utils.DialogUtils;
 import com.techouts.pcomplaints.utils.OkHttpUtils;
 
@@ -59,10 +53,10 @@ public class UserRegistrationActivity extends BaseActivity {
     private String userType = "";
     private boolean isPosted = false;
     private CustomDialog customDialog;
-    private List<DivisionPoliceStation> divisionPoliceStationList;
-    private List<SubDivision> subDivisionList;
-    private List<District> districtList;
-    private List<State> stateList;
+    private List<AddressModel.DivisionPoliceStation> divisionPoliceStationList;
+    private List<AddressModel.SubDivision> subDivisionList;
+    private List<AddressModel.District> districtList;
+    private List<AddressModel.State> stateList;
     private String stateCode = "";
     private String districtCode = "";
     private String subDivisionCode = "";
@@ -149,10 +143,10 @@ public class UserRegistrationActivity extends BaseActivity {
                                             true, false, true,
                                             new CustomDialog.OnDivisionPoliceStation() {
                                                 @Override
-                                                public void onDivisionPoliceStation(DivisionPoliceStation divisionPoliceStation) {
+                                                public void onDivisionPoliceStation(AddressModel.DivisionPoliceStation divisionPoliceStation) {
                                                     if(null!=divisionPoliceStation){
-                                                        tvDivisionPoliceStation.setText(divisionPoliceStation.divisionPoliceStationName+"");
-                                                        divisionPoliceStationCode = divisionPoliceStation.divisionPoliceStationCode;
+                                                        tvDivisionPoliceStation.setText(divisionPoliceStation.getDivisionName()+"");
+                                                        divisionPoliceStationCode = divisionPoliceStation.getDivisionCode();
                                                     }
                                                     customDialog.dismiss();
                                                 }
@@ -188,10 +182,10 @@ public class UserRegistrationActivity extends BaseActivity {
                                                 false, false,
                                                 new CustomDialog.OnSubDivisionSelected() {
                                                     @Override
-                                                    public void OnSubDivisionSelected(SubDivision subDivision) {
+                                                    public void OnSubDivisionSelected(AddressModel.SubDivision subDivision) {
                                                         if(null!=subDivision){
-                                                            tvSubDivisions.setText(subDivision.subDivisionName+"");
-                                                            subDivisionCode = subDivision.subDivisionCode;
+                                                            tvSubDivisions.setText(subDivision.getSubDivisionName()+"");
+                                                            subDivisionCode = subDivision.getSubDivisionCode();
                                                         }
                                                         customDialog.dismiss();
                                                     }
@@ -228,10 +222,10 @@ public class UserRegistrationActivity extends BaseActivity {
                                                 false, true,
                                                 new CustomDialog.OnDistrictSelected() {
                                                     @Override
-                                                    public void onDistrictSelected(District district) {
+                                                    public void onDistrictSelected(AddressModel.District district) {
                                                         if(null!=district){
-                                                            tvDistrict.setText(district.districtName+"");
-                                                            districtCode = district.districtCode;
+                                                            tvDistrict.setText(district.getDistrictName()+"");
+                                                            districtCode = district.getDistrictCode();
                                                         }
                                                         customDialog.dismiss();
                                                     }
@@ -264,10 +258,10 @@ public class UserRegistrationActivity extends BaseActivity {
                                             true,false,
                                             new CustomDialog.OnStateSelected() {
                                                 @Override
-                                                public void onStateSelected(State state) {
+                                                public void onStateSelected(AddressModel.State state) {
                                                     if(null!=state){
-                                                        stateCode = state.stateCode;
-                                                        tvState.setText(state.stateName+"");
+                                                        stateCode = state.getStateCode();
+                                                        tvState.setText(state.getStateName()+"");
                                                     }
                                                     customDialog.dismiss();
                                                 }

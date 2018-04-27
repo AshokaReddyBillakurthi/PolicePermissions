@@ -8,16 +8,16 @@ import android.widget.TextView;
 
 import com.techouts.pcomplaints.R;
 import com.techouts.pcomplaints.custom.CustomDialog;
-import com.techouts.pcomplaints.model.SubDivision;
+import com.techouts.pcomplaints.model.AddressModel;
 
 import java.util.List;
 
 public class SubDivisionAdapter extends RecyclerView.Adapter<SubDivisionAdapter.SubDivisionViewHolder>  {
 
-    private List<SubDivision> subDivisionList;
+    private List<AddressModel.SubDivision> subDivisionList;
     private CustomDialog.OnSubDivisionSelected onSubDivisionSelected;
 
-    public SubDivisionAdapter(List<SubDivision> subDivisionList,CustomDialog.OnSubDivisionSelected onSubDivisionSelected){
+    public SubDivisionAdapter(List<AddressModel.SubDivision> subDivisionList, CustomDialog.OnSubDivisionSelected onSubDivisionSelected){
         this.subDivisionList = subDivisionList;
         this.onSubDivisionSelected = onSubDivisionSelected;
     }
@@ -30,10 +30,10 @@ public class SubDivisionAdapter extends RecyclerView.Adapter<SubDivisionAdapter.
 
     @Override
     public void onBindViewHolder(SubDivisionViewHolder holder, int position) {
-        holder.tvArea.setText(subDivisionList.get(position).subDivisionName.toString());
+        holder.tvArea.setText(subDivisionList.get(position).getSubDivisionName().toString());
     }
 
-    public void refresh(List<SubDivision> subDivisionList){
+    public void refresh(List<AddressModel.SubDivision> subDivisionList){
         this.subDivisionList = subDivisionList;
         notifyDataSetChanged();
     }

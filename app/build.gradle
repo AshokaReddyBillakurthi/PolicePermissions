@@ -35,8 +35,14 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
 
+    //Circuler ImageView
+    implementation 'de.hdodenhof:circleimageview:2.2.0'
+
     //PayU
     compile 'com.payumoney.sdkui:plug-n-play:1.2.0'
+
+    //Gson
+    compile 'com.google.code.gson:gson:2.8.2'
 
     // Google
     compile 'com.google.android.gms:play-services-auth:10.0.0'

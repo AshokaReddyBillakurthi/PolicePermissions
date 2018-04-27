@@ -27,12 +27,9 @@ import com.techouts.pcomplaints.adapters.DistrictAdapter;
 import com.techouts.pcomplaints.adapters.DivisionPoliceStationAdapter;
 import com.techouts.pcomplaints.adapters.StateAdapter;
 import com.techouts.pcomplaints.adapters.SubDivisionAdapter;
+import com.techouts.pcomplaints.model.AddressModel;
 import com.techouts.pcomplaints.model.Area;
 import com.techouts.pcomplaints.model.City;
-import com.techouts.pcomplaints.model.District;
-import com.techouts.pcomplaints.model.DivisionPoliceStation;
-import com.techouts.pcomplaints.model.State;
-import com.techouts.pcomplaints.model.SubDivision;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,10 +49,10 @@ public class CustomDialog extends Dialog {
     private List<String> listNames;
     private List<Area> areaList;
     private List<City> cityList;
-    private List<State> stateList;
-    private List<District> districtList;
-    private List<SubDivision> subDivisionList;
-    private List<DivisionPoliceStation> divisionPoliceStationsList;
+    private List<AddressModel.State> stateList;
+    private List<AddressModel.District> districtList;
+    private List<AddressModel.SubDivision> subDivisionList;
+    private List<AddressModel.DivisionPoliceStation> divisionPoliceStationsList;
     private NameSelectedListener nameSelectedListener;
     private OnStateSelected onStateSelected;
     private OnDistrictSelected onDistrictSelected;
@@ -116,7 +113,7 @@ public class CustomDialog extends Dialog {
 //        this.isCity = isCity;
 //    }
 
-    public CustomDialog(@NonNull Context context, boolean isState, List<State> stateList, String title,
+    public CustomDialog(@NonNull Context context, boolean isState, List<AddressModel.State> stateList, String title,
                         boolean isSearchReq, boolean isCheckboxNeed, NameSelectedListener nameSelectedListener) {
         super(context);
         this.mContext = context;
@@ -128,7 +125,7 @@ public class CustomDialog extends Dialog {
         this.isState = isState;
     }
 
-    public CustomDialog(@NonNull Context context, boolean isState, List<State> stateList, String title,
+    public CustomDialog(@NonNull Context context, boolean isState, List<AddressModel.State> stateList, String title,
                         boolean isSearchReq, boolean isCheckboxNeed, OnStateSelected onStateSelected) {
         super(context);
         this.mContext = context;
@@ -140,7 +137,7 @@ public class CustomDialog extends Dialog {
         this.isState = isState;
     }
 
-    public CustomDialog(@NonNull Context context, List<District> districtList, String title,
+    public CustomDialog(@NonNull Context context, List<AddressModel.District> districtList, String title,
                         boolean isSearchReq, boolean isCheckboxNeed,
                         boolean isDistrict, OnDistrictSelected onDistrictSelected) {
         super(context);
@@ -153,7 +150,7 @@ public class CustomDialog extends Dialog {
         this.isDistrict = isDistrict;
     }
 
-    public CustomDialog(@NonNull Context context, List<SubDivision> subDivisionList,
+    public CustomDialog(@NonNull Context context, List<AddressModel.SubDivision> subDivisionList,
                         boolean isSubDivision, String title, boolean isSearchReq, boolean isCheckboxNeed,
                         OnSubDivisionSelected onSubDivisionSelected) {
         super(context);
@@ -166,7 +163,8 @@ public class CustomDialog extends Dialog {
         this.isSubDivision = isSubDivision;
     }
 
-    public CustomDialog(@NonNull Context context, List<DivisionPoliceStation> divisionPoliceStationsList,
+    public CustomDialog(@NonNull Context context,
+                        List<AddressModel.DivisionPoliceStation> divisionPoliceStationsList,
                         String title, boolean isSearchReq, boolean isCheckboxNeed,
                         boolean isDivisionPoliceStation, OnDivisionPoliceStation onDivisionPoliceStation) {
         super(context);
@@ -291,10 +289,10 @@ public class CustomDialog extends Dialog {
     private void searchText(String searchText) {
         try {
             if (isState) {
-                List<State> tempList = new ArrayList<>();
+                List<AddressModel.State> tempList = new ArrayList<>();
                 if (!TextUtils.isEmpty(searchText)) {
-                    for (State state : stateList) {
-                        if ((state.stateName.toLowerCase().contains(searchText.toLowerCase()))) {
+                    for (AddressModel.State state : stateList) {
+                        if ((state.getStateName().toLowerCase().contains(searchText.toLowerCase()))) {
                             tempList.add(state);
                         }
                     }
@@ -303,10 +301,10 @@ public class CustomDialog extends Dialog {
                     stateAdapter.refresh(stateList);
                 }
             } else if (isDistrict) {
-                List<District> tempList = new ArrayList<>();
+                List<AddressModel.District> tempList = new ArrayList<>();
                 if (!TextUtils.isEmpty(searchText)) {
-                    for (District district : districtList) {
-                        if ((district.districtName.toLowerCase().contains(searchText.toLowerCase()))) {
+                    for (AddressModel.District district : districtList) {
+                        if ((district.getDistrictName().toLowerCase().contains(searchText.toLowerCase()))) {
                             tempList.add(district);
                         }
                     }
@@ -315,10 +313,10 @@ public class CustomDialog extends Dialog {
                     districtAdapter.refresh(districtList);
                 }
             } else if (isSubDivision) {
-                List<SubDivision> tempList = new ArrayList<>();
+                List<AddressModel.SubDivision> tempList = new ArrayList<>();
                 if (!TextUtils.isEmpty(searchText)) {
-                    for (SubDivision subDivision : subDivisionList) {
-                        if ((subDivision.subDivisionName.toLowerCase().contains(searchText.toLowerCase()))) {
+                    for (AddressModel.SubDivision subDivision : subDivisionList) {
+                        if ((subDivision.getSubDivisionName().toLowerCase().contains(searchText.toLowerCase()))) {
                             tempList.add(subDivision);
                         }
                     }
@@ -327,10 +325,10 @@ public class CustomDialog extends Dialog {
                     subDivisionAdapter.refresh(subDivisionList);
                 }
             } else if (isDivisionPoliceStation) {
-                List<DivisionPoliceStation> tempList = new ArrayList<>();
+                List<AddressModel.DivisionPoliceStation> tempList = new ArrayList<>();
                 if (!TextUtils.isEmpty(searchText)) {
-                    for (DivisionPoliceStation divisionPoliceStation : divisionPoliceStationsList) {
-                        if ((divisionPoliceStation.divisionPoliceStationName.toLowerCase().contains(searchText.toLowerCase()))) {
+                    for (AddressModel.DivisionPoliceStation divisionPoliceStation : divisionPoliceStationsList) {
+                        if ((divisionPoliceStation.getDivisionName().toLowerCase().contains(searchText.toLowerCase()))) {
                             tempList.add(divisionPoliceStation);
                         }
                     }
@@ -440,19 +438,19 @@ public class CustomDialog extends Dialog {
     }
 
     public interface OnStateSelected {
-        void onStateSelected(State state);
+        void onStateSelected(AddressModel.State state);
     }
 
     public interface OnDistrictSelected {
-        void onDistrictSelected(District district);
+        void onDistrictSelected(AddressModel.District district);
     }
 
     public interface OnSubDivisionSelected {
-        void OnSubDivisionSelected(SubDivision subDivision);
+        void OnSubDivisionSelected(AddressModel.SubDivision subDivision);
     }
 
     public interface OnDivisionPoliceStation {
-        void onDivisionPoliceStation(DivisionPoliceStation divisionPoliceStation);
+        void onDivisionPoliceStation(AddressModel.DivisionPoliceStation divisionPoliceStation);
     }
 
 

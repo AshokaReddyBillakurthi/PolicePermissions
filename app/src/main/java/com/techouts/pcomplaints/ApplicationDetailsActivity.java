@@ -60,7 +60,7 @@ public class ApplicationDetailsActivity extends BaseActivity {
             tvEmail.setText(application.email+"");
             tvMobileNo.setText(application.mobileNo+"");
             tvApplicationType.setText(application.applicationType+"");
-            tvArea.setText(application.area+"");
+            tvArea.setText(application.circlePolicestation+"");
             tvTitle.setText(application.applicationType+"");
             if(application.status == 0) {
                tvStatus.setText(AppConstents.PENDING);

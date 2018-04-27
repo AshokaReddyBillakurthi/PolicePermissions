@@ -8,17 +8,16 @@ import android.widget.TextView;
 
 import com.techouts.pcomplaints.R;
 import com.techouts.pcomplaints.custom.CustomDialog;
-import com.techouts.pcomplaints.model.District;
-import com.techouts.pcomplaints.model.DivisionPoliceStation;
+import com.techouts.pcomplaints.model.AddressModel;
 
 import java.util.List;
 
 public class DivisionPoliceStationAdapter extends RecyclerView.Adapter<DivisionPoliceStationAdapter.DivisionPoliceStationViewHolder>  {
 
-    private List<DivisionPoliceStation> divisionPoliceStationList;
+    private List<AddressModel.DivisionPoliceStation> divisionPoliceStationList;
     private CustomDialog.OnDivisionPoliceStation onDivisionPoliceStation;
 
-    public DivisionPoliceStationAdapter(List<DivisionPoliceStation> divisionPoliceStationList,
+    public DivisionPoliceStationAdapter(List<AddressModel.DivisionPoliceStation> divisionPoliceStationList,
                                         CustomDialog.OnDivisionPoliceStation onDivisionPoliceStation){
         this.divisionPoliceStationList = divisionPoliceStationList;
         this.onDivisionPoliceStation = onDivisionPoliceStation;
@@ -32,10 +31,10 @@ public class DivisionPoliceStationAdapter extends RecyclerView.Adapter<DivisionP
 
     @Override
     public void onBindViewHolder(DivisionPoliceStationViewHolder holder, int position) {
-        holder.tvArea.setText(divisionPoliceStationList.get(position).divisionPoliceStationName.toString());
+        holder.tvArea.setText(divisionPoliceStationList.get(position).getDivisionName().toString());
     }
 
-    public void refresh(List<DivisionPoliceStation> divisionPoliceStationList){
+    public void refresh(List<AddressModel.DivisionPoliceStation> divisionPoliceStationList){
         this.divisionPoliceStationList = divisionPoliceStationList;
         notifyDataSetChanged();
     }

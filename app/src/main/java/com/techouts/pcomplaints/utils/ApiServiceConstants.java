@@ -13,6 +13,7 @@ public interface ApiServiceConstants {
     String USER_REGISTRATION = "/registercustomer";
     String X_SERVICEMAN_REGISTRATION = "/registerExServicMan";
     String USER_LOGIN = "/login?";
+    String GEO_DATA = "/geodata";
     String STATES = "/getStates";
     String DISTRICTS = "/getDistricts";
     String SUB_DIVISIONS = "/getSubDivisions";

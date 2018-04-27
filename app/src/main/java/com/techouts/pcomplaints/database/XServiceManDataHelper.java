@@ -16,7 +16,7 @@ public class XServiceManDataHelper {
         try{
             sqLiteDatabase = DatabaseHelper.getInstance(context).openDataBase();
             String insertQuery = "Insert into tblXServiceMans(firstName,lastName," +
-                    "email,password,mobileNo,state,city,area" +
+                    "email,password,mobileNo,state,city,area," +
                     "district,subDivision,circlePolicestation," +
                     "userImg,userType,services,reqDocs,status) " +
                     " values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
@@ -61,6 +61,30 @@ public class XServiceManDataHelper {
         try{
             sqLiteDatabase = DatabaseHelper.getInstance(context).openDataBase();
             String updateQuery = "Update tblXServiceMans set status='"+status+"' Where email ='"+email+"'";
+            SQLiteStatement updateStmt = sqLiteDatabase.compileStatement(updateQuery);
+            int count = updateStmt.executeUpdateDelete();
+            if(count>0)
+                isUpdated = true;
+
+            if(null != updateStmt)
+                updateStmt.close();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        finally {
+            if(null!=sqLiteDatabase&&sqLiteDatabase.isOpen())
+                sqLiteDatabase.close();
+        }
+        return isUpdated;
+    }
+
+    public static boolean updateUserActiveStatus(Context context, String status,String email){
+        SQLiteDatabase sqLiteDatabase = null;
+        boolean isUpdated = false;
+        try{
+            sqLiteDatabase = DatabaseHelper.getInstance(context).openDataBase();
+            String updateQuery = "Update tblXServiceMans set isActive='"+status+"' Where email ='"+email+"'";
             SQLiteStatement updateStmt = sqLiteDatabase.compileStatement(updateQuery);
             int count = updateStmt.executeUpdateDelete();
             if(count>0)
@@ -126,8 +150,8 @@ public class XServiceManDataHelper {
                     xServiceMan.email = cursor.getString(2);
                     xServiceMan.mobileNo = cursor.getString(3);
                     xServiceMan.state = cursor.getString(4);
-                    xServiceMan.state = cursor.getString(5);
-                    xServiceMan.state = cursor.getString(6);
+                    xServiceMan.city = cursor.getString(5);
+                    xServiceMan.area = cursor.getString(6);
                     xServiceMan.district = cursor.getString(7);
                     xServiceMan.subDivision = cursor.getString(8);
                     xServiceMan.circlePolicestation = cursor.getString(9);
@@ -152,5 +176,52 @@ public class XServiceManDataHelper {
                 sqLiteDatabase.close();
         }
         return XServiceManList;
+    }
+
+    public static ExServiceMan getXServiceManByEmailId(Context context,String email){
+        SQLiteDatabase sqLiteDatabase = null;
+        ExServiceMan xServiceMan = null;
+        try{
+            sqLiteDatabase = DatabaseHelper.getInstance(context).openDataBase();
+            String selectQuery = "Select firstName,lastName,email,mobileNo," +
+                    "state,city,area,district,subDivision,circlePolicestation," +
+                    "userImg,userType,services,reqDocs,status from tblXServiceMans" +
+                    " Where email = '"+email+"'";
+
+            Cursor cursor = sqLiteDatabase.rawQuery(selectQuery,null);
+
+            if(null!=cursor&&cursor.moveToFirst()){
+                do{
+                    xServiceMan = new ExServiceMan();
+                    xServiceMan.firstName = cursor.getString(0);
+                    xServiceMan.lastName = cursor.getString(1);
+                    xServiceMan.email = cursor.getString(2);
+                    xServiceMan.mobileNo = cursor.getString(3);
+                    xServiceMan.state = cursor.getString(4);
+                    xServiceMan.city = cursor.getString(5);
+                    xServiceMan.area = cursor.getString(6);
+                    xServiceMan.district = cursor.getString(7);
+                    xServiceMan.subDivision = cursor.getString(8);
+                    xServiceMan.circlePolicestation = cursor.getString(9);
+                    xServiceMan.userImg = cursor.getString(10);
+                    xServiceMan.userType = cursor.getString(11);
+                    xServiceMan.services = cursor.getString(12);
+                    xServiceMan.reqDocs = cursor.getString(13);
+                    xServiceMan.status = Integer.parseInt(cursor.getString(14));
+
+                }while (cursor.moveToNext());
+
+                if(null!=cursor&&!cursor.isClosed())
+                    cursor.close();
+            }
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        finally {
+            if(null!=sqLiteDatabase&&sqLiteDatabase.isOpen())
+                sqLiteDatabase.close();
+        }
+        return xServiceMan;
     }
 }

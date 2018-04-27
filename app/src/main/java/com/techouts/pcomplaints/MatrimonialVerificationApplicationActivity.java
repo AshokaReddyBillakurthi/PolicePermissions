@@ -143,7 +143,7 @@ public class MatrimonialVerificationApplicationActivity extends BaseActivity {
         if (resultCode == RESULT_OK) {
             if (requestCode == SELECT_FILE) {
                 Bitmap bm = null;
-                if (data != null) {
+                if (null!=data) {
                     try {
                         bm = MediaStore.Images.Media.getBitmap(getApplicationContext()
                                 .getContentResolver(), data.getData());

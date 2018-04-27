@@ -24,4 +24,5 @@ public class ExServiceMan implements Serializable{
     public String district = "";
     public String subDivision = "";
     public String circlePolicestation = "";
+    public int isActive = 0;
 }

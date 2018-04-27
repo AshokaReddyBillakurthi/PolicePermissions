@@ -8,7 +8,7 @@ import android.widget.TextView;
 
 import com.techouts.pcomplaints.R;
 import com.techouts.pcomplaints.custom.CustomDialog;
-import com.techouts.pcomplaints.model.State;
+import com.techouts.pcomplaints.model.AddressModel;
 
 import java.util.List;
 
@@ -18,10 +18,10 @@ import java.util.List;
 
 public class StateAdapter extends RecyclerView.Adapter<StateAdapter.StateViewHolder>  {
 
-    private List<State> stateList;
+    private List<AddressModel.State> stateList;
     private CustomDialog.OnStateSelected onStateSelected;
 
-    public StateAdapter(List<State> stateList,CustomDialog.OnStateSelected onStateSelected){
+    public StateAdapter(List<AddressModel.State> stateList,CustomDialog.OnStateSelected onStateSelected){
         this.stateList = stateList;
         this.onStateSelected = onStateSelected;
     }
@@ -34,10 +34,10 @@ public class StateAdapter extends RecyclerView.Adapter<StateAdapter.StateViewHol
 
     @Override
     public void onBindViewHolder(StateViewHolder holder, int position) {
-        holder.tvArea.setText(stateList.get(position).stateName.toString());
+        holder.tvArea.setText(stateList.get(position).getStateName().toString());
     }
 
-    public void refresh(List<State> stateList){
+    public void refresh(List<AddressModel.State> stateList){
         this.stateList = stateList;
         notifyDataSetChanged();
     }
