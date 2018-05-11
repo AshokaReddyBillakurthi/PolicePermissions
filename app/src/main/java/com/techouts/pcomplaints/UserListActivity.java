@@ -54,7 +54,7 @@ public class UserListActivity extends BaseActivity {
         serviceManListAdpter = new UserListAdpter(UserListActivity.this);
         rvServiceManList.setAdapter(serviceManListAdpter);
 
-        edtSearch.setHint("Search with area, city, first name, last name...");
+        edtSearch.setHint("Search with first name, last name, division/police station, ...");
 
         if (userListType.equalsIgnoreCase(AppConstents.SERVICE_MAN)) {
             tvTitle.setText("ServiceMan List");
@@ -104,7 +104,7 @@ public class UserListActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 edtSearch.setText("");
-                edtSearch.setHint("Search with area, city, first name, last name...");
+                edtSearch.setHint("Search with first name, last name, division/police station, ...");
                 ivCross.setVisibility(View.GONE);
                 searchText("");
             }
@@ -119,8 +119,8 @@ public class UserListActivity extends BaseActivity {
             tempUserList = new ArrayList<>();
             if (!TextUtils.isEmpty(searchText)) {
                 for (User user : userList) {
-                    if ((user.area.contains(searchText))
-                            || (user.city.contains(searchText))
+                    if ((user.circlePolicestation.contains(searchText))
+                            || (user.subDivision.contains(searchText))
                             || (user.firstName.contains(searchText))
                             || (user.lastName.contains(searchText))) {
                         tempUserList.add(user);

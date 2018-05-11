@@ -23,7 +23,6 @@ public class ExServiceManDetailsActivity extends BaseActivity {
     private ImageView ivBack;
     private CircleImageView ivUserImage;
     private ExServiceMan exServiceMan;
-    private String loginType;
     private ToggleButton tbActive;
     private LinearLayout llActions;
     private boolean isFromMyProfile = false;
@@ -87,7 +86,7 @@ public class ExServiceManDetailsActivity extends BaseActivity {
         tbActive.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(tbActive.isChecked()){
+                if(!tbActive.isChecked()){
                     tbActive.setChecked(false);
                     exServiceMan.isActive = 0;
                 }
@@ -102,7 +101,6 @@ public class ExServiceManDetailsActivity extends BaseActivity {
         if(isFromMyProfile){
             tbActive.setVisibility(View.VISIBLE);
             llActions.setVisibility(View.GONE);
-            tbActive.setChecked(true);
         }
         else{
             tbActive.setVisibility(View.GONE);
@@ -136,12 +134,27 @@ public class ExServiceManDetailsActivity extends BaseActivity {
         }
     }
 
+//    private class IsXServiceManIsActive extends AsyncTask<Void,Void,Boolean>{
+//
+//        @Override
+//        protected Boolean doInBackground(Void... voids) {
+//            return XServiceManDataHelper.isXserviceManActive(ExServiceManDetailsActivity.this,
+//                    SharedPreferenceUtils.getStringValue(AppConstents.EMAIL_ID));
+//        }
+//
+//        @Override
+//        protected void onPostExecute(Boolean aBoolean) {
+//            super.onPostExecute(aBoolean);
+//
+//        }
+//    }
+
     private class UpdateExserviceManStatus extends AsyncTask<ExServiceMan, Void, Boolean> {
 
         @Override
         protected Boolean doInBackground(ExServiceMan... exServiceMEN) {
             boolean isUpdated = XServiceManDataHelper.updateStatus(ExServiceManDetailsActivity.this,
-                    exServiceMEN[0].status+"",exServiceMEN[0].email);
+                    exServiceMEN[0].state+"",exServiceMEN[0].email);
             return isUpdated;
         }
 
@@ -150,7 +163,7 @@ public class ExServiceManDetailsActivity extends BaseActivity {
             super.onPostExecute(isUpdated);
             if (isUpdated) {
                 showToast(exServiceMan.firstName + " " + exServiceMan.lastName + " " +
-                        "Ap plication Accepted Successfully");
+                        "Application Accepted Successfully");
                 finish();
             } else {
                 showToast(exServiceMan.firstName + " " + exServiceMan.lastName + " " +
@@ -164,8 +177,8 @@ public class ExServiceManDetailsActivity extends BaseActivity {
 
         @Override
         protected Boolean doInBackground(ExServiceMan... exServiceMEN) {
-            boolean isUpdated = XServiceManDataHelper.updateStatus(ExServiceManDetailsActivity.this,
-                    exServiceMEN[0].status+"",exServiceMEN[0].email);
+            boolean isUpdated = XServiceManDataHelper.updateUserActiveStatus(ExServiceManDetailsActivity.this,
+                    exServiceMEN[0].isActive+"",exServiceMEN[0].email);
             return isUpdated;
         }
 
@@ -176,12 +189,9 @@ public class ExServiceManDetailsActivity extends BaseActivity {
         }
     }
 
-
-
-
     private void setXServiceManData(){
         try{
-            if (exServiceMan != null) {
+            if (null != exServiceMan) {
                 tvTitle.setText(exServiceMan.firstName + " " + exServiceMan.lastName);
                 tvFirstName.setText(exServiceMan.firstName + "");
                 tvLastName.setText(exServiceMan.lastName + "");
@@ -201,6 +211,13 @@ public class ExServiceManDetailsActivity extends BaseActivity {
                 }
                 else{
                     llActions.setVisibility(View.GONE);
+                }
+
+                if(exServiceMan.isActive == 1){
+                    tbActive.setChecked(true);
+                }
+                else{
+                    tbActive.setChecked(false);
                 }
             }
         }

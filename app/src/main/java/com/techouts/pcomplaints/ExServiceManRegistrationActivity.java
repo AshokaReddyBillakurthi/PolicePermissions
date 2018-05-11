@@ -136,13 +136,13 @@ public class ExServiceManRegistrationActivity extends BaseActivity {
                                 public void run() {
                                     customDialog = new CustomDialog(ExServiceManRegistrationActivity.this,
                                             divisionPoliceStationList,"Select Sub Division",
-                                            true, false, true,
+                                            true, true, true,
                                             new CustomDialog.OnDivisionPoliceStation() {
                                                 @Override
-                                                public void onDivisionPoliceStation(AddressModel.DivisionPoliceStation divisionPoliceStation) {
+                                                public void onDivisionPoliceStation(String divisionPoliceStation) {
                                                     if(null!=divisionPoliceStation){
-                                                        tvDivisionPoliceStation.setText(divisionPoliceStation.getDivisionName()+"");
-                                                        divisionPoliceStationCode = divisionPoliceStation.getDivisionCode();
+                                                        tvDivisionPoliceStation.setText(divisionPoliceStation+"");
+//                                                        divisionPoliceStationCode = divisionPoliceStation.getDivisionCode();
                                                     }
                                                     customDialog.dismiss();
                                                 }
@@ -346,6 +346,7 @@ public class ExServiceManRegistrationActivity extends BaseActivity {
                 exServiceMan.state = state;
                 exServiceMan.city = "";
                 exServiceMan.area = "";
+                exServiceMan.isActive = 1;
                 exServiceMan.userType = userType;
                 exServiceMan.userImg = userImg;
                 exServiceMan.status = 0;
@@ -459,7 +460,7 @@ public class ExServiceManRegistrationActivity extends BaseActivity {
 
         @Override
         protected Boolean doInBackground(ArrayList<ExServiceMan>[] arrayLists) {
-            XServiceManDataHelper.insertUserData(ExServiceManRegistrationActivity.this,arrayLists[0]);
+            XServiceManDataHelper.insertXserviceManData(ExServiceManRegistrationActivity.this,arrayLists[0]);
             return true;
         }
 

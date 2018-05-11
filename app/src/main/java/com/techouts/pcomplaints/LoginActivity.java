@@ -35,7 +35,6 @@ public class LoginActivity extends BaseActivity {
     private TextView tvLoginType;
     private EditText edtEmail,edtPassword;
     private Button btnLogin,btnRegister;
-    private String loginType = "";
     private String userType = "";
     private TextView tvSkipLogin;
     private CustomDialog customDialog;
@@ -172,7 +171,6 @@ public class LoginActivity extends BaseActivity {
                     SharedPreferenceUtils.putStaringValue(AppConstents.LOGIN_TYPE,loginType);
                     new LoginAsyncTask().execute(args);
                 }
-//                checkLogin(email,password);
             }
             else{
                 showToast("Please enter proper details");
@@ -190,12 +188,9 @@ public class LoginActivity extends BaseActivity {
             boolean isValidUser = false;
             if(userType.equalsIgnoreCase(AppConstents.USER_TYPE_SERVICEMAN)){
                 isValidUser = XServiceManDataHelper.isValidXServiceMan(LoginActivity.this,strings[0],strings[1]);
-//                count = DatabaseHandler.getInstance(getApplicationContext()).exServiceManDao()
-//                        .findExServiceManByEmailAndPassword(strings[0],strings[1],strings[2]);
             }
             else{
                 isValidUser = UserDataHelper.isValidUser(LoginActivity.this,strings[0],strings[1]);
-
             }
             return  isValidUser;
         }

@@ -60,7 +60,7 @@ public class UserRegistrationActivity extends BaseActivity {
     private String stateCode = "";
     private String districtCode = "";
     private String subDivisionCode = "";
-    private String divisionPoliceStationCode = "";
+//    private String divisionPoliceStationCode = "";
 
     @Override
     public int getRootLayout() {
@@ -139,14 +139,14 @@ public class UserRegistrationActivity extends BaseActivity {
                                 @Override
                                 public void run() {
                                     customDialog = new CustomDialog(UserRegistrationActivity.this,
-                                            divisionPoliceStationList,"Select Sub Division",
+                                            divisionPoliceStationList,"Select Division/Police Station",
                                             true, false, true,
                                             new CustomDialog.OnDivisionPoliceStation() {
                                                 @Override
-                                                public void onDivisionPoliceStation(AddressModel.DivisionPoliceStation divisionPoliceStation) {
+                                                public void onDivisionPoliceStation(String divisionPoliceStation) {
                                                     if(null!=divisionPoliceStation){
-                                                        tvDivisionPoliceStation.setText(divisionPoliceStation.getDivisionName()+"");
-                                                        divisionPoliceStationCode = divisionPoliceStation.getDivisionCode();
+                                                        tvDivisionPoliceStation.setText(divisionPoliceStation+"");
+//                                                        divisionPoliceStationCode = divisionPoliceStation.getDivisionCode();
                                                     }
                                                     customDialog.dismiss();
                                                 }

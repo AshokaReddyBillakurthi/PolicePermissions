@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.techouts.pcomplaints.ApplicationListActivity;
+import com.techouts.pcomplaints.BaseActivity;
 import com.techouts.pcomplaints.ChatActivity;
 import com.techouts.pcomplaints.CreateServiceActivity;
 import com.techouts.pcomplaints.ExServiceManDetailsActivity;
@@ -97,7 +98,7 @@ public class MenuListAdaper extends RecyclerView.Adapter<MenuListAdaper.MenuView
                             llChildItems.setVisibility(View.GONE);
                             ((HomeActivity)itemView.getContext()).closeDrawer();
                             Intent intent = new Intent(itemView.getContext(), ExServiceManListActivity.class);
-                            intent.putExtra(AppConstents.EXTRA_LOGIN_TYPE,((HomeActivity)itemView.getContext()).loginType);
+                            intent.putExtra(AppConstents.EXTRA_LOGIN_TYPE,((BaseActivity)itemView.getContext()).loginType);
                             intent.putExtra(AppConstents.EXTRA_USER_LIST,AppConstents.SERVICE_MAN);
                             itemView.getContext().startActivity(intent);
                             break;
@@ -133,7 +134,7 @@ public class MenuListAdaper extends RecyclerView.Adapter<MenuListAdaper.MenuView
                                     public void onClick(View v) {
                                         ((HomeActivity)itemView.getContext()).closeDrawer();
                                         Intent intent = new Intent(itemView.getContext(), ApplicationListActivity.class);
-                                        intent.putExtra(AppConstents.EXTRA_SEARCH_BY,AppConstents.SEARCH_BY_AREA);
+                                        intent.putExtra(AppConstents.EXTRA_SEARCH_BY,AppConstents.SEARCH_BY_DIVISION_POLICE_STATION);
                                         itemView.getContext().startActivity(intent);
                                     }
                                 });

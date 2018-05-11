@@ -7,6 +7,7 @@ import java.io.Serializable;
  * Created by TO-OW109 on 26-02-2018.
  */
 public class ExServiceMan implements Serializable{
+
     public String firstName;
     public String lastName;
     public String email;

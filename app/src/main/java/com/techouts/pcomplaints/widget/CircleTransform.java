@@ -1,5 +1,3 @@
-
-
 package com.techouts.pcomplaints.widget;
 
 import android.graphics.Bitmap;

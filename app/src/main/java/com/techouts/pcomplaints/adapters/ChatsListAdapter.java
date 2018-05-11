@@ -102,12 +102,16 @@ public class ChatsListAdapter extends RecyclerView.Adapter<ChatsListAdapter.View
         holder.content.setText(c.getText());
         if (c.getSender().getId().equals(set.readSetting("myid"))) {
             holder.title.setText(c.getReceiver().getName());
-            Picasso.with(mContext).load(c.getReceiver().getPhoto()).resize(100, 100).transform(new CircleTransform()).into(holder.image);
+            Picasso.with(mContext).load(c.getReceiver().getPhoto())
+                    .resize(100, 100)
+                    .transform(new CircleTransform()).into(holder.image);
         }
         else if(c.getReceiver().getId().equals(set.readSetting("myid")))
         {
             holder.title.setText(c.getSender().getName());
-            Picasso.with(mContext).load(c.getSender().getPhoto()).resize(100, 100).transform(new CircleTransform()).into(holder.image);
+            Picasso.with(mContext).load(c.getSender().getPhoto())
+                    .resize(100, 100)
+                    .transform(new CircleTransform()).into(holder.image);
         }
 
         // Here you apply the animation when the view is bound
@@ -225,6 +229,5 @@ public class ChatsListAdapter extends RecyclerView.Adapter<ChatsListAdapter.View
             filtered_items = (List<ChatMessage>) results.values;
             notifyDataSetChanged();
         }
-
     }
 }

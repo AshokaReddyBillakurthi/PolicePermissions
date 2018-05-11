@@ -36,19 +36,19 @@ public class UserListAdpter extends RecyclerView.Adapter<UserListAdpter.ServiceM
 
     @Override
     public ServiceManViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.user_item_cell, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.end_user_list_item_cell, parent, false);
         return new ServiceManViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(ServiceManViewHolder holder, int position) {
         holder.tvFullName.setText(userList.get(position).firstName + " "+userList.get(position).lastName + "");
-        holder.tvEmail.setText(userList.get(position).email + "");
-        holder.tvMobileNumber.setText(userList.get(position).mobileNo + "");
-        holder.tvArea.setText(userList.get(position).circlePolicestation+"");
-        holder.tvCity.setText(userList.get(position).subDivision+"");
-        holder.tvState.setText(userList.get(position).state+"");
-        getImageOfServiceMan(userList.get(position).userImg,holder.ivServiceManImg);
+        holder.tvDivisionPoliceStation.setText(userList.get(position).circlePolicestation+"");
+//        holder.tvEmail.setText(userList.get(position).email + "");
+//        holder.tvMobileNumber.setText(userList.get(position).mobileNo + "");
+//        holder.tvCity.setText(userList.get(position).subDivision+"");
+//        holder.tvState.setText(userList.get(position).state+"");
+//        getImageOfServiceMan(userList.get(position).userImg,holder.ivServiceManImg);
     }
 
     public void refresh(List<User> userList){
@@ -62,18 +62,18 @@ public class UserListAdpter extends RecyclerView.Adapter<UserListAdpter.ServiceM
     }
 
     class ServiceManViewHolder extends RecyclerView.ViewHolder {
-        TextView tvFullName, tvEmail, tvMobileNumber,tvArea,tvCity,tvState;
-        ImageView ivServiceManImg;
+        TextView tvFullName,tvDivisionPoliceStation;// tvEmail, tvMobileNumber,tvArea,tvCity,tvState;
+//        ImageView ivServiceManImg;
 
         public ServiceManViewHolder(final View itemView) {
             super(itemView);
             tvFullName = itemView.findViewById(R.id.tvFullName);
-            tvEmail = itemView.findViewById(R.id.tvEmail);
-            tvArea = itemView.findViewById(R.id.tvArea);
-            tvCity = itemView.findViewById(R.id.tvCity);
-            tvState = itemView.findViewById(R.id.tvState);
-            tvMobileNumber = itemView.findViewById(R.id.tvMobileNumber);
-            ivServiceManImg = itemView.findViewById(R.id.ivServiceManImg);
+            tvDivisionPoliceStation = itemView.findViewById(R.id.tvDivisionPoliceStation);
+//            tvEmail = itemView.findViewById(R.id.tvEmail);
+//            tvCity = itemView.findViewById(R.id.tvCity);
+//            tvState = itemView.findViewById(R.id.tvState);
+//            tvMobileNumber = itemView.findViewById(R.id.tvMobileNumber);
+//            ivServiceManImg = itemView.findViewById(R.id.ivServiceManImg);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

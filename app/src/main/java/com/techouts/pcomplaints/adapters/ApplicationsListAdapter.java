@@ -37,17 +37,19 @@ public class ApplicationsListAdapter extends RecyclerView.Adapter<ApplicationsLi
     @Override
     public ApplicationViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         mContext = parent.getContext();
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.application_item_cell,parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.application_list_item_cell,parent,false);
         return new ApplicationViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(ApplicationViewHolder holder, int position) {
-        holder.tvName.setText(applicationList.get(position).firstName+" "+applicationList.get(position).lastName);
-        holder.tvEmail.setText(applicationList.get(position).email+"");
-        holder.tvMobileNo.setText(applicationList.get(position).mobileNo+"");
-        holder.tvApplicationType.setText(applicationList.get(position).applicationType+"");
-        holder.tvArea.setText(applicationList.get(position).circlePolicestation+"");
+        holder.tvFullName.setText(applicationList.get(position).firstName+" "+applicationList.get(position).lastName);
+        holder.tvApplicationName.setText(applicationList.get(position).applicationType+"");
+        holder.tvDivisionPoliceStation.setText(applicationList.get(position).circlePolicestation+"");
+//        holder.tvEmail.setText(applicationList.get(position).email+"");
+//        holder.tvMobileNo.setText(applicationList.get(position).mobileNo+"");
+//        holder.tvApplicationType.setText(applicationList.get(position).applicationType+"");
+//        holder.tvDivisionPoliceStation.setText(applicationList.get(position).circlePolicestation+"");
 
         if(applicationList.get(position).status == 0) {
             holder.tvStatus.setText(AppConstents.PENDING);
@@ -62,16 +64,16 @@ public class ApplicationsListAdapter extends RecyclerView.Adapter<ApplicationsLi
             holder.tvStatus.setTextColor(mContext.getColor(R.color.button_green));
         }
 
-        holder.ivMessage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(mContext, ChatActivity.class);
-                intent.putExtra(AppConstents.EXTRA_EMAIL_ID,"ashok.billakurthi@gmail.com");
-                mContext.startActivity(intent);
-            }
-        });
+//        holder.ivMessage.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(mContext, ChatActivity.class);
+//                intent.putExtra(AppConstents.EXTRA_EMAIL_ID,"ashok.billakurthi@gmail.com");
+//                mContext.startActivity(intent);
+//            }
+//        });
 
-        getImageOfServiceMan(applicationList.get(position).userImg,holder.ivApplicantImg);
+//        getImageOfServiceMan(applicationList.get(position).userImg,holder.ivApplicantImg);
     }
 
     public void refresh(List<Application> applicationList){
@@ -86,21 +88,23 @@ public class ApplicationsListAdapter extends RecyclerView.Adapter<ApplicationsLi
 
     class ApplicationViewHolder extends RecyclerView.ViewHolder{
 
-        ImageView ivApplicantImg,ivMessage;
-        TextView tvName,tvEmail,tvMobileNo,tvApplicationType,
-                tvArea,tvStatus;
+       // ImageView ivApplicantImg,ivMessage;
+        TextView tvFullName,tvApplicationName,tvStatus,tvDivisionPoliceStation;//tvEmail,tvMobileNo,tvApplicationType,
+               // tvArea;
 
         public ApplicationViewHolder(View itemView) {
             super(itemView);
-
-            ivApplicantImg = itemView.findViewById(R.id.ivApplicantImg);
-            tvName = itemView.findViewById(R.id.tvName);
-            tvEmail = itemView.findViewById(R.id.tvEmail);
-            tvMobileNo = itemView.findViewById(R.id.tvMobileNo);
-            ivMessage = itemView.findViewById(R.id.ivMessage);
-            tvArea = itemView.findViewById(R.id.tvArea);
+            tvFullName = itemView.findViewById(R.id.tvFullName);
             tvStatus = itemView.findViewById(R.id.tvStatus);
-            tvApplicationType = itemView.findViewById(R.id.tvApplicationType);
+            tvApplicationName = itemView.findViewById(R.id.tvApplicationName);
+            tvDivisionPoliceStation = itemView.findViewById(R.id.tvDivisionPoliceStation);
+
+//            ivApplicantImg = itemView.findViewById(R.id.ivApplicantImg);
+//            tvEmail = itemView.findViewById(R.id.tvEmail);
+//            tvMobileNo = itemView.findViewById(R.id.tvMobileNo);
+//            ivMessage = itemView.findViewById(R.id.ivMessage);
+//            tvArea = itemView.findViewById(R.id.tvArea);
+//            tvApplicationType = itemView.findViewById(R.id.tvApplicationType);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

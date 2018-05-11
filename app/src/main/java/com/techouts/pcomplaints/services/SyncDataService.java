@@ -33,9 +33,6 @@ public class SyncDataService extends IntentService {
     protected void onHandleIntent(@Nullable Intent intent) {
         try {
             getAllData(ApiServiceConstants.GEO_DATA);
-//            getAllData(ApiServiceConstants.DISTRICTS);
-//            getAllData(ApiServiceConstants.SUB_DIVISIONS);
-//            getAllData(ApiServiceConstants.DIVISION);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -59,15 +56,6 @@ public class SyncDataService extends IntentService {
                 public void onResponse(Call call, final Response response) throws IOException {
                     String body = response.body().string().toString();
                     parseAddressData(body);
-//                    if (name.equalsIgnoreCase(ApiServiceConstants.STATES)) {
-//                        parseStatesData(body);
-//                    } else if (name.equalsIgnoreCase(ApiServiceConstants.DISTRICTS)) {
-//                        parseDistrictData(body);
-//                    } else if (name.equalsIgnoreCase(ApiServiceConstants.SUB_DIVISIONS)) {
-//                        parseSubDivisionData(body);
-//                    } else if (name.equalsIgnoreCase(ApiServiceConstants.DIVISION)) {
-//                        parseDivisionPoliceStationData(body);
-//                    }
                 }
             });
         } catch (Exception e) {
@@ -103,57 +91,4 @@ public class SyncDataService extends IntentService {
             e.printStackTrace();
         }
     }
-
-//    private void parseStatesData(String body) {
-//        try {
-//            StatesModel statesModel = new Gson().fromJson(body, StatesModel.class);
-//            if (null != statesModel.getStates() && !statesModel.getStates().isEmpty()) {
-////                AppDataHelper.insertUpdateStates(getApplicationContext(), statesModel.getStates());
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
-//
-//
-//    private void parseDistrictData(String body) {
-//        try {
-//            DistrictModel districtModel = new Gson().fromJson(body, DistrictModel.class);
-//            if (null != districtModel.getDistricts() && !districtModel.getDistricts().isEmpty()) {
-////                AppDataHelper.insertUpdateDistricts(getApplicationContext(), districtModel.getDistricts());
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
-//
-//    private void parseSubDivisionData(String body) {
-//        try {
-//            SubDivisionModel subDivisionModel = new Gson().fromJson(body, SubDivisionModel.class);
-//            if (null != subDivisionModel.getSubDivisions() && !subDivisionModel.getSubDivisions().isEmpty()) {
-////                AppDataHelper.insertUpdateSubDivisions(getApplicationContext(), subDivisionModel.getSubDivisions());
-//            }
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
-//
-//    private void parseDivisionPoliceStationData(String body){
-//        try{
-//            DivisionPoliceStationModel divisionPoliceStationModel = new Gson().fromJson(body, DivisionPoliceStationModel.class);
-//            if (null != divisionPoliceStationModel.getDivisionPoliceStations()
-//                    && !divisionPoliceStationModel.getDivisionPoliceStations().isEmpty()) {
-////                AppDataHelper.insertUpdateDivisionPoliceStations(getApplicationContext(),
-////                        divisionPoliceStationModel.getDivisionPoliceStations());
-//                Intent data = new Intent();
-//                data.setAction(MY_ACTION);
-//                data.putExtra("DATAPASSED", "Done");
-//                sendBroadcast(data);
-//            }
-//        }
-//        catch(Exception e){
-//            e.printStackTrace();
-//        }
-//    }
 }

@@ -1,6 +1,8 @@
 package com.techouts.pcomplaints;
 
+
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -10,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.techouts.pcomplaints.adapters.ExServiceManPagerAdapter;
+import com.techouts.pcomplaints.fragments.ExServiceManListFragment;
 import com.techouts.pcomplaints.model.ExServiceMan;
 import com.techouts.pcomplaints.utils.AppConstents;
 
@@ -24,8 +27,8 @@ public class ExServiceManListActivity extends BaseActivity {
     private String userListType = "";
     private EditText edtSearch;
     private List<ExServiceMan> tempExServiceManList;
-    public String loginType="";
     private ExServiceManPagerAdapter exServiceManPagerAdapter;
+
 
     @Override
     public int getRootLayout() {
@@ -57,6 +60,11 @@ public class ExServiceManListActivity extends BaseActivity {
             }
         });
 
+        Fragment fragment = ExServiceManListFragment.getInstance(0);
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.llContainer, fragment)
+                .commit();
     }
 
     @Override
@@ -104,10 +112,7 @@ public class ExServiceManListActivity extends BaseActivity {
                 searchText("");
             }
         });
-
-
     }
-
 
     private void searchText(String searchText) {
 //        try {

@@ -21,18 +21,13 @@ public class ExServiceManPagerAdapter extends FragmentPagerAdapter {
     // This determines the fragment for each tab
     @Override
     public Fragment getItem(int position) {
-        if (position == 0) {
-            return ExServiceManListFragment.getInstance(0);
-        } else if (position == 1){
-            return ExServiceManListFragment.getInstance(1);
-        } else
-            return ExServiceManListFragment.getInstance(-1);
+        return ExServiceManListFragment.getInstance(0);
     }
 
     // This determines the number of tabs
     @Override
     public int getCount() {
-        return 3;
+        return 1;
     }
 
     // This determines the title for each tab
@@ -41,11 +36,7 @@ public class ExServiceManPagerAdapter extends FragmentPagerAdapter {
         // Generate title based on item position
         switch (position) {
             case 0:
-                return "Pending";
-            case 1:
-                return "Approved";
-            case 2:
-                return "Rejected";
+                return "XServiceMan List";
             default:
                 return null;
         }

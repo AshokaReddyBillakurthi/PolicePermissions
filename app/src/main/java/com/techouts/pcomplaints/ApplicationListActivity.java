@@ -9,7 +9,9 @@ import android.widget.TextView;
 
 import com.techouts.pcomplaints.adapters.ApplicationsListAdapter;
 import com.techouts.pcomplaints.custom.CustomDialog;
+import com.techouts.pcomplaints.database.AppDataHelper;
 import com.techouts.pcomplaints.database.ApplicationHelper;
+import com.techouts.pcomplaints.model.AddressModel;
 import com.techouts.pcomplaints.model.Application;
 import com.techouts.pcomplaints.utils.AppConstents;
 import com.techouts.pcomplaints.utils.DataManager;
@@ -47,8 +49,8 @@ public class ApplicationListActivity extends BaseActivity  {
 
         tvTitle.setText("Applications");
 
-        if(searchBy.equalsIgnoreCase(AppConstents.SEARCH_BY_AREA))
-            tvSearchBy.setHint("Select Area");
+        if(searchBy.equalsIgnoreCase(AppConstents.SEARCH_BY_DIVISION_POLICE_STATION))
+            tvSearchBy.setHint("Select Division/Police Station");
         else if(searchBy.equalsIgnoreCase(AppConstents.SEARCH_BY_APPLICATION_TYPE))
             tvSearchBy.setHint("Select Application Type");
 
@@ -64,27 +66,26 @@ public class ApplicationListActivity extends BaseActivity  {
             public void onClick(View v) {
                 List<String> list = null;
                 String title = "";
-                if(searchBy.equalsIgnoreCase(AppConstents.SEARCH_BY_AREA)){
-                    list = DataManager.getList(AppConstents.TYPE_AREA);
-                    title = "Select Area";
+                if(searchBy.equalsIgnoreCase(AppConstents.SEARCH_BY_DIVISION_POLICE_STATION)){
+                    title = "Select Division/Police Station";
+                    new GetAllDivisionPoliceStations().execute();
                 }
                 else if(searchBy.equalsIgnoreCase(AppConstents.SEARCH_BY_APPLICATION_TYPE)){
                     list = DataManager.getAllServices();
                     title = "Select Application Type";
+                    customDialog = new CustomDialog(ApplicationListActivity.this, list, title,
+                            true,false,
+                            new CustomDialog.NameSelectedListener() {
+                                @Override
+                                public void onNameSelected(String listName) {
+                                    tvSearchBy.setText(listName);
+                                    new GetApplicationsAsyncTask().execute(listName);
+                                    customDialog.dismiss();
+                                }
+                            });
+
+                    customDialog.show();
                 }
-
-                customDialog = new CustomDialog(ApplicationListActivity.this, list, title,
-                        true,false,
-                        new CustomDialog.NameSelectedListener() {
-                            @Override
-                            public void onNameSelected(String listName) {
-                                tvSearchBy.setText(listName);
-                                new GetApplicationsAsyncTask().execute(listName);
-                                customDialog.dismiss();
-                            }
-                        });
-
-                customDialog.show();
             }
         });
     }
@@ -98,10 +99,11 @@ public class ApplicationListActivity extends BaseActivity  {
 
         @Override
         protected List<Application> doInBackground(String... strings) {
-            if(searchBy.equalsIgnoreCase(AppConstents.SEARCH_BY_AREA))
+            if(searchBy.equalsIgnoreCase(AppConstents.SEARCH_BY_DIVISION_POLICE_STATION))
                 return ApplicationHelper.getAllApplicationsByArea(ApplicationListActivity.this,strings[0]);
             else
-                return ApplicationHelper.getAllApplicationsByApplicationType(ApplicationListActivity.this,strings[0]);
+                return ApplicationHelper.getAllApplicationsByApplicationType(ApplicationListActivity.this,
+                        strings[0]);
         }
 
         @Override
@@ -115,6 +117,35 @@ public class ApplicationListActivity extends BaseActivity  {
             else{
                 tvNoApplications.setVisibility(View.VISIBLE);
                 rvApplications.setVisibility(View.GONE);
+            }
+        }
+    }
+
+    class GetAllDivisionPoliceStations extends AsyncTask<Void,Void,List<AddressModel.DivisionPoliceStation>>{
+
+        @Override
+        protected List<AddressModel.DivisionPoliceStation> doInBackground(Void... voids) {
+            return AppDataHelper.getAllDivisionPoliceStations(ApplicationListActivity.this);
+        }
+
+        @Override
+        protected void onPostExecute(List<AddressModel.DivisionPoliceStation> divisionPoliceStations) {
+            super.onPostExecute(divisionPoliceStations);
+            if(null!=divisionPoliceStations&&!divisionPoliceStations.isEmpty()){
+                customDialog = new CustomDialog(ApplicationListActivity.this,
+                        divisionPoliceStations,"Select Division/Police Station",
+                        true, false, true,
+                        new CustomDialog.OnDivisionPoliceStation() {
+                            @Override
+                            public void onDivisionPoliceStation(String divisionPoliceStation) {
+                                if(null!=divisionPoliceStation){
+                                    tvSearchBy.setText(divisionPoliceStation+"");
+                                    new GetApplicationsAsyncTask().execute(divisionPoliceStation);
+                                }
+                                customDialog.dismiss();
+                            }
+                        });
+                customDialog.show();
             }
         }
     }

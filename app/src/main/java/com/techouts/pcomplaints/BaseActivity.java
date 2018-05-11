@@ -2,7 +2,6 @@ package com.techouts.pcomplaints;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -10,15 +9,11 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.widget.EditText;
 import android.widget.Toast;
 
-import com.payumoney.core.PayUmoneyConfig;
 import com.payumoney.core.PayUmoneyConstants;
 import com.payumoney.core.PayUmoneySdkInitializer;
 import com.payumoney.sdkui.ui.utils.PayUmoneyFlowManager;
-import com.techouts.pcomplaints.services.SyncDataService;
-import com.techouts.pcomplaints.utils.PayUConfigDetails;
 import com.techouts.pcomplaints.utils.SharedPreferenceUtils;
 
 import org.json.JSONException;
@@ -44,6 +39,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     private SharedPreferenceUtils sharedPreferenceUtils;
     public String userImg = "";
     private PayUmoneySdkInitializer.PaymentParam mPaymentParams;
+    public String loginType="";
 
     private static final String TAG = BaseActivity.class.getSimpleName();
 

@@ -9,9 +9,19 @@
 
     <include layout="@layout/layout_search"/>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rvServiceManList"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:background="@color/lite_white"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rvServiceManList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="5dp"/>
+
+    </LinearLayout>
 
 </LinearLayout>

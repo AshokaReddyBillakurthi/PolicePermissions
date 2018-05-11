@@ -163,6 +163,8 @@ public class AddressModel {
         @Expose
         private String subDivisionCode;
 
+        public boolean isSelected = false;
+
         public String getDivisionCode() {
             return divisionCode;
         }

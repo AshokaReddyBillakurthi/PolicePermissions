@@ -19,7 +19,7 @@
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:padding="15dp"
-                android:text="Search by Area"
+                android:text="Search by Division/Police Station"
                 android:textSize="16sp"
                 android:textColor="@color/app_color"
                 android:fontFamily="sans-serif" />

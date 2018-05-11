@@ -12,7 +12,7 @@ import java.util.List;
 
 public class AppDataHelper {
 
-    public static void insertUpdateStates(SQLiteDatabase sqLiteDatabase, List<AddressModel.State> stateList){
+    public static void insertUpdateStates( SQLiteDatabase sqLiteDatabase, List<AddressModel.State> stateList){
         try{
             String insertQuery = "Insert into tblStates(stateCode,stateName)" +
                     " values(?,?)";
@@ -54,7 +54,6 @@ public class AppDataHelper {
                     " Where districtCode = ?";
             SQLiteStatement insertStmt = sqLiteDatabase.compileStatement(insertQuery);
             SQLiteStatement updateStmt = sqLiteDatabase.compileStatement(updateQuery);
-
             if(null!= districtList&&!districtList.isEmpty()){
                 for(AddressModel.District district: districtList){
                     updateStmt.bindString(1,district.getDistrictName());
@@ -75,7 +74,7 @@ public class AppDataHelper {
                 insertStmt.close();
         }
         catch (Exception e){
-            e.printStackTrace();
+           e.printStackTrace();
         }
         finally {
             if(null!=sqLiteDatabase&&sqLiteDatabase.isOpen())
@@ -83,7 +82,8 @@ public class AppDataHelper {
         }
     }
 
-    public static void insertUpdateSubDivisions(SQLiteDatabase sqLiteDatabase, List<AddressModel.SubDivision> subDivisionList){
+    public static void insertUpdateSubDivisions(SQLiteDatabase sqLiteDatabase,
+                                                List<AddressModel.SubDivision> subDivisionList){
         try{
             String insertQuery = "Insert into tblSubDivision " +
                     "(subDivisionCode,subDivisionName,districtCode) values(?,?,?)";
@@ -158,12 +158,11 @@ public class AppDataHelper {
         }
     }
 
-
     public static List<AddressModel.State> getAllStates(Context context){
         List<AddressModel.State> statesList = new ArrayList<>();
         SQLiteDatabase sqLiteDatabase = null;
         try{
-            sqLiteDatabase = DatabaseHelper.getInstance(context).openDataBase();
+            sqLiteDatabase = DatabaseHelper.getInstance(context).getWritableDatabase();
             String selectQuery = " Select stateCode,stateName from tblStates ";
             Cursor cursor = sqLiteDatabase.rawQuery(selectQuery,null);
             if(null!=cursor&&cursor.moveToFirst()){
@@ -185,7 +184,7 @@ public class AppDataHelper {
         List<AddressModel.District> districtList = new ArrayList<>();
         SQLiteDatabase sqLiteDatabase = null;
         try{
-            sqLiteDatabase = DatabaseHelper.getInstance(context).openDataBase();
+            sqLiteDatabase = DatabaseHelper.getInstance(context).getWritableDatabase();
             String selectQuery = " Select districtCode,districtName from tblDistrict Where stateCode='"+stateCode+"'";
             Cursor cursor = sqLiteDatabase.rawQuery(selectQuery,null);
             if(null!=cursor&&cursor.moveToFirst()){
@@ -204,11 +203,12 @@ public class AppDataHelper {
         return districtList;
     }
 
-    public static List<AddressModel.SubDivision> getAllSubDivisionsByDistrictCode(Context context,String districtCode){
+    public static List<AddressModel.SubDivision> getAllSubDivisionsByDistrictCode(Context context,
+                                                                                  String districtCode){
         List<AddressModel.SubDivision> subDivisionList = new ArrayList<>();
         SQLiteDatabase sqLiteDatabase = null;
         try{
-            sqLiteDatabase = DatabaseHelper.getInstance(context).openDataBase();
+            sqLiteDatabase = DatabaseHelper.getInstance(context).getWritableDatabase();
             String selectQuery = " Select subDivisionCode,subDivisionName from tblSubDivision " +
                     "Where districtCode='"+districtCode+"'";
             Cursor cursor = sqLiteDatabase.rawQuery(selectQuery,null);
@@ -227,11 +227,12 @@ public class AppDataHelper {
         }
         return subDivisionList;
     }
-    public static List<AddressModel.DivisionPoliceStation> getAllDivisionPoliceStationByDistrictCode(Context context,String subDivisionCode){
+    public static List<AddressModel.DivisionPoliceStation> getAllDivisionPoliceStationByDistrictCode(Context context,
+                                                                                                     String subDivisionCode){
         List<AddressModel.DivisionPoliceStation> divisionPoliceStationList = new ArrayList<>();
         SQLiteDatabase sqLiteDatabase = null;
         try{
-            sqLiteDatabase = DatabaseHelper.getInstance(context).openDataBase();
+            sqLiteDatabase = DatabaseHelper.getInstance(context).getWritableDatabase();
             String selectQuery = " Select divisionPoliceStationCode,divisionPoliceStationName " +
                     "from tblDivisionPoliceStation Where subDivisionCode = '"+subDivisionCode+"'";
             Cursor cursor = sqLiteDatabase.rawQuery(selectQuery,null);
@@ -251,5 +252,27 @@ public class AppDataHelper {
         return divisionPoliceStationList;
     }
 
-
+    public static List<AddressModel.DivisionPoliceStation> getAllDivisionPoliceStations(Context context){
+        List<AddressModel.DivisionPoliceStation> divisionPoliceStationList = new ArrayList<>();
+        SQLiteDatabase sqLiteDatabase = null;
+        try{
+            sqLiteDatabase = DatabaseHelper.getInstance(context).getWritableDatabase();
+            String selectQuery = " Select divisionPoliceStationCode,divisionPoliceStationName " +
+                    "from tblDivisionPoliceStation ";
+            Cursor cursor = sqLiteDatabase.rawQuery(selectQuery,null);
+            if(null!=cursor&&cursor.moveToFirst()){
+                AddressModel.DivisionPoliceStation divisionPoliceStation = null;
+                do{
+                    divisionPoliceStation = new AddressModel.DivisionPoliceStation();
+                    divisionPoliceStation.setDivisionCode(cursor.getString(0));
+                    divisionPoliceStation.setDivisionName(cursor.getString(1));
+                    divisionPoliceStationList.add(divisionPoliceStation);
+                }while (cursor.moveToNext());
+            }
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        return divisionPoliceStationList;
+    }
 }

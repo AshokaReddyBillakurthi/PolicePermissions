@@ -70,7 +70,7 @@ public class ExServiceManListFragment  extends BaseFragment {
 
         @Override
         protected List<ExServiceMan> doInBackground(Integer... integers) {
-            exServiceManList = XServiceManDataHelper.getAllXServiceMans(getContext(),integers[0]+"");
+            exServiceManList = XServiceManDataHelper.getAllXServiceMans(getContext());
             return exServiceManList;
         }
 

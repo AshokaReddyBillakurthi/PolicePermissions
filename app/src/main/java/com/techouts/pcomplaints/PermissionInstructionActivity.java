@@ -120,9 +120,6 @@ public class PermissionInstructionActivity extends BaseActivity {
 
                     new SendApplicationAsyncTask().execute(listApplications);
 
-//                    Intent intent = new Intent(PermissionInstructionActivity.this,PaymentActivity.class);
-//                    intent.putExtra(AppConstents.EXTRA_APPLICATION_TYPE,applicationType);
-//                    startActivityForResult(intent,PAYMENT_CODE);
 
 //                    launchPayUMoneyFlow();
                 }
@@ -210,8 +207,12 @@ public class PermissionInstructionActivity extends BaseActivity {
         @Override
         protected void onPostExecute(Boolean aBoolean) {
             super.onPostExecute(aBoolean);
-            DialogUtils.showDialog(PermissionInstructionActivity.this,
-                    "Application submitted successfully", AppConstents.FINISH, false);
+//            DialogUtils.showDialog(PermissionInstructionActivity.this,
+//                    "Application submitted successfully", AppConstents.FINISH, false);
+
+            Intent intent = new Intent(PermissionInstructionActivity.this,PaymentActivity.class);
+            intent.putExtra(AppConstents.EXTRA_APPLICATION_TYPE,applicationType);
+            startActivityForResult(intent,PAYMENT_CODE);
         }
     }
 

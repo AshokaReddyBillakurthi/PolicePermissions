@@ -16,7 +16,7 @@ public class UserDataHelper {
     public static void insertUserData(Context context,ArrayList<User> userList){
         SQLiteDatabase sqLiteDatabase = null;
         try{
-            sqLiteDatabase = DatabaseHelper.getInstance(context).openDataBase();
+            sqLiteDatabase = DatabaseHelper.getInstance(context).getWritableDatabase();
 
             String insertQuery = "Insert into tblUsers(firstName,lastName," +
                     "email,password,mobileNo,state,city,area," +
@@ -59,7 +59,7 @@ public class UserDataHelper {
         boolean isValidUser = false;
         SQLiteDatabase sqLiteDatabase = null;
         try{
-            sqLiteDatabase = DatabaseHelper.getInstance(context).openDataBase();
+            sqLiteDatabase = DatabaseHelper.getInstance(context).getWritableDatabase();
             String selectQuery = "Select email from tblUsers Where email = '"+email+"' and password = '"+password+"'";
             Cursor cursor = sqLiteDatabase.rawQuery(selectQuery,null);
             if(null!=cursor&&cursor.moveToFirst()){
@@ -84,7 +84,7 @@ public class UserDataHelper {
         List<User> userList = new ArrayList<>();
         SQLiteDatabase sqLiteDatabase = null;
         try{
-            sqLiteDatabase = DatabaseHelper.getInstance(context).openDataBase();
+            sqLiteDatabase = DatabaseHelper.getInstance(context).getWritableDatabase();
             String selectQuery = "Select firstName,lastName,email,mobileNo,state,city,area," +
                     "district,subDivision,circlePolicestation,userImg,userType from tblUsers";
 
@@ -122,7 +122,7 @@ public class UserDataHelper {
     public static User getUserByEmailId(Context context,String email){
         User user = null;
         try{
-            SQLiteDatabase sqLiteDatabase = DatabaseHelper.getInstance(context).openDataBase();
+            SQLiteDatabase sqLiteDatabase = DatabaseHelper.getInstance(context).getWritableDatabase();
             String selectQuery = "Select firstName,lastName,email,mobileNo,state,city,area," +
                     "district,subDivision,circlePolicestation,userImg,userType " +
                     " from tblUsers Where email = '"+email+"'";

@@ -89,30 +89,6 @@ public class CustomDialog extends Dialog {
         this.nameSelectedListener = nameSelectedListener;
     }
 
-//    public CustomDialog(@NonNull Context context, List<Area> areaList, String title,boolean isArea,
-//                        boolean isSearchReq, boolean isCheckboxNeed, NameSelectedListener nameSelectedListener) {
-//        super(context);
-//        this.mContext = context;
-//        this.areaList = areaList;
-//        this.isSearchReq = isSearchReq;
-//        this.isCheckboxNeed = isCheckboxNeed;
-//        this.title = title;
-//        this.nameSelectedListener = nameSelectedListener;
-//        this.isArea = isArea;
-//    }
-//
-//    public CustomDialog(@NonNull Context context, List<City> cityList, boolean isCity, String title,
-//                        boolean isSearchReq, boolean isCheckboxNeed, NameSelectedListener nameSelectedListener) {
-//        super(context);
-//        this.mContext = context;
-//        this.cityList = cityList;
-//        this.isSearchReq = isSearchReq;
-//        this.isCheckboxNeed = isCheckboxNeed;
-//        this.title = title;
-//        this.nameSelectedListener = nameSelectedListener;
-//        this.isCity = isCity;
-//    }
-
     public CustomDialog(@NonNull Context context, boolean isState, List<AddressModel.State> stateList, String title,
                         boolean isSearchReq, boolean isCheckboxNeed, NameSelectedListener nameSelectedListener) {
         super(context);
@@ -208,7 +184,8 @@ public class CustomDialog extends Dialog {
             subDivisionAdapter = new SubDivisionAdapter(subDivisionList, onSubDivisionSelected);
             rvList.setAdapter(subDivisionAdapter);
         } else if (isDivisionPoliceStation) {
-            divisionPoliceStationAdapter = new DivisionPoliceStationAdapter(divisionPoliceStationsList, onDivisionPoliceStation);
+            divisionPoliceStationAdapter =
+                    new DivisionPoliceStationAdapter(divisionPoliceStationsList,isCheckboxNeed, onDivisionPoliceStation);
             rvList.setAdapter(divisionPoliceStationAdapter);
         } else {
             listNamesAdapter = new ListNamesAdapter();
@@ -220,16 +197,17 @@ public class CustomDialog extends Dialog {
             @Override
             public void onClick(View v) {
                 StringBuilder stringBuilder = new StringBuilder();
-                List<Area> areas = areaAdapter.getSelectedAreas();
-                for (Area area : areas) {
-                    stringBuilder.append(area.areaName).append(",");
+                List<AddressModel.DivisionPoliceStation>
+                        divisionPoliceStationList = divisionPoliceStationAdapter.getSelectedDivisionPoliceStations();
+                for (AddressModel.DivisionPoliceStation divisionPoliceStation : divisionPoliceStationList) {
+                    stringBuilder.append(divisionPoliceStation.getDivisionName()).append(",");
                 }
                 int index = -1;
-                String areaStr = "";
+                String divisionPoliceStationStr = "";
                 index = stringBuilder.toString().lastIndexOf(",");
                 if (index >= 0) {
-                    areaStr = stringBuilder.toString().substring(0, index);
-                    nameSelectedListener.onNameSelected(areaStr);
+                    divisionPoliceStationStr = stringBuilder.toString().substring(0, index);
+                    onDivisionPoliceStation.onDivisionPoliceStation(divisionPoliceStationStr);
                 }
             }
         });
@@ -450,7 +428,7 @@ public class CustomDialog extends Dialog {
     }
 
     public interface OnDivisionPoliceStation {
-        void onDivisionPoliceStation(AddressModel.DivisionPoliceStation divisionPoliceStation);
+        void onDivisionPoliceStation(String divisionPoliceStations);
     }
 
 

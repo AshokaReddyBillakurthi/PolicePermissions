@@ -15,7 +15,7 @@ public interface AppConstents {
     String SERVICES = "Services";
     String MY_PROFILE = "My Profile";
     String MY_ACCOUNT = "My Account";
-    String MY_COMPLAINTS = "My Complaints";
+    String MY_COMPLAINTS = "My Applied Services";
     String ADMIN = "Admin";
     String SERVICE_MAN = "XService Man";
     String CUSTOMER = "Customer";
@@ -30,6 +30,7 @@ public interface AppConstents {
     String FINISH = "Finish";
     String LOGIN_TYPE_NONE = "None";
     String SEARCH_BY_AREA = "Search by Area";
+    String SEARCH_BY_DIVISION_POLICE_STATION = "Search by Division/Police Station";
     String SEARCH_BY_APPLICATION_TYPE = "Search by Application Type";
     String EMAIL_ID = "Email Id";
     String PASSWORD = "Password";

@@ -1,13 +1,18 @@
 package com.techouts.pcomplaints;
 
 import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.techouts.pcomplaints.database.XServiceManDataHelper;
 import com.techouts.pcomplaints.model.Application;
+import com.techouts.pcomplaints.model.ExServiceMan;
 import com.techouts.pcomplaints.utils.AppConstents;
+
+import java.util.List;
 
 public class ApplicationDetailsActivity extends BaseActivity {
 
@@ -15,7 +20,6 @@ public class ApplicationDetailsActivity extends BaseActivity {
             tvArea,tvOccupation,tvStatus;
     private ImageView ivBack,ivUserImage;
     private Application application;
-    private String userType = "";
     private LinearLayout llAssign;
 
     @Override
@@ -54,7 +58,7 @@ public class ApplicationDetailsActivity extends BaseActivity {
 
     @Override
     public void initData() {
-        if(application!=null){
+        if(null!=application){
             tvFullName.setText(application.firstName+"");
             tvOccupation.setText(application.lastName+"");
             tvEmail.setText(application.email+"");
@@ -83,8 +87,28 @@ public class ApplicationDetailsActivity extends BaseActivity {
         llAssign.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                if(application!=null){
+                    new GetAllServiceMansRelatedToDivision().execute(application.circlePolicestation);
+                }
             }
         });
+    }
+
+
+    class GetAllServiceMansRelatedToDivision extends AsyncTask<String,Void,List<ExServiceMan>>{
+
+        @Override
+        protected List<ExServiceMan> doInBackground(String... strings) {
+            return XServiceManDataHelper.getAllXServiceMansBasedOnDivision(ApplicationDetailsActivity.this,
+                    strings[0]);
+        }
+
+        @Override
+        protected void onPostExecute(List<ExServiceMan> exServiceMEN) {
+            super.onPostExecute(exServiceMEN);
+            if(null!=exServiceMEN){
+
+            }
+        }
     }
 }

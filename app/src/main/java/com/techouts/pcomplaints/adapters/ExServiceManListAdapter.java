@@ -11,8 +11,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.techouts.pcomplaints.BaseActivity;
 import com.techouts.pcomplaints.ExServiceManDetailsActivity;
-import com.techouts.pcomplaints.ExServiceManListActivity;
 import com.techouts.pcomplaints.R;
 import com.techouts.pcomplaints.model.ExServiceMan;
 import com.techouts.pcomplaints.utils.AppConstents;
@@ -37,18 +37,33 @@ public class ExServiceManListAdapter extends RecyclerView.Adapter<ExServiceManLi
 
     @Override
     public ExServiceManViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.user_item_cell, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.xserviceman_list_item_cell, parent, false);
         return new ExServiceManViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(ExServiceManViewHolder holder, int position) {
         holder.tvFullName.setText(listExServiceMan.get(position).firstName + " "+listExServiceMan.get(position).lastName + "");
-        holder.tvEmail.setText(listExServiceMan.get(position).email + "");
-        holder.tvMobileNumber.setText(listExServiceMan.get(position).mobileNo + "");
-        holder.tvArea.setText(listExServiceMan.get(position).circlePolicestation+"");
-        holder.tvCity.setText(listExServiceMan.get(position).subDivision+"");
-        holder.tvState.setText(listExServiceMan.get(position).state+"");
+        holder.tvDivisionPoliceStation.setText(listExServiceMan.get(position).circlePolicestation+"");
+
+        if(listExServiceMan.get(position).status == 0) {
+            holder.tvStatus.setText("Pending");
+            holder.tvStatus.setTextColor(mContext.getResources().getColor(R.color.orange));
+        }
+        else if(listExServiceMan.get(position).status == 1) {
+            holder.tvStatus.setText("Approved");
+            holder.tvStatus.setTextColor(mContext.getResources().getColor(R.color.button_green));
+        }
+        else if(listExServiceMan.get(position).status == -1) {
+            holder.tvStatus.setText("Rejected");
+            holder.tvStatus.setTextColor(mContext.getResources().getColor(R.color.red));
+        }
+
+//        holder.tvEmail.setText(listExServiceMan.get(position).email + "");
+//        holder.tvMobileNumber.setText(listExServiceMan.get(position).mobileNo + "");
+//
+//        holder.tvCity.setText(listExServiceMan.get(position).subDivision+"");
+//        holder.tvState.setText(listExServiceMan.get(position).state+"");
         getImageOfServiceMan(listExServiceMan.get(position).userImg,holder.ivServiceManImg);
     }
 
@@ -64,25 +79,27 @@ public class ExServiceManListAdapter extends RecyclerView.Adapter<ExServiceManLi
 
     class ExServiceManViewHolder extends RecyclerView.ViewHolder{
 
-        TextView tvFullName, tvEmail, tvMobileNumber,tvArea,tvCity,tvState;
+        TextView tvFullName,tvDivisionPoliceStation,tvStatus;// tvEmail, tvMobileNumber,tvArea,tvCity,tvState;
         ImageView ivServiceManImg;
 
         public ExServiceManViewHolder(final View itemView) {
             super(itemView);
             tvFullName = itemView.findViewById(R.id.tvFullName);
-            tvEmail = itemView.findViewById(R.id.tvEmail);
-            tvMobileNumber = itemView.findViewById(R.id.tvMobileNumber);
-            ivServiceManImg = itemView.findViewById(R.id.ivServiceManImg);
-            tvArea = itemView.findViewById(R.id.tvArea);
-            tvCity = itemView.findViewById(R.id.tvCity);
-            tvState = itemView.findViewById(R.id.tvState);
+            tvDivisionPoliceStation = itemView.findViewById(R.id.tvDivisionPoliceStation);
+            tvStatus = itemView.findViewById(R.id.tvStatus);
+//            tvEmail = itemView.findViewById(R.id.tvEmail);
+//            tvMobileNumber = itemView.findViewById(R.id.tvMobileNumber);
+//            ivServiceManImg = itemView.findViewById(R.id.ivServiceManImg);
+//            tvArea = itemView.findViewById(R.id.tvArea);
+//            tvCity = itemView.findViewById(R.id.tvCity);
+//            tvState = itemView.findViewById(R.id.tvState);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(mContext, ExServiceManDetailsActivity.class);
                     intent.putExtra(AppConstents.EXTRA_USER,listExServiceMan.get(getAdapterPosition()));
-                    intent.putExtra(AppConstents.EXTRA_LOGIN_TYPE,((ExServiceManListActivity)(itemView.getContext())).loginType);
+                    intent.putExtra(AppConstents.EXTRA_LOGIN_TYPE,((BaseActivity)(itemView.getContext())).loginType);
                     mContext.startActivity(intent);
                 }
             });
